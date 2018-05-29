@@ -1,0 +1,44 @@
+{
+  "name": "smogon-stats-site",
+  "version": "0.1.0-alpha",
+  "description": "Website that shows Smogon usage stats in a pretty format.",
+  "author": {
+    "name": "Agustin San Roman",
+    "email": "agustinsanromanguzman@gmail.com",
+    "url": "https://github.com/asanrom"
+  },
+  "scripts": {
+    "watch": "npm run watch:ts",
+    "watch:ts": "npm run build:ts -- --watch --diagnostics",
+    "prebuild": "npm run lint",
+    "compile": "tsc --pretty",
+    "build": "rimraf dist && tsc --pretty",
+    "lint": "tslint src/**/*.ts",
+    "start": "node index.js"
+  },
+  "main": "index.js",
+  "engines": {
+    "node": "> 4.0.0"
+  },
+  "dependencies": {
+    "express": "4.16.3"
+  },
+  "peerDependencies": {
+    "typescript": "^2.8"
+  },
+  "homepage": "https://github.com/asanrom/Smogon-Stats-Site",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asanrom/Smogon-Stats-Site.git"
+  },
+  "bugs": {
+    "url": "https://github.com/asanrom/Smogon-Stats-Site/issues"
+  },
+  "private": true,
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^2.8.0",
+    "rimraf": "^2.6.1",
+    "tslint": "^5.4.3"
+  }
+}
