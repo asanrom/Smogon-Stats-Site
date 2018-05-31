@@ -13,7 +13,7 @@
     "prebuild": "npm run lint",
     "compile": "tsc --pretty",
     "build": "rimraf dist && tsc --pretty",
-    "lint": "tslint src/**/*.ts",
+    "lint": "tslint --fix src/**/*.ts",
     "start": "node index.js"
   },
   "main": "index.js",
@@ -37,8 +37,9 @@
   "private": true,
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^2.8.0",
+    "@types/node": "^10.1.4",
     "rimraf": "^2.6.1",
-    "tslint": "^5.4.3"
+    "tslint": "^5.4.3",
+    "typescript": "^2.8.0"
   }
 }
