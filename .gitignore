@@ -1,5 +1,7 @@
 # Logs
 /logs
+/data
+/data-zip
 /temp
 *.log
 npm-debug.log*
