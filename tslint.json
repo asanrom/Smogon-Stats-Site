@@ -7,7 +7,8 @@
     "rules": {
         "no-console": false,
         "triple-equals": true,
-        "indent": [true, "spaces", 4]
+        "indent": [true, "spaces", 4],
+        "no-var-requires": false
     },
     "rulesDirectory": []
 }
