@@ -1,0 +1,20 @@
+{
+    "debug": true,
+    "portHTTP": 8000,
+    "portHTTPS": 443,
+    "bindAddress": "",
+    "certificate": "",
+    "privateKey": "",
+    "redirectSecure": false,
+    "numWorkers": 1,
+    "logsPath": "logs",
+    "smogonStatsURL": "https://www.smogon.com/stats/",
+    "storageMode": "zip",
+    "storagePath": "data-zip",
+    "mongoURL": "",
+    "mongoOptions": {},
+    "controlPanelUsername": "admin",
+    "controlPanelPasswdHash": "a82152d01a5e9f9ccc178e6d546316ae1feddc163696261945be333947c6e6e1",
+    "controlPanelPasswdAlgo": "sha256",
+    "controlPanelPasswdSalt": "53c915f129c9a8d4562d7bda2154f564"
+}

@@ -12,16 +12,22 @@
     "watch:ts": "npm run build:ts -- --watch --diagnostics",
     "prebuild": "npm run lint",
     "compile": "tsc --pretty",
-    "build": "rimraf dist && tsc --pretty",
+    "build": "rimraf dist && tsc --pretty && node minify && node build-resources.js",
     "lint": "tslint --fix src/**/*.ts",
     "start": "node index.js"
   },
   "main": "index.js",
   "engines": {
-    "node": "> 4.0.0"
+    "node": ">= 8.11.0"
   },
   "dependencies": {
-    "express": "4.16.3"
+    "adm-zip": "0.4.11",
+    "body-parser": "1.18.3",
+    "cookie-parser": "1.4.3",
+    "express": "4.16.3",
+    "express-fileupload": "0.4.0",
+    "material-design-icons": "3.0.1",
+    "mongodb": "3.0.10"
   },
   "peerDependencies": {
     "typescript": "^2.8"
@@ -37,7 +43,14 @@
   "private": true,
   "license": "MIT",
   "devDependencies": {
+    "@types/adm-zip": "^0.4.31",
+    "@types/body-parser": "^1.17.0",
+    "@types/cookie-parser": "^1.4.1",
+    "@types/express": "^4.11.1",
+    "@types/express-fileupload": "^0.1.1",
+    "@types/mongodb": "^3.0.21",
     "@types/node": "^10.1.4",
+    "node-minify": "^3.1.0",
     "rimraf": "^2.6.1",
     "tslint": "^5.4.3",
     "typescript": "^2.8.0"
