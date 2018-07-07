@@ -25,7 +25,7 @@ let pokedex = require(Pokedex_File).BattlePokedex;
 let newPokedex = {};
 
 for (let poke in pokedex) {
-    newPokedex[poke] = { name: pokedex[poke].spacies, num: pokedex[poke].num };
+    newPokedex[poke] = { name: pokedex[poke].species, num: pokedex[poke].num };
 }
 
 FileSystem.writeFileSync(Pokedex_File_Min, JSON.stringify(newPokedex));

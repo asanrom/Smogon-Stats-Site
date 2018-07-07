@@ -9,7 +9,10 @@ import * as Util from "util";
 import { SmogonUsageStatsSite } from "./app";
 import { CrashGuard } from "./crashguard";
 import { Storage } from "./storage/storage";
+import { reloadNames } from "./utils/formats-names";
+import { Language } from "./utils/languages";
 import { Logger } from "./utils/logs";
+import { PokemonData } from "./utils/pokemon-data";
 
 CrashGuard.enable();
 
@@ -31,8 +34,13 @@ process.on("message", (message) => {
         case "reload-crawler-status":
             Storage.cache.remove("crawler.status");
             break;
-        case "reload":
+        case "clear-cache":
             Storage.cache.clear();
+            break;
+        case "reload":
+            reloadNames();
+            PokemonData.load();
+            Language.loadLanguages();
             break;
     }
 });

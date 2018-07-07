@@ -10,7 +10,7 @@ import * as Express from "express";
 import * as Path from "path";
 
 import { Config } from "../config";
-import { IMonthStatus } from "../crawler/months-list";
+import { IMonthStatus } from "../model/interfaces";
 import { Storage } from "./../storage/storage";
 import { Logger } from "./../utils/logs";
 import { generateControlPanelPage, generateLoginPage } from "./page-generator";
@@ -59,7 +59,7 @@ export class ControlPanelWebApplication {
             Storage.get("crawler.status").then((status) => {
                 generateControlPanelPage((html) => {
                     response.write(html);
-                }, Object.values(data), status ? !status.disabled : true,
+                }, Object.values(data || {}), status ? !status.disabled : true,
                     Math.floor(process.uptime() * 1000));
                 response.end();
             });
@@ -153,6 +153,14 @@ export class ControlPanelWebApplication {
                 this.deleteMonth(request.body.arg);
                 result.done = "Month pending to delete.";
                 break;
+            case "show-month":
+                this.showMonth(request.body.arg);
+                result.done = "Month is now visible.";
+                break;
+            case "hide-month":
+                this.hideMonth(request.body.arg);
+                result.done = "Month is now hidden.";
+                break;
             case "interrupt":
                 this.interruptMonth(request.body.arg);
                 result.done = "Interrupted sucessfully.";
@@ -210,6 +218,14 @@ export class ControlPanelWebApplication {
 
     private interruptMonth(mid: number) {
         process.send({ type: "crawler", action: "stop", month: mid });
+    }
+
+    private showMonth(mid: number) {
+        process.send({ type: "crawler", action: "show", month: mid });
+    }
+
+    private hideMonth(mid: number) {
+        process.send({ type: "crawler", action: "hide", month: mid });
     }
 
     private markMonthAsPending(mid: number) {

@@ -8,11 +8,14 @@
 "use strict";
 
 /**
- * Month identifier.
+ * Represents the status of a month.
  */
-export interface IMonth {
+export interface IMonthStatus {
+    mid: number;
     year: number;
     month: number;
+    status: string;
+    visible: boolean;
 }
 
 /**

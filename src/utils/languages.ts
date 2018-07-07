@@ -9,8 +9,10 @@
 
 import * as FS from "fs";
 import * as Path from "path";
-
 import { Logger } from "./logs";
+import { escapeHTML } from "./text-utils";
+
+const LANG_PATH = Path.resolve(__dirname, "../../resources/lang");
 
 /**
  * Represents a language manager.
@@ -30,12 +32,11 @@ export class Language {
 
     /**
      * Loads languages from text files in a directory.
-     * @param path  The path to the text files.
      */
-    public static loadLanguages(path: string) {
-        FS.readdirSync(path).forEach((file) => {
+    public static loadLanguages() {
+        FS.readdirSync(LANG_PATH).forEach((file) => {
             if (file.match(/^[a-z0-9-]+\.txt$/)) {
-                const filePath = Path.resolve(path, file);
+                const filePath = Path.resolve(LANG_PATH, file);
                 const id = file.substr(0, file.length - 4);
                 try {
                     Language.languages[id] = new Language(FS.readFileSync(filePath).toString());
@@ -87,13 +88,22 @@ export class Language {
                 } else {
                     const spaceIndex = line.indexOf(" ");
                     if (spaceIndex > 0) {
-                        const id = line.substr(0, spaceIndex).toLowerCase().replace(/[^a-z0-9_\.-]/g, "");
+                        const parts = this.getIdParts(line.substr(0, spaceIndex).toLowerCase().trim());
+                        let currAux = curr;
+                        for (let i = 0; i < parts.length - 1; i++) {
+                            const part = parts[i];
+                            if (typeof currAux[part] !== "object") {
+                                currAux[part] = {};
+                            }
+                            currAux = currAux[part];
+                        }
                         const value = line.substr(spaceIndex + 1).trim();
-                        curr[id] = value;
+                        currAux[parts[parts.length - 1]] = value;
                     }
                 }
             }
         }
+        console.log(JSON.stringify(this.languageData));
     }
 
     /**
@@ -107,13 +117,13 @@ export class Language {
         for (const part of parts) {
             curr = curr[part];
             if (curr === undefined) {
-                return "";
+                return escapeHTML(id);
             }
             if (typeof curr === "string") {
-                return this.replaceVars(curr, replaces || {});
+                return escapeHTML(this.replaceVars(curr, replaces || {}));
             }
         }
-        return id;
+        return escapeHTML(id);
     }
 
     /**
@@ -146,3 +156,5 @@ export class Language {
         });
     }
 }
+
+Language.loadLanguages();

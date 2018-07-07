@@ -13,6 +13,7 @@ import { ItemData } from "../model/data-item";
 import { MoveData } from "../model/data-move";
 import { PokemonData } from "../model/data-pokemon";
 import { FormatMetagame } from "../model/format-metagame";
+import { IMonthStatus } from "../model/interfaces";
 import {
     IAbilitiesFormat, IItemsFormat,
     ILeadsFormat, IMetagameFormat,
@@ -42,7 +43,7 @@ import {
 } from "./json-data-parser";
 import { parseLeadsRanking } from "./leads-ranking-parser";
 import { parseMetagameInformation } from "./metagame-parser";
-import { IMonthStatus, parseMonthsList } from "./months-list";
+import { parseMonthsList } from "./months-list";
 import { parsePokemonRanking } from "./pokemon-ranking-parser";
 import { parseUsageDataTable } from "./tables-parser";
 
@@ -85,16 +86,22 @@ async function crawler() {
         }
     }
 
-    let lastMonth = { mid: 0, status: "ready" };
+    let lastMonth: IMonthStatus = {
+        mid: 0,
+        month: 0,
+        status: "ready",
+        visible: false,
+        year: 0,
+    };
     Object.values(StatsCrawler.months).forEach((month) => {
         if (month.mid > lastMonth.mid) {
             lastMonth = month;
         }
     });
 
-    const monthsToCrawl = [];
+    const monthsToCrawl: IMonthStatus[] = [];
 
-    if (lastMonth.status !== "ready") {
+    if (lastMonth.status === "new") {
         monthsToCrawl.push(lastMonth);
     }
 
@@ -230,6 +237,7 @@ async function crawler() {
         } else {
             Logger.getInstance().info("[" + monthID + "] " + "COMPLETED!");
             month.status = "ready";
+            month.visible = true;
         }
     }
     try {
@@ -840,6 +848,7 @@ async function deleteMonthData(month: IMonthStatus) {
 
     Logger.getInstance().info("[" + monthID + "] " + "DONE: Deleted month.");
     month.status = "deleted";
+    month.visible = false;
 }
 
 /**
@@ -973,6 +982,18 @@ process.on("message", (message) => {
                         && StatsCrawler.months[message.month].status !== "deleting") {
                         StatsCrawler.months[message.month].status = "pending";
                     }
+                }
+                StatsCrawler.saveMonths();
+                break;
+            case "show":
+                if (StatsCrawler.months[message.month]) {
+                    StatsCrawler.months[message.month].visible = true;
+                }
+                StatsCrawler.saveMonths();
+                break;
+            case "hide":
+                if (StatsCrawler.months[message.month]) {
+                    StatsCrawler.months[message.month].visible = false;
                 }
                 StatsCrawler.saveMonths();
                 break;

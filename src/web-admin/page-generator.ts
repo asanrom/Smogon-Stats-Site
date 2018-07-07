@@ -5,7 +5,7 @@
 
 "use strict";
 
-import { IMonthStatus } from "../crawler/months-list";
+import { IMonthStatus } from "../model/interfaces";
 import { addLeftZeros, capitalize } from "../utils/text-utils";
 import { getMonth } from "../utils/time-utils";
 
@@ -140,7 +140,8 @@ export function generateControlPanelPage(print: PrintFunction, months: IMonthSta
     /* Table of months */
     print("<table class=\"container main-table mdl-data-table mdl-js-data-table\">");
     print("<thead>");
-    print("<tr>" + "<th class=\"mdl-data-table__cell--non-numeric\">ID</th>"
+    print("<tr>" + "<th width=\"1rem\" class=\"mdl-data-table__cell--non-numeric\"></th>"
+        + "<th class=\"mdl-data-table__cell--non-numeric\">ID</th>"
         + "<th class=\"mdl-data-table__cell--non-numeric large-screen\">Year</th>"
         + "<th class=\"mdl-data-table__cell--non-numeric large-screen\">Month</th>"
         + "<th class=\"mdl-data-table__cell--non-numeric\">Status</th>"
@@ -150,6 +151,13 @@ export function generateControlPanelPage(print: PrintFunction, months: IMonthSta
     for (const month of months) {
         const monthID = month.year + "-" + addLeftZeros(month.month, 2);
         print("<tr>");
+        print("<td class=\"mdl-data-table__cell--non-numeric\">"
+            + "<label class=\"mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect\""
+            + " for=\"check-visible-" + month.mid
+            + "\"><input type=\"checkbox\" id=\"check-visible-"
+            + month.mid + "\" class=\"mdl-checkbox__input visibility-checkbox\" "
+            + (month.visible ? "checked" : "") + " />"
+            + "</label></td>");
         print("<td class=\"mdl-data-table__cell--non-numeric\">"
             + monthID + "</td>");
         print("<td class=\"mdl-data-table__cell--non-numeric large-screen\">"

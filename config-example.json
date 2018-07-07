@@ -10,7 +10,7 @@
     "logsPath": "logs",
     "smogonStatsURL": "https://www.smogon.com/stats/",
     "storageMode": "zip",
-    "storagePath": "data-zip",
+    "storagePath": "data",
     "mongoURL": "",
     "mongoOptions": {},
     "controlPanelUsername": "admin",

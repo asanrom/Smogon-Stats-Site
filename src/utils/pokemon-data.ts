@@ -15,6 +15,9 @@ import { Logger } from "./logs";
 const POKEDEX_FILE = "pokedex-min.json";
 const MOVES_FILE = "moves-min.json";
 const ITEMS_FILE = "items-min.json";
+const ABILITIES_FILE = "abilities-min.json";
+
+const DATA_PATH = Path.resolve(__dirname, "../../resources");
 
 /**
  * Reads the pokemon data.
@@ -25,21 +28,28 @@ export class PokemonData {
      * Loads the poemon, items and moves data
      * from the resources files.
      */
-    public static load(path: string) {
+    public static load() {
         try {
-            PokemonData.pokedex = JSON.parse(FS.readFileSync(Path.resolve(path, POKEDEX_FILE)).toString());
+            PokemonData.pokedex = JSON.parse(FS.readFileSync(Path.resolve(DATA_PATH, POKEDEX_FILE)).toString());
         } catch (err) {
             Logger.getInstance().error(err);
         }
 
         try {
-            PokemonData.moves = JSON.parse(FS.readFileSync(Path.resolve(path, MOVES_FILE)).toString());
+            PokemonData.moves = JSON.parse(FS.readFileSync(Path.resolve(DATA_PATH, MOVES_FILE)).toString());
         } catch (err) {
             Logger.getInstance().error(err);
         }
 
         try {
-            PokemonData.items = JSON.parse(FS.readFileSync(Path.resolve(path, ITEMS_FILE)).toString());
+            PokemonData.items = JSON.parse(FS.readFileSync(Path.resolve(DATA_PATH, ITEMS_FILE)).toString());
+        } catch (err) {
+            Logger.getInstance().error(err);
+        }
+
+        try {
+            PokemonData.abilities = JSON.parse(FS.readFileSync(Path.resolve(DATA_PATH,
+                ABILITIES_FILE)).toString());
         } catch (err) {
             Logger.getInstance().error(err);
         }
@@ -69,7 +79,18 @@ export class PokemonData {
         return PokemonData.items;
     }
 
+    /**
+     * Obtains the abilities data.
+     * @returns The abilities data.
+     */
+    public static getAbilities(): object {
+        return PokemonData.abilities;
+    }
+
     private static pokedex: object;
     private static moves: object;
     private static items: object;
+    private static abilities: object;
 }
+
+PokemonData.load();

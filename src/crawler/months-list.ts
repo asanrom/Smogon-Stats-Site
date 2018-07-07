@@ -5,18 +5,9 @@
 
 "use strict";
 
+import { IMonthStatus } from "../model/interfaces";
 import { findAllLinks } from "../utils/links";
 import { Logger } from "../utils/logs";
-
-/**
- * Represents the status of a month.
- */
-export interface IMonthStatus {
-    mid: number;
-    year: number;
-    month: number;
-    status: string;
-}
 
 /**
  * Parses a months list.
@@ -24,7 +15,7 @@ export interface IMonthStatus {
  * @returns     The list of months.
  */
 export function parseMonthsList(html: string): IMonthStatus[] {
-    const list = [];
+    const list: IMonthStatus[] = [];
     findAllLinks(html).forEach((link) => {
         // console.log(link);
         if ((/^[0-9][0-9][0-9][0-9]\-[0-9][0-9]\/$/).test(link)) {
@@ -38,6 +29,7 @@ export function parseMonthsList(html: string): IMonthStatus[] {
                 mid: (year * 12) + month,
                 month,
                 status: "new",
+                visible: false,
                 year,
             });
         }
