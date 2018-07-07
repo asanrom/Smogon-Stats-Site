@@ -7,4 +7,4 @@
 
 'use strict';
 
-module.exports = require("./dist/app.js");
+module.exports = require("./dist/index.js");

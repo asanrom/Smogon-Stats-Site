@@ -11,9 +11,6 @@ window.actionToConfirm = {
 $(document).ready(function () {
     $(document).on('click', 'button', function (event) {
         var target = $(event.currentTarget);
-        console.log(target.prop("name"));
-        console.log(event.target);
-        window.GHY = event;
         switch (target.prop("name")) {
             case "logout":
                 actionLogout();
@@ -47,6 +44,13 @@ $(document).ready(function () {
 
     $("#crawler-status-check").on('change', function (event) {
         changeCrawlerStatus();
+    });
+
+    $(".visibility-checkbox").on('change', function (event) {
+        var target = $(event.currentTarget);
+        var month = target.prop("id").split("-")[2];
+        var checked = target.prop("checked");
+        changeVisibilityStatus(month, checked);
     });
 
     window.appUptime = parseInt(document.getElementById("uptime-span").innerHTML);
@@ -128,6 +132,21 @@ function changeCrawlerStatus() {
     jQuery.post("/admin/action", {
         action: "crawler-status",
         arg: $("#crawler-status-check").prop("checked")
+    }, function (data) {
+        if (typeof data === "string") data = JSON.parse(data);
+        if (data.done) {
+            document.getElementById("action-snackbar").MaterialSnackbar.showSnackbar({ message: data.done });
+        }
+    }).fail(function () {
+        document.getElementById("action-snackbar").MaterialSnackbar
+            .showSnackbar({ message: "Connection error. Cound not perform the action" });
+    });
+}
+
+function changeVisibilityStatus(mid, check) {
+    jQuery.post("/admin/action", {
+        action: (check ? "show-month" : "hide-month"),
+        arg: mid
     }, function (data) {
         if (typeof data === "string") data = JSON.parse(data);
         if (data.done) {
