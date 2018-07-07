@@ -204,4 +204,3 @@ function findText(text, filter) {
     }
     return null;
 }
-

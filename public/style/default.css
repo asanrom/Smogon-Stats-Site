@@ -53,6 +53,10 @@ a {
     width: 100%;
 }
 
+.hidden {
+    display: none;
+}
+
 .autowidth {
     width: auto;
 }
