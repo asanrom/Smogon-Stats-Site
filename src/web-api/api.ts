@@ -158,13 +158,28 @@ export class SmogonStatsAPI {
 
     /**
      * Obtains the default baseline for a format.
+     * @param baselines     Available baselines.
+     * @returns             The default baseline.
+     */
+    public static getDefaultBaseline(baselines: number[]): number {
+        let baseline = -1;
+        for (const b of baselines) {
+            if (baseline === -1 || (baseline <= 1500 && b > 1500)) {
+                baseline = b;
+            }
+        }
+        return baseline;
+    }
+
+    /**
+     * Obtains the available baselines for a format.
      * (Pokemon stats feature)
      * @param year    Year number.
      * @param month   Month number (1-12).
      * @param format  Format identifier.
      */
-    public static getDefaultBaselinePkmn(year: number, month: number,
-                                         format: string): Promise<number> {
+    public static getBaselinesPkmn(year: number, month: number,
+                                   format: string): Promise<number[]> {
         return new Promise((resolve) => {
             SmogonStatsAPI.getFormatsPokemon(year, month).then((list) => {
                 const baselines = [];
@@ -173,26 +188,20 @@ export class SmogonStatsAPI {
                         baselines.push(fmat.baseline);
                     }
                 });
-                let baseline = -1;
-                for (const b of baselines) {
-                    if (baseline === -1 || (baseline <= 1500 && b > 1500)) {
-                        baseline = b;
-                    }
-                }
-                resolve(baseline);
+                resolve(baselines);
             });
         });
     }
 
     /**
-     * Obtains the default baseline for a format.
+     * Obtains the available baselines for a format.
      * (Moves stats feature)
      * @param year    Year number.
      * @param month   Month number (1-12).
      * @param format  Format identifier.
      */
-    public static getDefaultBaselineMvs(year: number, month: number,
-                                        format: string): Promise<number> {
+    public static getBaselinesMvs(year: number, month: number,
+                                  format: string): Promise<number[]> {
         return new Promise((resolve) => {
             SmogonStatsAPI.getFormatsMoves(year, month).then((list) => {
                 const baselines = [];
@@ -201,26 +210,20 @@ export class SmogonStatsAPI {
                         baselines.push(fmat.baseline);
                     }
                 });
-                let baseline = -1;
-                for (const b of baselines) {
-                    if (baseline === -1 || (baseline <= 1500 && b > 1500)) {
-                        baseline = b;
-                    }
-                }
-                resolve(baseline);
+                resolve(baselines);
             });
         });
     }
 
     /**
-     * Obtains the default baseline for a format.
+     * Obtains the available baselines for a format.
      * (Items stats feature)
      * @param year    Year number.
      * @param month   Month number (1-12).
      * @param format  Format identifier.
      */
-    public static getDefaultBaselineItms(year: number, month: number,
-                                         format: string): Promise<number> {
+    public static getbaselinesItms(year: number, month: number,
+                                   format: string): Promise<number[]> {
         return new Promise((resolve) => {
             SmogonStatsAPI.getFormatsItems(year, month).then((list) => {
                 const baselines = [];
@@ -229,26 +232,20 @@ export class SmogonStatsAPI {
                         baselines.push(fmat.baseline);
                     }
                 });
-                let baseline = -1;
-                for (const b of baselines) {
-                    if (baseline === -1 || (baseline <= 1500 && b > 1500)) {
-                        baseline = b;
-                    }
-                }
-                resolve(baseline);
+                resolve(baselines);
             });
         });
     }
 
     /**
-     * Obtains the default baseline for a format.
+     * Obtains the available baselines for a format.
      * (Abilities stats feature)
      * @param year    Year number.
      * @param month   Month number (1-12).
      * @param format  Format identifier.
      */
-    public static getDefaultBaselineAbl(year: number, month: number,
-                                        format: string): Promise<number> {
+    public static getBaselinesAbl(year: number, month: number,
+                                  format: string): Promise<number[]> {
         return new Promise((resolve) => {
             SmogonStatsAPI.getFormatsAbilities(year, month).then((list) => {
                 const baselines = [];
@@ -257,26 +254,20 @@ export class SmogonStatsAPI {
                         baselines.push(fmat.baseline);
                     }
                 });
-                let baseline = -1;
-                for (const b of baselines) {
-                    if (baseline === -1 || (baseline <= 1500 && b > 1500)) {
-                        baseline = b;
-                    }
-                }
-                resolve(baseline);
+                resolve(baselines);
             });
         });
     }
 
     /**
-     * Obtains the default baseline for a format.
+     * Obtains the available baselines for a format.
      * (Leads stats feature)
      * @param year    Year number.
      * @param month   Month number (1-12).
      * @param format  Format identifier.
      */
-    public static getDefaultBaselineLeads(year: number, month: number,
-                                          format: string): Promise<number> {
+    public static getBaselinesLeads(year: number, month: number,
+                                    format: string): Promise<number[]> {
         return new Promise((resolve) => {
             SmogonStatsAPI.getFormatsLeads(year, month).then((list) => {
                 const baselines = [];
@@ -285,26 +276,20 @@ export class SmogonStatsAPI {
                         baselines.push(fmat.baseline);
                     }
                 });
-                let baseline = -1;
-                for (const b of baselines) {
-                    if (baseline === -1 || (baseline <= 1500 && b > 1500)) {
-                        baseline = b;
-                    }
-                }
-                resolve(baseline);
+                resolve(baselines);
             });
         });
     }
 
     /**
-     * Obtains the default baseline for a format.
+     * Obtains the available baselines for a format.
      * (Metagame feature)
      * @param year    Year number.
      * @param month   Month number (1-12).
      * @param format  Format identifier.
      */
-    public static getDefaultBaselineMeta(year: number, month: number,
-                                         format: string): Promise<number> {
+    public static gettBaselinesMeta(year: number, month: number,
+                                    format: string): Promise<number[]> {
         return new Promise((resolve) => {
             SmogonStatsAPI.getFormatsMetagame(year, month).then((list) => {
                 const baselines = [];
@@ -313,13 +298,7 @@ export class SmogonStatsAPI {
                         baselines.push(fmat.baseline);
                     }
                 });
-                let baseline = -1;
-                for (const b of baselines) {
-                    if (baseline === -1 || (baseline <= 1500 && b > 1500)) {
-                        baseline = b;
-                    }
-                }
-                resolve(baseline);
+                resolve(baselines);
             });
         });
     }

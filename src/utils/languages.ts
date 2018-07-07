@@ -103,7 +103,7 @@ export class Language {
                 }
             }
         }
-        console.log(JSON.stringify(this.languageData));
+        //console.log(JSON.stringify(this.languageData));
     }
 
     /**

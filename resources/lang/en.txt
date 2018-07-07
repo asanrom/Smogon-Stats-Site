@@ -127,3 +127,30 @@
         onlytop     Show only top baselines
     @@
 @@
+
+@rank
+    @pokemon
+        total       Total Battles
+        avg         Average weight / team
+        pokemon     Pokemon
+        usage       Usage
+        raw         Raw
+        real        Real
+    @@
+    @rank
+    @moves
+        total       Total Moves
+    @@
+    @rank
+    @items
+        total       Total Items
+    @@
+    @rank
+    @abilities
+        total       Total Abilities
+    @@
+    @rank
+    @leads
+        total       Total Leads
+    @@
+@@

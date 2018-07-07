@@ -13,6 +13,7 @@ import { Storage } from "./../storage/storage";
 import { Logger } from "./../utils/logs";
 import { SmogonStatsAPI } from "./../web-api/api";
 
+import { getFormatName } from "../utils/formats-names";
 import { Language } from "../utils/languages";
 import { BasePG } from "./page-generator/base";
 import { FormatsListAbilitiesPG } from "./page-generator/formats-list-abilities";
@@ -22,6 +23,7 @@ import { FormatsListMetaPG } from "./page-generator/formats-list-meta";
 import { FormatsListMovesPG } from "./page-generator/formats-list-moves";
 import { FormatsListPokemonPG } from "./page-generator/formats-list-pokemon";
 import { IGenerationData, newGenerationData } from "./page-generator/page-generator";
+import { RankingPokemonPG } from "./page-generator/rank-pokemon";
 
 /**
  * Main web application.
@@ -30,12 +32,15 @@ export class MainWebApplication {
     public app: Express.Express;
 
     private basePG: BasePG;
+
     private pokemonFormatsPG: FormatsListPokemonPG;
     private movesFormatsPG: FormatsListMovesPG;
     private itemsFormatsPG: FormatsListItemsPG;
     private abilitiesFormatsPG: FormatsListAbilitiesPG;
     private leadsFormatsPG: FormatsListLeadsPG;
     private metagameFormatsPG: FormatsListMetaPG;
+
+    private pokemonRankingPG: RankingPokemonPG;
 
     /**
      * Creates a new instance of MainWebApplication.
@@ -48,6 +53,7 @@ export class MainWebApplication {
         this.abilitiesFormatsPG = new FormatsListAbilitiesPG();
         this.leadsFormatsPG = new FormatsListLeadsPG();
         this.metagameFormatsPG = new FormatsListMetaPG();
+        this.pokemonRankingPG = new RankingPokemonPG();
 
         this.app = Express();
         this.app.get("/", this.homeHandler.bind(this));
@@ -168,11 +174,48 @@ export class MainWebApplication {
     }
 
     private pokemonFormatHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+        request.params.baseline = "default";
+        this.pokemonFormatBaselineHandler(request, response);
     }
 
-    private pokemonFormatBaselineHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+    private async pokemonFormatBaselineHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.feature = "pokemon";
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
+
+        if (!genData.isNotFound) {
+            genData.format = request.params.format || "";
+            genData.formatName = getFormatName(genData.format);
+            const baselines = await
+                SmogonStatsAPI.getBaselinesPkmn(genData.year, genData.month, genData.format);
+            genData.isNotFound = (baselines.length === 0);
+            if (!genData.isNotFound) {
+                if (request.params.baseline === "default") {
+                    genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
+                } else {
+                    genData.baseline = parseInt(request.params.baseline, 10);
+                }
+                if (baselines.indexOf(genData.baseline) < 0) {
+                    this.serveNotFoundPage(genData, response);
+                } else {
+                    genData.statsData.rankingPokemon = await SmogonStatsAPI
+                        .getPokemonRanking(genData.year, genData.month, genData.format, genData.baseline);
+                    response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+                    this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                        response.write(html);
+                    }, this.pokemonRankingPG);
+                    response.end();
+                }
+            } else {
+                this.serveNotFoundPage(genData, response);
+            }
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
     }
 
     private pokemonTargetHandler(request: Express.Request, response: Express.Response) {

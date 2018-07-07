@@ -18,7 +18,12 @@ import { LeadsFormatsList } from "../../model/formats-list-leads";
 import { MetagameFormatsList } from "../../model/formats-list-metagame";
 import { MovesFormatsList } from "../../model/formats-list-moves";
 import { PokemonFormatsList } from "../../model/formats-list-pokemon";
-import { IMonthStatus } from "../../model/interfaces";
+import {
+    IAbilitiesFormat, IItemsFormat,
+    ILeadsFormat, IMetagameFormat,
+    IMonthStatus, IMovesFormat,
+    IPokemonFormat,
+} from "../../model/interfaces";
 import { AbilitiesRanking } from "../../model/ranking-abilities";
 import { ItemsRanking } from "../../model/ranking-items";
 import { LeadsRanking } from "../../model/ranking-leads";

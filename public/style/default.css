@@ -75,6 +75,10 @@ a {
     text-align: center;
 }
 
+.mdl-chip {
+    margin: 0.3rem 0.5rem;
+} 
+
 .options-separator {
     margin: 0 2rem;
 }
