@@ -2,7 +2,7 @@
  * Page-Generator
  * Smogon Stats Site - https://github.com/asanrom/Smogon-Stats-Site
  *
- * Formats list for pokemon usage stats.
+ * Formats list for leads usage stats.
  */
 
 "use strict";
@@ -14,7 +14,7 @@ import { Sprites } from "../../utils/sprites";
 import { addLeftZeros, escapeHTML, toId } from "../../utils/text-utils";
 import { IGenerationData, IPageGenerator, PrintFunction } from "./page-generator";
 
-export class FormatsListPokemonPG implements IPageGenerator {
+export class FormatsListLeadsPG implements IPageGenerator {
 
     /**
      * Generates a web page.
@@ -31,12 +31,12 @@ export class FormatsListPokemonPG implements IPageGenerator {
         print("<label class=\"mdl-radio mdl-js-radio mdl-js-ripple-effect\" for=\"option-sort-abc\">");
         print("<input type=\"radio\" id=\"option-sort-abc\" class=\"mdl-radio__button\""
             + " name=\"options-sort\" value=\"1\" " + (data.cookies.sorted !== "total" ? "checked" : "") + ">");
-        print("<span class=\"mdl-radio__label\">" + language.getText("flist.pokemon.sortabc") + "</span>");
+        print("<span class=\"mdl-radio__label\">" + language.getText("flist.leads.sortabc") + "</span>");
         print("</label><span class=\"options-separator\"></span>");
         print("<label class=\"mdl-radio mdl-js-radio mdl-js-ripple-effect\" for=\"option-sort-total\">");
         print("<input type=\"radio\" id=\"option-sort-total\" class=\"mdl-radio__button\""
             + " name=\"options-sort\" value=\"2\" " + (data.cookies.sorted === "total" ? "checked" : "") + ">");
-        print("<span class=\"mdl-radio__label\">" + language.getText("flist.pokemon.sorttotal") + "</span>");
+        print("<span class=\"mdl-radio__label\">" + language.getText("flist.leads.sorttotal") + "</span>");
         print("</label></div>");
 
         /* Filter baselines options */
@@ -44,7 +44,7 @@ export class FormatsListPokemonPG implements IPageGenerator {
         print("<label class=\"mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect autowidth\" for=\"check-only-top\">");
         print("<input type=\"checkbox\" id=\"check-only-top\" class=\"mdl-checkbox__input\" "
             + (data.cookies.onlytop === "yes" ? "checked" : "") + ">");
-        print("<span class=\"mdl-checkbox__label\">" + language.getText("flist.pokemon.onlytop")
+        print("<span class=\"mdl-checkbox__label\">" + language.getText("flist.leads.onlytop")
             + " (&gt; 1500)</span>");
         print("</label></div>");
 
@@ -59,33 +59,32 @@ export class FormatsListPokemonPG implements IPageGenerator {
         print("<input class=\"mdl-textfield__input\" type=\"text\" name=\"sample\" id=\"input-text-search\">");
         print("</div></div></div>");
 
-        if (data.statsData.formatsPokemon) {
-            const formats = data.statsData.formatsPokemon.formats;
+        if (data.statsData.formatsLeads) {
+            const formats = data.statsData.formatsLeads.formats;
             for (const format of formats) {
                 print("<div class=\"format-card mdl-card mdl-shadow--2dp\" "
-                    + "id=\"" + format.id + "-" + format.baseline + "-" + format.totalBattles
-                    + "\" name=\"" + format.id + "-" + format.baseline + "-" + format.totalBattles
+                    + "id=\"" + format.id + "-" + format.baseline + "-" + format.totalLeads
+                    + "\" name=\"" + format.id + "-" + format.baseline + "-" + format.totalLeads
                     + "\">");
                 print("<div class=\"mdl-card__title\">");
                 print("<div class=\"format-card-sprite\" style=\""
-                    + "background: url('" + Sprites.getPokemonSpriteURL(format.topPokemon)
+                    + "background: url('" + Sprites.getPokemonSpriteURL(format.topLead)
                     + "') top right no-repeat;" + "\"></div>");
                 print("<span class=\"format-card-title\">" + escapeHTML(getFormatName(format.id))
                     + " - " + format.baseline + "</span>");
                 print("</div>");
 
                 print("<div class=\"mdl-card__supporting-text\">");
-                print("" + language.getText("flist.pokemon.baseline") + ": " + format.baseline);
-                print(", " + language.getText("flist.pokemon.total") + ": " + format.totalBattles);
-                print(", " + language.getText("flist.pokemon.top") + ": "
-                    + escapeHTML(getPokemonName(format.topPokemon) || "(none)"));
-                print(", " + language.getText("flist.pokemon.avg") + ": " + format.avgwt);
+                print("" + language.getText("flist.leads.baseline") + ": " + format.baseline);
+                print(", " + language.getText("flist.leads.total") + ": " + format.totalLeads);
+                print(", " + language.getText("flist.leads.top") + ": "
+                    + escapeHTML(getPokemonName(format.topLead) || "(none)"));
                 print("</div>");
 
                 print("<div class=\"mdl-card__actions mdl-card--border\">");
                 print("<a href=\"" + this.getFormatBaselineURL(data, format.id, format.baseline)
                     + "\" class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\">");
-                print(language.getText("flist.pokemon.view"));
+                print(language.getText("flist.leads.view"));
                 print("</a></div>");
                 print("</div>");
             }
@@ -97,7 +96,7 @@ export class FormatsListPokemonPG implements IPageGenerator {
     }
 
     private getFormatBaselineURL(data: IGenerationData, format: string, baseline: number): string {
-        let url = "/" + (data.feature || "pokemon");
+        let url = "/" + (data.feature || "leads");
         if (!data.isNotFound) {
             url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
         }

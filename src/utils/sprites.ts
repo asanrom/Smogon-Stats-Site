@@ -63,7 +63,7 @@ export class Sprites {
         const top = Math.floor(num / 16) * 24;
         const left = (num % 16) * 24;
 
-        return "background:transparent url(/static/images/sprites/itemicons-shee.png?v1) no-repeat scroll -"
+        return "background:transparent url(/static/images/sprites/itemicons-sheet.png?v1) no-repeat scroll -"
             + left + "px -" + top + "px;";
     }
 
@@ -78,6 +78,20 @@ export class Sprites {
             return "/static/images/sprites/pokemon/" + pokemon + ".png";
         } else {
             return "/static/images/sprites/pokemon/0.png";
+        }
+    }
+
+    /**
+     * Obtains an item sprite.
+     * @param item      The item name.
+     * @returns         The url of the sprite.
+     */
+    public static getItemSpriteURL(item: string): string {
+        item = toId(item);
+        if (PokemonData.getItems()[item]) {
+            return "/static/images/sprites/items/" + item + ".png";
+        } else {
+            return "/static/images/sprites/items/0.png";
         }
     }
 

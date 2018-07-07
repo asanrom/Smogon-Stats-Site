@@ -15,6 +15,11 @@ import { SmogonStatsAPI } from "./../web-api/api";
 
 import { Language } from "../utils/languages";
 import { BasePG } from "./page-generator/base";
+import { FormatsListAbilitiesPG } from "./page-generator/formats-list-abilities";
+import { FormatsListItemsPG } from "./page-generator/formats-list-items";
+import { FormatsListLeadsPG } from "./page-generator/formats-list-leads";
+import { FormatsListMetaPG } from "./page-generator/formats-list-meta";
+import { FormatsListMovesPG } from "./page-generator/formats-list-moves";
 import { FormatsListPokemonPG } from "./page-generator/formats-list-pokemon";
 import { IGenerationData, newGenerationData } from "./page-generator/page-generator";
 
@@ -26,6 +31,11 @@ export class MainWebApplication {
 
     private basePG: BasePG;
     private pokemonFormatsPG: FormatsListPokemonPG;
+    private movesFormatsPG: FormatsListMovesPG;
+    private itemsFormatsPG: FormatsListItemsPG;
+    private abilitiesFormatsPG: FormatsListAbilitiesPG;
+    private leadsFormatsPG: FormatsListLeadsPG;
+    private metagameFormatsPG: FormatsListMetaPG;
 
     /**
      * Creates a new instance of MainWebApplication.
@@ -33,6 +43,11 @@ export class MainWebApplication {
     constructor() {
         this.basePG = new BasePG();
         this.pokemonFormatsPG = new FormatsListPokemonPG();
+        this.movesFormatsPG = new FormatsListMovesPG();
+        this.itemsFormatsPG = new FormatsListItemsPG();
+        this.abilitiesFormatsPG = new FormatsListAbilitiesPG();
+        this.leadsFormatsPG = new FormatsListLeadsPG();
+        this.metagameFormatsPG = new FormatsListMetaPG();
 
         this.app = Express();
         this.app.get("/", this.homeHandler.bind(this));
@@ -132,13 +147,11 @@ export class MainWebApplication {
 
     private async pokemonMonthHandler(request: Express.Request, response: Express.Response) {
         const genData = newGenerationData();
-
         genData.feature = "pokemon";
         genData.language = this.getLanguage(request);
         genData.cookies = request.cookies || {};
         genData.months = await SmogonStatsAPI.getMonths();
         this.parseMonth(request, genData);
-
         genData.isNotFound = !this.checkMonth(genData);
 
         if (!genData.isNotFound) {
@@ -169,11 +182,30 @@ export class MainWebApplication {
     /* Moves */
 
     private movesHomeHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+        request.params.month = "last";
+        this.movesMonthHandler(request, response);
     }
 
-    private movesMonthHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+    private async movesMonthHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.feature = "moves";
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
+
+        if (!genData.isNotFound) {
+            genData.statsData.formatsMoves = await SmogonStatsAPI
+                .getFormatsMoves(genData.year, genData.month);
+            response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+            this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                response.write(html);
+            }, this.movesFormatsPG);
+            response.end();
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
     }
 
     private movesFormatHandler(request: Express.Request, response: Express.Response) {
@@ -191,11 +223,30 @@ export class MainWebApplication {
     /* Items */
 
     private itemsHomeHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+        request.params.month = "last";
+        this.itemsMonthHandler(request, response);
     }
 
-    private itemsMonthHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+    private async itemsMonthHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.feature = "items";
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
+
+        if (!genData.isNotFound) {
+            genData.statsData.formatsItems = await SmogonStatsAPI
+                .getFormatsItems(genData.year, genData.month);
+            response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+            this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                response.write(html);
+            }, this.itemsFormatsPG);
+            response.end();
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
     }
 
     private itemsFormatHandler(request: Express.Request, response: Express.Response) {
@@ -213,11 +264,30 @@ export class MainWebApplication {
     /* Abilities */
 
     private abilitiesHomeHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+        request.params.month = "last";
+        this.abilitiesMonthHandler(request, response);
     }
 
-    private abilitiesMonthHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+    private async abilitiesMonthHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.feature = "abilities";
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
+
+        if (!genData.isNotFound) {
+            genData.statsData.formatsAbilities = await SmogonStatsAPI
+                .getFormatsAbilities(genData.year, genData.month);
+            response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+            this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                response.write(html);
+            }, this.abilitiesFormatsPG);
+            response.end();
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
     }
 
     private abilitiesFormatHandler(request: Express.Request, response: Express.Response) {
@@ -235,11 +305,30 @@ export class MainWebApplication {
     /* Leads */
 
     private leadsHomeHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+        request.params.month = "last";
+        this.leadsMonthHandler(request, response);
     }
 
-    private leadsMonthHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+    private async leadsMonthHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.feature = "leads";
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
+
+        if (!genData.isNotFound) {
+            genData.statsData.formatsLeads = await SmogonStatsAPI
+                .getFormatsLeads(genData.year, genData.month);
+            response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+            this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                response.write(html);
+            }, this.leadsFormatsPG);
+            response.end();
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
     }
 
     private leadsFormatHandler(request: Express.Request, response: Express.Response) {
@@ -253,13 +342,30 @@ export class MainWebApplication {
     /* Metagame */
 
     private metagameHomeHandler(request: Express.Request, response: Express.Response) {
-        response.end();
-
+        request.params.month = "last";
+        this.metagameMonthHandler(request, response);
     }
 
-    private metagameMonthHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+    private async metagameMonthHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.feature = "metagame";
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
 
+        if (!genData.isNotFound) {
+            genData.statsData.formatsMetagame = await SmogonStatsAPI
+                .getFormatsMetagame(genData.year, genData.month);
+            response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+            this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                response.write(html);
+            }, this.metagameFormatsPG);
+            response.end();
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
     }
 
     private metagameFormatHandler(request: Express.Request, response: Express.Response) {
