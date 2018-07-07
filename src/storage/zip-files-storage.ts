@@ -60,6 +60,8 @@ export class ZIPStorage implements IStorage {
                                     resolve(null);
                                 }
                             });
+                        } else {
+                            resolve(null);
                         }
                     } catch (err) {
                         resolve(null);
