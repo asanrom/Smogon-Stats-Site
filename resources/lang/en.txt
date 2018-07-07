@@ -78,6 +78,52 @@
         sorttotal   Sorted by Number of Battles
         onlytop     Show only top baselines
     @@
+    @flist
+    @moves
+        baseline    Baseline
+        total       Total moves
+        top         Top Move
+        view        View Usage Stats
+        sortabc     Sorted Alphabetically
+        sorttotal   Sorted by Number of Moves
+        onlytop     Show only top baselines
+    @@
+    @flist
+    @items
+        baseline    Baseline
+        total       Total items
+        top         Top Item
+        view        View Usage Stats
+        sortabc     Sorted Alphabetically
+        sorttotal   Sorted by Number of Items
+        onlytop     Show only top baselines
+    @@
+    @flist
+    @abilities
+        baseline    Baseline
+        total       Total abilities
+        top         Top Ability
+        view        View Usage Stats
+        sortabc     Sorted Alphabetically
+        sorttotal   Sorted by Number of Abilities
+        onlytop     Show only top baselines
+    @@
+    @flist
+    @leads
+        baseline    Baseline
+        total       Total leads
+        top         Top Lead
+        view        View Usage Stats
+        sortabc     Sorted Alphabetically
+        sorttotal   Sorted by Number of leads
+        onlytop     Show only top baselines
+    @@
+    @flist
+    @metagame
+        baseline    Baseline
+        stall       Mean Stalliness
+        top         Top playstyle
+        view        View Metagame Stats
+        onlytop     Show only top baselines
+    @@
 @@
-
-
