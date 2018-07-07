@@ -1,0 +1,83 @@
+############################
+# English language package #
+############################
+
+@lang
+    name    English
+@@
+
+@site
+    title           Smogon Usage Stats
+    description     A mobile-responsive website that shows Pokemon Showdown! usage stats, provided by Smogon University.
+@@
+
+@months
+    title       Months
+    january     January
+    february    February
+    march       March
+    april       April
+    may         May
+    june        June
+    july        July
+    august      August
+    september   September
+    october     October
+    november    November
+    december    December
+@@
+
+@header
+    short-title     ${month}, ${year}
+    title           Usage Stats
+    not-found       (Not Found)
+@@
+
+@footer
+    logo        Smogon Usage Stats
+    github      GutHub Repository
+    source      Source
+@@
+
+@tooltips
+    language        Select your language
+@@
+
+@tabs
+    pokemon.title   Pokemon usage stats
+    pokemon.text    Pokemon
+
+    moves.title     Most used moves
+    moves.text      Moves
+
+    items.title     Most used items
+    items.text      Items
+
+    abilities.title Most used abilities
+    abilities.text  Abilities
+
+    leads.title     Leads stats
+    leads.text      Leads
+
+    metagame.title  Metagame stats
+    metagame.text   Metagame
+@@
+
+@chips
+    formats     Formats List
+@@
+
+@flist
+    @pokemon
+        baseline    Baseline
+        total       Total battles
+        top         Top Pokemon
+        avg         Average weight / team
+        view        View Usage Stats
+        sortabc     Sorted Alphabetically
+        sorttotal   Sorted by Number of Battles
+        onlytop     Show only top baselines
+    @@
+@@
+
+

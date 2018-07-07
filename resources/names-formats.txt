@@ -1,0 +1,202 @@
+Anything Goes
+Battle Spot Doubles
+Battle Spot Singles
+Battle Spot Triples
+CAP
+Custom Game
+Doubles Custom Game
+Doubles OU
+Doubles UU
+Doubles Ubers
+Inverse Battle
+LC
+NU
+OU
+PU
+RU
+Random Battle
+Random Doubles Battle
+Triples Custom Game
+UU
+Ubers
+VGC 2016
+[Gen 1] 1v1
+[Gen 1] Challenge Cup
+[Gen 1] Custom Game
+[Gen 1] OU
+[Gen 1] OU (tradeback)
+[Gen 1] OU + Mew
+[Gen 1] Random Battle
+[Gen 1] STABmons
+[Gen 1] Stadium
+[Gen 1] UU
+[Gen 1] Ubers
+[Gen 2] Custom Game
+[Gen 2] NU
+[Gen 2] OU
+[Gen 2] OU + Ho-Oh + Celebi
+[Gen 2] Random Battle
+[Gen 2] STABmons
+[Gen 2] UU
+[Gen 2] Ubers
+[Gen 3] 1v1
+[Gen 3] BL
+[Gen 3] Custom Game
+[Gen 3] Doubles Custom Game
+[Gen 3] OU
+[Gen 3] OU (no Tyranitar)
+[Gen 3] Random Battle
+[Gen 3] STABmons
+[Gen 3] UU
+[Gen 3] Ubers
+[Gen 4] Balanced Hackmons
+[Gen 4] Custom Game
+[Gen 4] Doubles Custom Game
+[Gen 4] Doubles OU
+[Gen 4] LC
+[Gen 4] NU
+[Gen 4] OU
+[Gen 4] OU (LatiMence)
+[Gen 4] OU (Team Preview)
+[Gen 4] PU
+[Gen 4] Random Battle
+[Gen 4] UU
+[Gen 4] Ubers
+[Gen 5] Custom Game
+[Gen 5] Doubles Custom Game
+[Gen 5] Doubles OU
+[Gen 5] GBU Doubles
+[Gen 5] GBU Singles
+[Gen 5] LC
+[Gen 5] NU
+[Gen 5] OU
+[Gen 5] OU (blind)
+[Gen 5] PU
+[Gen 5] RU
+[Gen 5] Random Battle
+[Gen 5] UU
+[Gen 5] Ubers
+[Gen 6] Anything Goes
+[Gen 6] Balanced Hackmons
+[Gen 6] Battle Factory
+[Gen 6] Battle Spot Doubles
+[Gen 6] Battle Spot Singles
+[Gen 6] Battle Spot Triples
+[Gen 6] CAP
+[Gen 6] Custom Game
+[Gen 6] Doubles Custom Game
+[Gen 6] Doubles OU
+[Gen 6] Doubles UU
+[Gen 6] Doubles Ubers
+[Gen 6] Gen-NEXT OU
+[Gen 6] Inverse Battle
+[Gen 6] LC
+[Gen 6] Monotype
+[Gen 6] NU
+[Gen 6] OU
+[Gen 6] OU (No Team Preview)
+[Gen 6] OU Theorymon
+[Gen 6] PU
+[Gen 6] RU
+[Gen 6] Random Battle
+[Gen 6] Random Doubles Battle
+[Gen 6] Triples Custom Game
+[Gen 6] UU
+[Gen 6] Ubers
+[Gen 6] VGC 2016
+[Gen 7] 1v1
+[Gen 7] 1v1 (suspect test)
+[Gen 7] 2017 No Holds Barred
+[Gen 7] 2v2 Doubles
+[Gen 7] 350 Cup
+[Gen 7] AAA Sketchmons
+[Gen 7] Almost Any Ability
+[Gen 7] Almost Any Ability (suspect test)
+[Gen 7] Alphabet Cup
+[Gen 7] Anything Goes
+[Gen 7] BH Doubles
+[Gen 7] BSS Factory
+[Gen 7] Balanced Hackmons
+[Gen 7] Balanced Hackmons (suspect test)
+[Gen 7] Battle Factory
+[Gen 7] Battle Spot Doubles
+[Gen 7] Battle Spot Singles
+[Gen 7] Battle Spot Special 10
+[Gen 7] Battle Spot Special 11
+[Gen 7] Battle Spot Special 4
+[Gen 7] Battle Spot Special 5
+[Gen 7] Battle Spot Special 6
+[Gen 7] Battle Spot Special 7
+[Gen 7] Battle Spot Special 8
+[Gen 7] Battle Spot Special 9
+[Gen 7] CAP
+[Gen 7] CAP LC
+[Gen 7] Camomons
+[Gen 7] Challenge Cup 1v1
+[Gen 7] Challenge Cup 2v2
+[Gen 7] Custom Game
+[Gen 7] Dancerability
+[Gen 7] Doubles Custom Game
+[Gen 7] Doubles Hackmons Cup
+[Gen 7] Doubles OU
+[Gen 7] Doubles OU (suspect test)
+[Gen 7] Doubles UU
+[Gen 7] Doubles Ubers
+[Gen 7] Dragon Cup
+[Gen 7] Dual Wielding
+[Gen 7] Full Potential
+[Gen 7] Godly Gift
+[Gen 7] Hackmons Cup
+[Gen 7] Hidden Type
+[Gen 7] Inheritance
+[Gen 7] Inverse
+[Gen 7] Johto x Alola
+[Gen 7] LC
+[Gen 7] LC (suspect test)
+[Gen 7] Linked
+[Gen 7] Mediocremons
+[Gen 7] Mega Melee
+[Gen 7] Metagamiate
+[Gen 7] Metronome Battle
+[Gen 7] Middle Cup
+[Gen 7] Mix and Mega
+[Gen 7] Mix and Mega (suspect test)
+[Gen 7] Monotype
+[Gen 7] Monotype (suspect test)
+[Gen 7] Monotype Random Battle
+[Gen 7] NU
+[Gen 7] NU (beta)
+[Gen 7] NU (suspect test)
+[Gen 7] Nature Swap
+[Gen 7] OU
+[Gen 7] OU (suspect test)
+[Gen 7] PU
+[Gen 7] PU (alpha)
+[Gen 7] PU (beta)
+[Gen 7] PU (suspect test)
+[Gen 7] Partners in Crime
+[Gen 7] RU
+[Gen 7] RU (suspect test)
+[Gen 7] Random Battle
+[Gen 7] Random Doubles Battle
+[Gen 7] Reversed
+[Gen 7] STABmons
+[Gen 7] Scalemons
+[Gen 7] Shared Power
+[Gen 7] Sketchmons
+[Gen 7] Suicide Cup
+[Gen 7] Tier Shift
+[Gen 7] Typemons
+[Gen 7] UU
+[Gen 7] UU (suspect test)
+[Gen 7] Ubers
+[Gen 7] Ubers (suspect test)
+[Gen 7] Ultimate Z
+[Gen 7] Ultra Kalos Classic
+[Gen 7] Ultra No Holds Barred
+[Gen 7] Ultra Sinnoh Classic
+[Gen 7] Unrated Random Battle
+[Gen 7] VGC 2017
+[Gen 7] VGC 2018
+[Gen 7] Weakness Cup
+[Gen 7] ZU
