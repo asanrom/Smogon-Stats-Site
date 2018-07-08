@@ -63,8 +63,7 @@ export class FormatsListLeadsPG implements IPageGenerator {
             const formats = data.statsData.formatsLeads.formats;
             for (const format of formats) {
                 print("<div class=\"format-card mdl-card mdl-shadow--2dp\" "
-                    + "id=\"" + format.id + "-" + format.baseline + "-" + format.totalLeads
-                    + "\" name=\"" + format.id + "-" + format.baseline + "-" + format.totalLeads
+                    + "id=\"" + format.id + "-" + format.baseline + "-" + Math.floor(format.totalLeads)
                     + "\">");
                 print("<div class=\"mdl-card__title\">");
                 print("<div class=\"format-card-sprite\" style=\""
@@ -76,7 +75,7 @@ export class FormatsListLeadsPG implements IPageGenerator {
 
                 print("<div class=\"mdl-card__supporting-text\">");
                 print("" + language.getText("flist.leads.baseline") + ": " + format.baseline);
-                print(", " + language.getText("flist.leads.total") + ": " + format.totalLeads);
+                print(", " + language.getText("flist.leads.total") + ": " + Math.floor(format.totalLeads));
                 print(", " + language.getText("flist.leads.top") + ": "
                     + escapeHTML(getPokemonName(format.topLead) || "(none)"));
                 print("</div>");

@@ -29,13 +29,13 @@ export function extractMovesRanking(json: any): MovesRanking {
                 const moves = pokemonData.Moves;
                 for (const move in moves) {
                     if (moves.hasOwnProperty(move)) {
-                        totalMoves++;
                         const moveId = toId(move);
                         const count = moves[move];
+                        totalMoves += count;
                         if (!movesRanking[moveId]) {
-                            movesRanking[moveId] = 1;
+                            movesRanking[moveId] = count;
                         } else {
-                            movesRanking[moveId]++;
+                            movesRanking[moveId] += count;
                         }
                     }
                 }
@@ -45,7 +45,7 @@ export function extractMovesRanking(json: any): MovesRanking {
 
     ranking.totalMoves = totalMoves;
     for (const move in movesRanking) {
-        if (movesRanking.hasOwnProperty(move)) {
+        if (move && movesRanking.hasOwnProperty(move)) {
             const raw = movesRanking[move];
             ranking.moves.push({
                 name: move,
@@ -90,14 +90,14 @@ export function extractItemsRanking(json: any): ItemsRanking {
             if (typeof pokemonData === "object" && typeof pokemonData.Items === "object") {
                 const items = pokemonData.Items;
                 for (const item in items) {
-                    if (items.hasOwnProperty(item)) {
-                        totalItems++;
+                    if (item && items.hasOwnProperty(item)) {
                         const itemId = toId(item);
                         const count = items[item];
+                        totalItems += count;
                         if (!itemsRanking[itemId]) {
-                            itemsRanking[itemId] = 1;
+                            itemsRanking[itemId] = count;
                         } else {
-                            itemsRanking[itemId]++;
+                            itemsRanking[itemId] += count;
                         }
                     }
                 }
@@ -129,9 +129,9 @@ export function extractItemsRanking(json: any): ItemsRanking {
     });
 
     let pos = 0;
-    for (const move of ranking.items) {
+    for (const item of ranking.items) {
         pos++;
-        move.pos = pos;
+        item.pos = pos;
     }
 
     return ranking;
@@ -152,14 +152,14 @@ export function extractAbilitiesRanking(json: any): AbilitiesRanking {
             if (typeof pokemonData === "object" && typeof pokemonData.Abilities === "object") {
                 const abilities = pokemonData.Abilities;
                 for (const ability in abilities) {
-                    if (abilities.hasOwnProperty(ability)) {
-                        totalAbilities++;
+                    if (ability && abilities.hasOwnProperty(ability)) {
                         const abilityId = toId(ability);
                         const count = abilities[ability];
+                        totalAbilities += count;
                         if (!abilitiesRanking[abilityId]) {
-                            abilitiesRanking[abilityId] = 1;
+                            abilitiesRanking[abilityId] = count;
                         } else {
-                            abilitiesRanking[abilityId]++;
+                            abilitiesRanking[abilityId] += count;
                         }
                     }
                 }
@@ -191,9 +191,9 @@ export function extractAbilitiesRanking(json: any): AbilitiesRanking {
     });
 
     let pos = 0;
-    for (const move of ranking.abilities) {
+    for (const ability of ranking.abilities) {
         pos++;
-        move.pos = pos;
+        ability.pos = pos;
     }
 
     return ranking;
@@ -215,7 +215,7 @@ export function extractMoveUsageData(json: any): MoveData[] {
                 if (typeof pokemonData === "object" && typeof pokemonData.Moves === "object") {
                     const moves = pokemonData.Moves;
                     for (const move in moves) {
-                        if (moves.hasOwnProperty(move)) {
+                        if (move && moves.hasOwnProperty(move)) {
                             const moveId = toId(move);
                             const count = moves[move];
                             if (!data[moveId]) {
@@ -252,7 +252,7 @@ export function extractItemUsageData(json: any): ItemData[] {
                 if (typeof pokemonData === "object" && typeof pokemonData.Items === "object") {
                     const items = pokemonData.Items;
                     for (const item in items) {
-                        if (items.hasOwnProperty(item)) {
+                        if (item && items.hasOwnProperty(item)) {
                             const itemId = toId(item);
                             const count = items[item];
                             if (!data[itemId]) {
@@ -289,7 +289,7 @@ export function extractAbilityUsageData(json: any): AbilityData[] {
                 if (typeof pokemonData === "object" && typeof pokemonData.Abilities === "object") {
                     const abilities = pokemonData.Abilities;
                     for (const ability in abilities) {
-                        if (abilities.hasOwnProperty(ability)) {
+                        if (ability && abilities.hasOwnProperty(ability)) {
                             const abilityId = toId(ability);
                             const count = abilities[ability];
                             if (!data[abilityId]) {

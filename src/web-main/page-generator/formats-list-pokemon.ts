@@ -63,8 +63,7 @@ export class FormatsListPokemonPG implements IPageGenerator {
             const formats = data.statsData.formatsPokemon.formats;
             for (const format of formats) {
                 print("<div class=\"format-card mdl-card mdl-shadow--2dp\" "
-                    + "id=\"" + format.id + "-" + format.baseline + "-" + format.totalBattles
-                    + "\" name=\"" + format.id + "-" + format.baseline + "-" + format.totalBattles
+                    + "id=\"" + format.id + "-" + format.baseline + "-" + Math.floor(format.totalBattles)
                     + "\">");
                 print("<div class=\"mdl-card__title\">");
                 print("<div class=\"format-card-sprite\" style=\""
@@ -76,10 +75,10 @@ export class FormatsListPokemonPG implements IPageGenerator {
 
                 print("<div class=\"mdl-card__supporting-text\">");
                 print("" + language.getText("flist.pokemon.baseline") + ": " + format.baseline);
-                print(", " + language.getText("flist.pokemon.total") + ": " + format.totalBattles);
+                print(", " + language.getText("flist.pokemon.total") + ": " + Math.floor(format.totalBattles));
                 print(", " + language.getText("flist.pokemon.top") + ": "
                     + escapeHTML(getPokemonName(format.topPokemon) || "(none)"));
-                print(", " + language.getText("flist.pokemon.avg") + ": " + format.avgwt);
+                print(", " + language.getText("flist.pokemon.avg") + ": " + this.prettyDecimal(format.avgwt));
                 print("</div>");
 
                 print("<div class=\"mdl-card__actions mdl-card--border\">");
@@ -103,5 +102,15 @@ export class FormatsListPokemonPG implements IPageGenerator {
         }
         url += "/" + format + "/" + baseline;
         return url;
+    }
+
+    private prettyDecimal(dec: number): string {
+        const p = Math.floor(dec * 1000) / 1000;
+        const e = Math.floor(p);
+        let d = "" + Math.floor((p - e) * 1000);
+        while (d.length < 3) {
+            d += "0";
+        }
+        return e + "." + d;
     }
 }

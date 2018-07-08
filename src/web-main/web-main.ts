@@ -23,6 +23,10 @@ import { FormatsListMetaPG } from "./page-generator/formats-list-meta";
 import { FormatsListMovesPG } from "./page-generator/formats-list-moves";
 import { FormatsListPokemonPG } from "./page-generator/formats-list-pokemon";
 import { IGenerationData, newGenerationData } from "./page-generator/page-generator";
+import { RankingAbilitiesPG } from "./page-generator/rank-abilities";
+import { RankingItemsPG } from "./page-generator/rank-items";
+import { RankingLeadsPG } from "./page-generator/rank-leads";
+import { RankingMovesPG } from "./page-generator/rank-moves";
 import { RankingPokemonPG } from "./page-generator/rank-pokemon";
 
 /**
@@ -41,6 +45,10 @@ export class MainWebApplication {
     private metagameFormatsPG: FormatsListMetaPG;
 
     private pokemonRankingPG: RankingPokemonPG;
+    private movesRankingPG: RankingMovesPG;
+    private itemsRankingPG: RankingItemsPG;
+    private abilitiesRankingPG: RankingAbilitiesPG;
+    private leadsRankingPG: RankingLeadsPG;
 
     /**
      * Creates a new instance of MainWebApplication.
@@ -54,6 +62,10 @@ export class MainWebApplication {
         this.leadsFormatsPG = new FormatsListLeadsPG();
         this.metagameFormatsPG = new FormatsListMetaPG();
         this.pokemonRankingPG = new RankingPokemonPG();
+        this.movesRankingPG = new RankingMovesPG();
+        this.itemsRankingPG = new RankingItemsPG();
+        this.abilitiesRankingPG = new RankingAbilitiesPG();
+        this.leadsRankingPG = new RankingLeadsPG();
 
         this.app = Express();
         this.app.get("/", this.homeHandler.bind(this));
@@ -68,19 +80,16 @@ export class MainWebApplication {
         this.app.get("/moves/:month", this.movesMonthHandler.bind(this));
         this.app.get("/moves/:month/:format", this.movesFormatHandler.bind(this));
         this.app.get("/moves/:month/:format/:baseline", this.movesFormatBaselineHandler.bind(this));
-        this.app.get("/moves/:month/:format/:baseline/:target", this.movesFormatBaselineHandler.bind(this));
 
         this.app.get("/items", this.itemsHomeHandler.bind(this));
         this.app.get("/items/:month", this.itemsMonthHandler.bind(this));
         this.app.get("/items/:month/:format", this.itemsFormatHandler.bind(this));
         this.app.get("/items/:month/:format/:baseline", this.itemsFormatBaselineHandler.bind(this));
-        this.app.get("/items/:month/:format/:baseline/:target", this.itemsTargetHandler.bind(this));
 
         this.app.get("/abilities", this.abilitiesHomeHandler.bind(this));
         this.app.get("/abilities/:month", this.abilitiesMonthHandler.bind(this));
         this.app.get("/abilities/:month/:format", this.abilitiesFormatHandler.bind(this));
         this.app.get("/abilities/:month/:format/:baseline", this.abilitiesFormatBaselineHandler.bind(this));
-        this.app.get("/abilities/:month/:format/:baseline/:target", this.abilitiesTargetHandler.bind(this));
 
         this.app.get("/leads", this.leadsHomeHandler.bind(this));
         this.app.get("/leads/:month", this.leadsMonthHandler.bind(this));
@@ -252,15 +261,48 @@ export class MainWebApplication {
     }
 
     private movesFormatHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+        request.params.baseline = "default";
+        this.movesFormatBaselineHandler(request, response);
     }
 
-    private movesFormatBaselineHandler(request: Express.Request, response: Express.Response) {
-        response.end();
-    }
+    private async movesFormatBaselineHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.feature = "moves";
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
 
-    private movesTargetHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+        if (!genData.isNotFound) {
+            genData.format = request.params.format || "";
+            genData.formatName = getFormatName(genData.format);
+            const baselines = await
+                SmogonStatsAPI.getBaselinesMvs(genData.year, genData.month, genData.format);
+            genData.isNotFound = (baselines.length === 0);
+            if (!genData.isNotFound) {
+                if (request.params.baseline === "default") {
+                    genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
+                } else {
+                    genData.baseline = parseInt(request.params.baseline, 10);
+                }
+                if (baselines.indexOf(genData.baseline) < 0) {
+                    this.serveNotFoundPage(genData, response);
+                } else {
+                    genData.statsData.rankingMoves = await SmogonStatsAPI
+                        .getMovesRanking(genData.year, genData.month, genData.format, genData.baseline);
+                    response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+                    this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                        response.write(html);
+                    }, this.movesRankingPG);
+                    response.end();
+                }
+            } else {
+                this.serveNotFoundPage(genData, response);
+            }
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
     }
 
     /* Items */
@@ -293,15 +335,48 @@ export class MainWebApplication {
     }
 
     private itemsFormatHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+        request.params.baseline = "default";
+        this.itemsFormatBaselineHandler(request, response);
     }
 
-    private itemsFormatBaselineHandler(request: Express.Request, response: Express.Response) {
-        response.end();
-    }
+    private async itemsFormatBaselineHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.feature = "items";
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
 
-    private itemsTargetHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+        if (!genData.isNotFound) {
+            genData.format = request.params.format || "";
+            genData.formatName = getFormatName(genData.format);
+            const baselines = await
+                SmogonStatsAPI.getbaselinesItms(genData.year, genData.month, genData.format);
+            genData.isNotFound = (baselines.length === 0);
+            if (!genData.isNotFound) {
+                if (request.params.baseline === "default") {
+                    genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
+                } else {
+                    genData.baseline = parseInt(request.params.baseline, 10);
+                }
+                if (baselines.indexOf(genData.baseline) < 0) {
+                    this.serveNotFoundPage(genData, response);
+                } else {
+                    genData.statsData.rankingItems = await SmogonStatsAPI
+                        .getItemsRanking(genData.year, genData.month, genData.format, genData.baseline);
+                    response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+                    this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                        response.write(html);
+                    }, this.itemsRankingPG);
+                    response.end();
+                }
+            } else {
+                this.serveNotFoundPage(genData, response);
+            }
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
     }
 
     /* Abilities */
@@ -334,15 +409,48 @@ export class MainWebApplication {
     }
 
     private abilitiesFormatHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+        request.params.baseline = "default";
+        this.abilitiesFormatBaselineHandler(request, response);
     }
 
-    private abilitiesFormatBaselineHandler(request: Express.Request, response: Express.Response) {
-        response.end();
-    }
+    private async abilitiesFormatBaselineHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.feature = "abilities";
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
 
-    private abilitiesTargetHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+        if (!genData.isNotFound) {
+            genData.format = request.params.format || "";
+            genData.formatName = getFormatName(genData.format);
+            const baselines = await
+                SmogonStatsAPI.getBaselinesAbl(genData.year, genData.month, genData.format);
+            genData.isNotFound = (baselines.length === 0);
+            if (!genData.isNotFound) {
+                if (request.params.baseline === "default") {
+                    genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
+                } else {
+                    genData.baseline = parseInt(request.params.baseline, 10);
+                }
+                if (baselines.indexOf(genData.baseline) < 0) {
+                    this.serveNotFoundPage(genData, response);
+                } else {
+                    genData.statsData.rankingAbilities = await SmogonStatsAPI
+                        .getAbilitiesRanking(genData.year, genData.month, genData.format, genData.baseline);
+                    response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+                    this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                        response.write(html);
+                    }, this.abilitiesRankingPG);
+                    response.end();
+                }
+            } else {
+                this.serveNotFoundPage(genData, response);
+            }
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
     }
 
     /* Leads */
@@ -375,11 +483,48 @@ export class MainWebApplication {
     }
 
     private leadsFormatHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+        request.params.baseline = "default";
+        this.leadsFormatBaselineHandler(request, response);
     }
 
-    private leadsFormatBaselineHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+    private async leadsFormatBaselineHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.feature = "leads";
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
+
+        if (!genData.isNotFound) {
+            genData.format = request.params.format || "";
+            genData.formatName = getFormatName(genData.format);
+            const baselines = await
+                SmogonStatsAPI.getBaselinesLeads(genData.year, genData.month, genData.format);
+            genData.isNotFound = (baselines.length === 0);
+            if (!genData.isNotFound) {
+                if (request.params.baseline === "default") {
+                    genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
+                } else {
+                    genData.baseline = parseInt(request.params.baseline, 10);
+                }
+                if (baselines.indexOf(genData.baseline) < 0) {
+                    this.serveNotFoundPage(genData, response);
+                } else {
+                    genData.statsData.rankingLeads = await SmogonStatsAPI
+                        .getLeadsRanking(genData.year, genData.month, genData.format, genData.baseline);
+                    response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+                    this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                        response.write(html);
+                    }, this.leadsRankingPG);
+                    response.end();
+                }
+            } else {
+                this.serveNotFoundPage(genData, response);
+            }
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
     }
 
     /* Metagame */
@@ -412,11 +557,11 @@ export class MainWebApplication {
     }
 
     private metagameFormatHandler(request: Express.Request, response: Express.Response) {
-        response.end();
-
+        request.params.baseline = "default";
+        this.metagameFormatBaselineHandler(request, response);
     }
 
-    private metagameFormatBaselineHandler(request: Express.Request, response: Express.Response) {
+    private async metagameFormatBaselineHandler(request: Express.Request, response: Express.Response) {
         response.end();
     }
 }

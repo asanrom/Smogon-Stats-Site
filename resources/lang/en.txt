@@ -35,7 +35,7 @@
 
 @footer
     logo        Smogon Usage Stats
-    github      GutHub Repository
+    github      GitHub Repository
     source      Source
 @@
 
@@ -140,17 +140,29 @@
     @rank
     @moves
         total       Total Moves
+        move        Move
+        usage       Usage
+        raw         Raw
     @@
     @rank
     @items
         total       Total Items
+        item        Item
+        usage       Usage
+        raw         Raw
     @@
     @rank
     @abilities
         total       Total Abilities
+        ability     Ability
+        usage       Usage
+        raw         Raw
     @@
     @rank
     @leads
         total       Total Leads
+        pokemon     Pokemon
+        usage       Usage
+        raw         Raw
     @@
 @@

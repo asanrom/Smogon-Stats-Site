@@ -173,6 +173,18 @@ a {
     float: left;
 }
 
+.type-image {
+    display: inline-block;
+    height: 1rem;
+    width: auto;
+}
+
+.caregory-image {
+    display: inline-block;
+    height: 1rem;
+    width: auto;
+}
+
 /* Other styles */
 
 .filter-match {

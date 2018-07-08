@@ -37,9 +37,9 @@ import { Logger } from "./../utils/logs";
 import { Downloader } from "./downloader";
 import { IFormat, parseFormatsList } from "./formats-list";
 import {
-    extractAbilitiesRanking, extractAbilityUsageData,
-    extractItemsRanking, extractItemUsageData,
-    extractMovesRanking, extractMoveUsageData,
+    extractAbilitiesRanking,
+    extractItemsRanking,
+    extractMovesRanking,
 } from "./json-data-parser";
 import { parseLeadsRanking } from "./leads-ranking-parser";
 import { parseMetagameInformation } from "./metagame-parser";
@@ -101,12 +101,14 @@ async function crawler() {
 
     const monthsToCrawl: IMonthStatus[] = [];
 
+    let addedLast = false;
     if (lastMonth.status === "new") {
         monthsToCrawl.push(lastMonth);
+        addedLast = true;
     }
 
     Object.values(StatsCrawler.months).forEach((month) => {
-        if (month.mid !== lastMonth.mid && (month.status === "pending" || month.status === "working"
+        if ((!addedLast || month.mid !== lastMonth.mid) && (month.status === "pending" || month.status === "working"
             || month.status === "delete")) {
             monthsToCrawl.push(month);
         }
@@ -414,7 +416,7 @@ async function processFormat(month: IMonthStatus, format: IFormat, isMonotype?: 
             formatData.topMove = moveRanking.moves[0].name;
         }
 
-        const moveData: MoveData[] = extractMoveUsageData(jsonPokemonUsageData);
+        /*const moveData: MoveData[] = extractMoveUsageData(jsonPokemonUsageData);
         for (const move of moveData) {
             try {
                 await Storage.put("stats.moves." + monthID + "."
@@ -422,7 +424,7 @@ async function processFormat(month: IMonthStatus, format: IFormat, isMonotype?: 
             } catch (err) {
                 Logger.getInstance().error(err);
             }
-        }
+        }*/
 
         try {
             await Storage.put("stats.moves." + monthID + "."
@@ -461,7 +463,7 @@ async function processFormat(month: IMonthStatus, format: IFormat, isMonotype?: 
             formatData.topItem = itemsRanking.items[0].name;
         }
 
-        const itemData: ItemData[] = extractItemUsageData(jsonPokemonUsageData);
+        /*const itemData: ItemData[] = extractItemUsageData(jsonPokemonUsageData);
         for (const item of itemData) {
             try {
                 await Storage.put("stats.items." + monthID + "."
@@ -469,7 +471,7 @@ async function processFormat(month: IMonthStatus, format: IFormat, isMonotype?: 
             } catch (err) {
                 Logger.getInstance().error(err);
             }
-        }
+        }*/
 
         try {
             await Storage.put("stats.items." + monthID + "."
@@ -508,7 +510,7 @@ async function processFormat(month: IMonthStatus, format: IFormat, isMonotype?: 
             formatData.topAbility = abilityRanking.abilities[0].name;
         }
 
-        const abilityData: AbilityData[] = extractAbilityUsageData(jsonPokemonUsageData);
+        /*const abilityData: AbilityData[] = extractAbilityUsageData(jsonPokemonUsageData);
         for (const ability of abilityData) {
             try {
                 await Storage.put("stats.abilities." + monthID + "."
@@ -516,7 +518,7 @@ async function processFormat(month: IMonthStatus, format: IFormat, isMonotype?: 
             } catch (err) {
                 Logger.getInstance().error(err);
             }
-        }
+        }*/
 
         try {
             await Storage.put("stats.abilities." + monthID + "."
@@ -740,14 +742,14 @@ async function deleteMonthData(month: IMonthStatus) {
     for (const format of formatsListMv.formats) {
         const ranking = new MovesRanking(await Storage.get("stats.moves."
             + monthID + format.id + "." + format.baseline));
-        for (const move of ranking.moves) {
+        /*for (const move of ranking.moves) {
             try {
                 await Storage.remove("stats.moves." + monthID
                     + format.id + "." + format.baseline + "." + move.name);
             } catch (err) {
                 Logger.getInstance().error(err);
             }
-        }
+        }*/
         try {
             await Storage.remove("stats.moves." + monthID
                 + format.id + "." + format.baseline);
@@ -766,14 +768,14 @@ async function deleteMonthData(month: IMonthStatus) {
     for (const format of formatsListItm.formats) {
         const ranking = new ItemsRanking(await Storage.get("stats.items."
             + monthID + format.id + "." + format.baseline));
-        for (const item of ranking.items) {
+        /*for (const item of ranking.items) {
             try {
                 await Storage.remove("stats.items." + monthID
                     + format.id + "." + format.baseline + "." + item.name);
             } catch (err) {
                 Logger.getInstance().error(err);
             }
-        }
+        }*/
         try {
             await Storage.remove("stats.items." + monthID
                 + format.id + "." + format.baseline);
@@ -792,14 +794,14 @@ async function deleteMonthData(month: IMonthStatus) {
     for (const format of formatsListAbl.formats) {
         const ranking = new AbilitiesRanking(await Storage.get("stats.abilities."
             + monthID + format.id + "." + format.baseline));
-        for (const ability of ranking.abilities) {
+        /*for (const ability of ranking.abilities) {
             try {
                 await Storage.remove("stats.abilities." + monthID
                     + format.id + "." + format.baseline + "." + ability.name);
             } catch (err) {
                 Logger.getInstance().error(err);
             }
-        }
+        }*/
         try {
             await Storage.remove("stats.abilities." + monthID
                 + format.id + "." + format.baseline);

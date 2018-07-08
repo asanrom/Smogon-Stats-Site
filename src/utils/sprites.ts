@@ -55,7 +55,7 @@ export class Sprites {
     public static getItemIcon(item: string): string {
         item = toId(item);
         let num = 0;
-        const dex = PokemonData.getItems[item];
+        const dex = PokemonData.getItems()[item];
         if (dex) {
             num = dex.spritenum;
         }
@@ -102,7 +102,7 @@ export class Sprites {
      */
     public static getTypeIcon(type: string): string {
         type = toId(type);
-        if (Sprites.categories[type]) {
+        if (Sprites.types[type]) {
             return "/static/images/sprites/types/" + type + ".png";
         } else {
             return "/static/images/sprites/types/none.png";

@@ -2,7 +2,7 @@
  * Page-Generator
  * Smogon Stats Site - https://github.com/asanrom/Smogon-Stats-Site
  *
- * Pokemon usage ranking.
+ * Leads usage ranking.
  */
 
 "use strict";
@@ -14,7 +14,7 @@ import { Sprites } from "../../utils/sprites";
 import { addLeftZeros, escapeHTML, toId } from "../../utils/text-utils";
 import { IGenerationData, IPageGenerator, PrintFunction } from "./page-generator";
 
-export class RankingPokemonPG implements IPageGenerator {
+export class RankingLeadsPG implements IPageGenerator {
 
     /**
      * Generates a web page.
@@ -25,7 +25,7 @@ export class RankingPokemonPG implements IPageGenerator {
      */
     public generateHTML(data: IGenerationData, language: Language, print: PrintFunction,
                         nestedGenerator?: IPageGenerator) {
-        const formatRanking = data.statsData.rankingPokemon;
+        const formatRanking = data.statsData.rankingLeads;
 
         if (formatRanking) {
             /* Title */
@@ -34,10 +34,8 @@ export class RankingPokemonPG implements IPageGenerator {
                 + " - " + data.baseline + "</h3>");
 
             /* Format stats */
-            print("<p><b>" + language.getText("rank.pokemon.total") + ":</b> "
-                + Math.floor(formatRanking.totalBattles) + "</p>");
-            print("<p><b>" + language.getText("rank.pokemon.avg") + ":</b> "
-                + this.prettyDecimal(formatRanking.avgWeightTeam) + "</p>");
+            print("<p><b>" + language.getText("rank.leads.total") + ":</b> "
+                + Math.floor(formatRanking.totalLeads) + "</p>");
             print("</div>");
 
             print("<table class=\"container main-table mdl-data-table mdl-js-data-table\">");
@@ -47,44 +45,32 @@ export class RankingPokemonPG implements IPageGenerator {
             print("<th width=\"1rem\" class=\"mdl-data-table__cell--non-numeric mid-screen\">"
                 + "<div class=\"picon\" style=\"" + Sprites.getPokemonIcon("") + "\"></div></th>");
             print("<th class=\"mdl-data-table__cell--non-numeric\">"
-                + language.getText("rank.pokemon.pokemon") + "</th>");
-            print("<th>" + language.getText("rank.pokemon.usage") + " %</th>");
-            print("<th class=\"mid-screen\">" + language.getText("rank.pokemon.raw") + "</th>");
-            print("<th class=\"mid-screen\">" + language.getText("rank.pokemon.raw") + " %</th>");
-            print("<th class=\"large-screen\">" + language.getText("rank.pokemon.real") + "</th>");
-            print("<th class=\"large-screen\">" + language.getText("rank.pokemon.real") + " %</th>");
+                + language.getText("rank.leads.pokemon") + "</th>");
+            print("<th>" + language.getText("rank.leads.usage") + " %</th>");
+            print("<th class=\"mid-screen\">" + language.getText("rank.leads.raw") + "</th>");
+            print("<th class=\"mid-screen\">" + language.getText("rank.leads.raw") + " %</th>");
             print("</tr></thead>");
             /* Table body */
             print("<tbody>");
-            for (const pokemon of formatRanking.pokemon) {
+            for (const pokemon of formatRanking.leads) {
                 print("<tr><td class=\"mid-screen\"><b>" + pokemon.pos + "</b></td>");
                 print("<td class=\"mdl-data-table__cell--non-numeric mid-screen\">"
                     + "<div class=\"picon\" style=\"" + Sprites.getPokemonIcon(pokemon.name)
                     + "\"></div></td>");
                 print("<td class=\"mdl-data-table__cell--non-numeric\">" + "<a href=\""
-                    + this.getTargetURL(data, pokemon.name)
-                    + "\"><b>" + getPokemonName(pokemon.name) + "</b></a></td>");
+                    + this.getTargetURL(pokemon.name)
+                    + "\" target=\"_blank\"><b>" + getPokemonName(pokemon.name) + "</b></a></td>");
                 print("<td><b>" + this.prettyPercent(pokemon.usage) + "</b></td>");
                 print("<td class=\"mid-screen\">" + Math.floor(pokemon.raw) + "</td>");
                 print("<td class=\"mid-screen\">" + this.prettyPercent(pokemon.rawp) + "</td>");
-                print("<td class=\"large-screen\">" + Math.floor(pokemon.real) + "</td>");
-                print("<td class=\"large-screen\">" + this.prettyPercent(pokemon.realp) + "</td>");
                 print("</tr>");
             }
             print("</tbody></table>");
         }
     }
 
-    private getTargetURL(data: IGenerationData, target: string): string {
-        let url = "/" + (data.feature || "pokemon");
-        if (!data.isNotFound) {
-            url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
-        }
-        if (data.format) {
-            url += "/" + data.format + "/" + data.baseline;
-        }
-        url += "/" + target;
-        return url;
+    private getTargetURL(target: string): string {
+        return "https://dex.pokemonshowdown.com/pokemon/" + toId(target);
     }
 
     private prettyPercent(percent: number): string {
@@ -95,15 +81,5 @@ export class RankingPokemonPG implements IPageGenerator {
             d += "0";
         }
         return e + "." + d + "%";
-    }
-
-    private prettyDecimal(dec: number): string {
-        const p = Math.floor(dec * 1000) / 1000;
-        const e = Math.floor(p);
-        let d = "" + Math.floor((p - e) * 1000);
-        while (d.length < 3) {
-            d += "0";
-        }
-        return e + "." + d;
     }
 }

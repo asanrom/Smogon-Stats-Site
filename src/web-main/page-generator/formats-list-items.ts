@@ -63,8 +63,7 @@ export class FormatsListItemsPG implements IPageGenerator {
             const formats = data.statsData.formatsItems.formats;
             for (const format of formats) {
                 print("<div class=\"format-card mdl-card mdl-shadow--2dp\" "
-                    + "id=\"" + format.id + "-" + format.baseline + "-" + format.totalItems
-                    + "\" name=\"" + format.id + "-" + format.baseline + "-" + format.totalItems
+                    + "id=\"" + format.id + "-" + format.baseline + "-" + Math.floor(format.totalItems)
                     + "\">");
                 print("<div class=\"mdl-card__title\">");
                 print("<div class=\"format-card-sprite\" style=\""
@@ -76,7 +75,7 @@ export class FormatsListItemsPG implements IPageGenerator {
 
                 print("<div class=\"mdl-card__supporting-text\">");
                 print("" + language.getText("flist.items.baseline") + ": " + format.baseline);
-                print(", " + language.getText("flist.items.total") + ": " + format.totalItems);
+                print(", " + language.getText("flist.items.total") + ": " + Math.floor(format.totalItems));
                 print(", " + language.getText("flist.items.top") + ": "
                     + escapeHTML(getItemName(format.topItem) || "(none)"));
                 print("</div>");
