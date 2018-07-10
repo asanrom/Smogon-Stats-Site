@@ -186,11 +186,3 @@ export interface ICounterUsage {
     switch: number;
     total: number;
 }
-
-/**
- * Represents a pokemon count.
- */
-export interface IPokemonCount {
-    name: string;
-    count: number;
-}

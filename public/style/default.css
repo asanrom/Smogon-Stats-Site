@@ -144,6 +144,12 @@ a {
 
 /* Tables */
 
+.main-table-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
 .main-table th {
     font-size: 1.3rem;
     font-weight: bold;
@@ -185,8 +191,17 @@ a {
     width: auto;
 }
 
+.pokemon-big-sprite {
+    width: 96px;
+    height: 96px;
+}
+
 /* Other styles */
 
 .filter-match {
     background-color: gold;
+}
+
+.pokemon-nav-button {
+    margin: 5px;
 }

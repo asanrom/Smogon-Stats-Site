@@ -166,3 +166,33 @@
         raw         Raw
     @@
 @@
+
+@pkmdata
+    stats       Usage Stats
+    usage       Usage
+    raw         Raw
+    real        Real
+    rawc        Raw Count
+    avg         Average Weight
+    vc          Viability Ceiling
+    abilities   Most Used Abilities
+    moves       Most Used Abilities
+    items       Most Used Abilities
+    spreads     Most Used Spreads
+    teammates   Most Common Teammates
+    counters    Most Common Checks & Counters
+    ability     Ability 
+    move        Move
+    item        Item
+    nature      Nature
+    neutral     Neutral Nature
+    evs         EVs
+    pokemon     Pokemon
+    ko          KO (%)
+    switch      Switch (%)
+    total       Total (%)
+@@
+
+@pkmdata.tooltips
+    usage       % of battles where<br /> this pokemon was in<br /> the team of one or<br /> both of the players<br /> (Weighted)
+@@

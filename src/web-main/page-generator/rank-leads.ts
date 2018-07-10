@@ -38,7 +38,8 @@ export class RankingLeadsPG implements IPageGenerator {
                 + Math.floor(formatRanking.totalLeads) + "</p>");
             print("</div>");
 
-            print("<table class=\"container main-table mdl-data-table mdl-js-data-table\">");
+            print("<div class=\"main-table-container\">");
+            print("<table class=\"container limited-width main-table mdl-data-table mdl-js-data-table\">");
             /* Table head */
             print("<thead><tr>");
             print("<th class=\"mid-screen\" width=\"3rem\">#</th>");
@@ -65,7 +66,7 @@ export class RankingLeadsPG implements IPageGenerator {
                 print("<td class=\"mid-screen\">" + this.prettyPercent(pokemon.rawp) + "</td>");
                 print("</tr>");
             }
-            print("</tbody></table>");
+            print("</tbody></table></div>");
         }
     }
 

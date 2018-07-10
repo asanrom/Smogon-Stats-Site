@@ -16,7 +16,7 @@ import { PokemonData } from "./utils/pokemon-data";
 
 CrashGuard.enable();
 
-Logger.getInstance().info("Worker statrted!");
+Logger.getInstance().info("Worker started!");
 
 const app = new SmogonUsageStatsSite();
 try {

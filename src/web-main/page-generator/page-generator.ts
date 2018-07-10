@@ -7,9 +7,6 @@
 
 "use strict";
 
-import { AbilityData } from "../../model/data-ability";
-import { ItemData } from "../../model/data-item";
-import { MoveData } from "../../model/data-move";
 import { PokemonData } from "../../model/data-pokemon";
 import { FormatMetagame } from "../../model/format-metagame";
 import { AbilitiesFormatsList } from "../../model/formats-list-abilities";
@@ -63,9 +60,6 @@ export interface IGenerationData {
         rankingLeads: LeadsRanking,
         metagameInfo: FormatMetagame,
         pokemonData: PokemonData,
-        moveData: MoveData,
-        itemData: ItemData,
-        abilitynData: AbilityData,
     };
 }
 
@@ -84,16 +78,13 @@ export function newGenerationData(): IGenerationData {
         month: 0,
         months: [],
         statsData: {
-            abilitynData: null,
             formatsAbilities: null,
             formatsItems: null,
             formatsLeads: null,
             formatsMetagame: null,
             formatsMoves: null,
             formatsPokemon: null,
-            itemData: null,
             metagameInfo: null,
-            moveData: null,
             pokemonData: null,
             rankingAbilities: null,
             rankingItems: null,

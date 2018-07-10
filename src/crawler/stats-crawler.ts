@@ -8,9 +8,6 @@
 "use strict";
 
 import * as URL from "url";
-import { AbilityData } from "../model/data-ability";
-import { ItemData } from "../model/data-item";
-import { MoveData } from "../model/data-move";
 import { PokemonData } from "../model/data-pokemon";
 import { FormatMetagame } from "../model/format-metagame";
 import { IMonthStatus } from "../model/interfaces";

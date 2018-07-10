@@ -107,7 +107,7 @@ export class Language {
     }
 
     /**
-     * Obtains a text resource from the languaje package.
+     * Obtains a text resource from the language package.
      * @param id        The text resource identifier.
      * @param replaces  An object with variable replacements (var -> value).
      */
@@ -124,6 +124,26 @@ export class Language {
             }
         }
         return escapeHTML(id);
+    }
+
+    /**
+     * Obtains aan html resource from the language package.
+     * @param id        The text resource identifier.
+     * @param replaces  An object with variable replacements (var -> value).
+     */
+    public getHtml(id: string, replaces?: object): string {
+        const parts = this.getIdParts(id);
+        let curr = this.languageData;
+        for (const part of parts) {
+            curr = curr[part];
+            if (curr === undefined) {
+                return id;
+            }
+            if (typeof curr === "string") {
+                return this.replaceVars(curr, replaces || {});
+            }
+        }
+        return id;
     }
 
     /**

@@ -15,6 +15,8 @@ import { SmogonStatsAPI } from "./../web-api/api";
 
 import { getFormatName } from "../utils/formats-names";
 import { Language } from "../utils/languages";
+import { getPokemonName } from "../utils/pokemon-names";
+import { toId } from "../utils/text-utils";
 import { BasePG } from "./page-generator/base";
 import { FormatsListAbilitiesPG } from "./page-generator/formats-list-abilities";
 import { FormatsListItemsPG } from "./page-generator/formats-list-items";
@@ -23,6 +25,7 @@ import { FormatsListMetaPG } from "./page-generator/formats-list-meta";
 import { FormatsListMovesPG } from "./page-generator/formats-list-moves";
 import { FormatsListPokemonPG } from "./page-generator/formats-list-pokemon";
 import { IGenerationData, newGenerationData } from "./page-generator/page-generator";
+import { DataPokemonPG } from "./page-generator/pokemon-data";
 import { RankingAbilitiesPG } from "./page-generator/rank-abilities";
 import { RankingItemsPG } from "./page-generator/rank-items";
 import { RankingLeadsPG } from "./page-generator/rank-leads";
@@ -45,6 +48,7 @@ export class MainWebApplication {
     private metagameFormatsPG: FormatsListMetaPG;
 
     private pokemonRankingPG: RankingPokemonPG;
+    private pokemonDataPG: DataPokemonPG;
     private movesRankingPG: RankingMovesPG;
     private itemsRankingPG: RankingItemsPG;
     private abilitiesRankingPG: RankingAbilitiesPG;
@@ -66,6 +70,7 @@ export class MainWebApplication {
         this.itemsRankingPG = new RankingItemsPG();
         this.abilitiesRankingPG = new RankingAbilitiesPG();
         this.leadsRankingPG = new RankingLeadsPG();
+        this.pokemonDataPG = new DataPokemonPG();
 
         this.app = Express();
         this.app.get("/", this.homeHandler.bind(this));
@@ -197,7 +202,7 @@ export class MainWebApplication {
         genData.isNotFound = !this.checkMonth(genData);
 
         if (!genData.isNotFound) {
-            genData.format = request.params.format || "";
+            genData.format = toId(request.params.format || "");
             genData.formatName = getFormatName(genData.format);
             const baselines = await
                 SmogonStatsAPI.getBaselinesPkmn(genData.year, genData.month, genData.format);
@@ -227,8 +232,49 @@ export class MainWebApplication {
         }
     }
 
-    private pokemonTargetHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+    private async pokemonTargetHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.feature = "pokemon";
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
+
+        if (!genData.isNotFound) {
+            genData.format = toId(request.params.format || "");
+            genData.formatName = getFormatName(genData.format);
+            const baselines = await
+                SmogonStatsAPI.getBaselinesPkmn(genData.year, genData.month, genData.format);
+            genData.isNotFound = (baselines.length === 0);
+            if (!genData.isNotFound) {
+                if (request.params.baseline === "default") {
+                    genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
+                } else {
+                    genData.baseline = parseInt(request.params.baseline, 10);
+                }
+                if (baselines.indexOf(genData.baseline) < 0) {
+                    this.serveNotFoundPage(genData, response);
+                } else {
+                    genData.target = toId(request.params.target || "");
+                    genData.targetName = getPokemonName(genData.target) || "(Not Found)";
+                    genData.statsData.rankingPokemon = await SmogonStatsAPI
+                        .getPokemonRanking(genData.year, genData.month, genData.format, genData.baseline);
+                    genData.statsData.pokemonData = await SmogonStatsAPI
+                        .getPokemonData(genData.year, genData.month,
+                            genData.format, genData.baseline, genData.target);
+                    response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+                    this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                        response.write(html);
+                    }, this.pokemonDataPG);
+                    response.end();
+                }
+            } else {
+                this.serveNotFoundPage(genData, response);
+            }
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
     }
 
     /* Moves */
@@ -275,7 +321,7 @@ export class MainWebApplication {
         genData.isNotFound = !this.checkMonth(genData);
 
         if (!genData.isNotFound) {
-            genData.format = request.params.format || "";
+            genData.format = toId(request.params.format || "");
             genData.formatName = getFormatName(genData.format);
             const baselines = await
                 SmogonStatsAPI.getBaselinesMvs(genData.year, genData.month, genData.format);
@@ -349,7 +395,7 @@ export class MainWebApplication {
         genData.isNotFound = !this.checkMonth(genData);
 
         if (!genData.isNotFound) {
-            genData.format = request.params.format || "";
+            genData.format = toId(request.params.format || "");
             genData.formatName = getFormatName(genData.format);
             const baselines = await
                 SmogonStatsAPI.getbaselinesItms(genData.year, genData.month, genData.format);
@@ -423,7 +469,7 @@ export class MainWebApplication {
         genData.isNotFound = !this.checkMonth(genData);
 
         if (!genData.isNotFound) {
-            genData.format = request.params.format || "";
+            genData.format = toId(request.params.format || "");
             genData.formatName = getFormatName(genData.format);
             const baselines = await
                 SmogonStatsAPI.getBaselinesAbl(genData.year, genData.month, genData.format);
@@ -497,7 +543,7 @@ export class MainWebApplication {
         genData.isNotFound = !this.checkMonth(genData);
 
         if (!genData.isNotFound) {
-            genData.format = request.params.format || "";
+            genData.format = toId(request.params.format || "");
             genData.formatName = getFormatName(genData.format);
             const baselines = await
                 SmogonStatsAPI.getBaselinesLeads(genData.year, genData.month, genData.format);

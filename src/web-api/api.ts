@@ -5,9 +5,6 @@
 
 "use strict";
 
-import { AbilityData } from "../model/data-ability";
-import { ItemData } from "../model/data-item";
-import { MoveData } from "../model/data-move";
 import { PokemonData } from "../model/data-pokemon";
 import { FormatMetagame } from "../model/format-metagame";
 import { AbilitiesFormatsList } from "../model/formats-list-abilities";
@@ -419,60 +416,6 @@ export class SmogonStatsAPI {
             Storage.get("stats.pokemon." + toMonthID(year, month) + "." + format
                 + "." + baseline + "." + target).then((value) => {
                     resolve(new PokemonData(value));
-                });
-        });
-    }
-
-    /**
-     * Obtains tha usage data for a move.
-     * @param year      Year number.
-     * @param month     Month number (1-12).
-     * @param format    Format identifier.
-     * @param baseline  Ranking baseline.
-     * @param target    Target move.
-     */
-    public static getMoveData(year: number, month: number, format: string,
-                              baseline: number, target: string): Promise<MoveData> {
-        return new Promise((resolve) => {
-            Storage.get("stats.moves." + toMonthID(year, month) + "." + format
-                + "." + baseline + "." + target).then((value) => {
-                    resolve(new MoveData(value));
-                });
-        });
-    }
-
-    /**
-     * Obtains tha usage data for an item.
-     * @param year      Year number.
-     * @param month     Month number (1-12).
-     * @param format    Format identifier.
-     * @param baseline  Ranking baseline.
-     * @param target    Target item.
-     */
-    public static getItemData(year: number, month: number, format: string,
-                              baseline: number, target: string): Promise<ItemData> {
-        return new Promise((resolve) => {
-            Storage.get("stats.items." + toMonthID(year, month) + "." + format
-                + "." + baseline + "." + target).then((value) => {
-                    resolve(new ItemData(value));
-                });
-        });
-    }
-
-    /**
-     * Obtains tha usage data for an ability.
-     * @param year      Year number.
-     * @param month     Month number (1-12).
-     * @param format    Format identifier.
-     * @param baseline  Ranking baseline.
-     * @param target    Target ability.
-     */
-    public static getAbilityData(year: number, month: number, format: string,
-                                 baseline: number, target: string): Promise<AbilityData> {
-        return new Promise((resolve) => {
-            Storage.get("stats.abilities." + toMonthID(year, month) + "." + format
-                + "." + baseline + "." + target).then((value) => {
-                    resolve(new AbilityData(value));
                 });
         });
     }
