@@ -149,7 +149,7 @@ export class BasePG implements IPageGenerator {
         print("<section class=\"main-content section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp\">");
         print("<div class=\"container padded\">");
 
-        if (!data.isNotFound) {
+        if (data.feature) {
             print("<a href=\"" + this.getFormatsListURL(data) + "\">");
             print("<button type=\"button\" class=\"mdl-chip\">");
             print("<span class=\"mdl-chip__text\">");
@@ -209,9 +209,7 @@ export class BasePG implements IPageGenerator {
 
     private getTabURL(feature: string, data: IGenerationData): string {
         let url = "/" + feature;
-        if (!data.isNotFound) {
-            url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
-        }
+        url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
         if (data.format) {
             url += "/" + data.format + "/" + data.baseline;
         }
@@ -220,17 +218,13 @@ export class BasePG implements IPageGenerator {
 
     private getFormatsListURL(data: IGenerationData): string {
         let url = "/" + (data.feature || "pokemon");
-        if (!data.isNotFound) {
-            url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
-        }
+        url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
         return url;
     }
 
     private getFormatURL(data: IGenerationData): string {
         let url = "/" + (data.feature || "pokemon");
-        if (!data.isNotFound) {
-            url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
-        }
+        url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
         if (data.format) {
             url += "/" + data.format;
         }
@@ -239,9 +233,7 @@ export class BasePG implements IPageGenerator {
 
     private getFormatBaselineURL(data: IGenerationData): string {
         let url = "/" + (data.feature || "pokemon");
-        if (!data.isNotFound) {
-            url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
-        }
+        url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
         if (data.format) {
             url += "/" + data.format + "/" + data.baseline;
         }
@@ -250,9 +242,7 @@ export class BasePG implements IPageGenerator {
 
     private getTargetURL(data: IGenerationData): string {
         let url = "/" + (data.feature || "pokemon");
-        if (!data.isNotFound) {
-            url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
-        }
+        url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
         if (data.format) {
             url += "/" + data.format + "/" + data.baseline;
         }

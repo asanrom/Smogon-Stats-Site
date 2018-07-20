@@ -7,8 +7,6 @@
 
 "use strict";
 
-import * as URL from "url";
-import { PokemonData } from "../model/data-pokemon";
 import { FormatMetagame } from "../model/format-metagame";
 import { IMonthStatus } from "../model/interfaces";
 import {
@@ -189,42 +187,60 @@ async function crawler() {
         Logger.getInstance().info("[" + monthID + "] " + "Processing formats...");
         let stopped = false;
         for (const format of list) {
-            if (stopped || month.status === "stop") {
+            if (StatsCrawler.status.disabled) {
+                break;
+            }
+            if (stopped || month.status === "stopped") {
                 stopped = true;
                 break;
             }
             await processFormat(month, format);
         }
         for (const format of listMonotype) {
-            if (stopped || month.status === "stop") {
+            if (StatsCrawler.status.disabled) {
+                break;
+            }
+            if (stopped || month.status === "stopped") {
                 stopped = true;
                 break;
             }
             await processFormat(month, format, true);
         }
         for (const format of listLeads) {
-            if (stopped || month.status === "stop") {
+            if (StatsCrawler.status.disabled) {
+                break;
+            }
+            if (stopped || month.status === "stopped") {
                 stopped = true;
                 break;
             }
             await processLeadsFormat(month, format);
         }
         for (const format of listLeadsMonotype) {
-            if (stopped || month.status === "stop") {
+            if (StatsCrawler.status.disabled) {
+                break;
+            }
+            if (stopped || month.status === "stopped") {
                 stopped = true;
                 break;
             }
             await processLeadsFormat(month, format, true);
         }
         for (const format of listMeta) {
-            if (stopped || month.status === "stop") {
+            if (StatsCrawler.status.disabled) {
+                break;
+            }
+            if (stopped || month.status === "stopped") {
                 stopped = true;
                 break;
             }
             await processMetaFormat(month, format);
         }
         for (const format of listMetaMonotype) {
-            if (stopped || month.status === "stop") {
+            if (StatsCrawler.status.disabled) {
+                break;
+            }
+            if (stopped || month.status === "stopped") {
                 stopped = true;
                 break;
             }
@@ -233,6 +249,9 @@ async function crawler() {
         if (stopped) {
             Logger.getInstance().info("[" + monthID + "] " + "INTERRUPTED!");
             month.status = "stopped";
+        } else if (StatsCrawler.status.disabled) {
+            Logger.getInstance().info("[" + monthID + "] " + "INTERRUPTED!");
+            month.status = "pending";
         } else {
             Logger.getInstance().info("[" + monthID + "] " + "COMPLETED!");
             month.status = "ready";

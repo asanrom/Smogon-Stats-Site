@@ -91,8 +91,8 @@ export class SmogonUsageStatsSite {
         this.app.use("/static", express.static(Path.resolve(__dirname, "../public")));
         this.app.use("/favicon.ico", express.static(Path.resolve(__dirname, "../public/images/favicon.ico")));
         /* Modules */
-        this.app.use(this.mainApp.app);
         this.app.use(this.controlPanel.app);
+        this.app.use(this.mainApp.app);
     }
 
 }

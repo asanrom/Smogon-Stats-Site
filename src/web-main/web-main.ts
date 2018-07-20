@@ -6,24 +6,20 @@
 "use strict";
 
 import * as Express from "express";
-import * as Path from "path";
-
-import { Config } from "../config";
-import { Storage } from "./../storage/storage";
-import { Logger } from "./../utils/logs";
-import { SmogonStatsAPI } from "./../web-api/api";
-
 import { getFormatName } from "../utils/formats-names";
 import { Language } from "../utils/languages";
 import { getPokemonName } from "../utils/pokemon-names";
 import { toId } from "../utils/text-utils";
+import { SmogonStatsAPI } from "./../web-api/api";
 import { BasePG } from "./page-generator/base";
+import { FormatMetagamePG } from "./page-generator/format-metagame";
 import { FormatsListAbilitiesPG } from "./page-generator/formats-list-abilities";
 import { FormatsListItemsPG } from "./page-generator/formats-list-items";
 import { FormatsListLeadsPG } from "./page-generator/formats-list-leads";
 import { FormatsListMetaPG } from "./page-generator/formats-list-meta";
 import { FormatsListMovesPG } from "./page-generator/formats-list-moves";
 import { FormatsListPokemonPG } from "./page-generator/formats-list-pokemon";
+import { NotFoundPG } from "./page-generator/not-found";
 import { IGenerationData, newGenerationData } from "./page-generator/page-generator";
 import { DataPokemonPG } from "./page-generator/pokemon-data";
 import { RankingAbilitiesPG } from "./page-generator/rank-abilities";
@@ -39,6 +35,7 @@ export class MainWebApplication {
     public app: Express.Express;
 
     private basePG: BasePG;
+    private notFoundPG: NotFoundPG;
 
     private pokemonFormatsPG: FormatsListPokemonPG;
     private movesFormatsPG: FormatsListMovesPG;
@@ -53,12 +50,14 @@ export class MainWebApplication {
     private itemsRankingPG: RankingItemsPG;
     private abilitiesRankingPG: RankingAbilitiesPG;
     private leadsRankingPG: RankingLeadsPG;
+    private metagamePG: FormatMetagamePG;
 
     /**
      * Creates a new instance of MainWebApplication.
      */
     constructor() {
         this.basePG = new BasePG();
+        this.notFoundPG = new NotFoundPG();
         this.pokemonFormatsPG = new FormatsListPokemonPG();
         this.movesFormatsPG = new FormatsListMovesPG();
         this.itemsFormatsPG = new FormatsListItemsPG();
@@ -71,6 +70,7 @@ export class MainWebApplication {
         this.abilitiesRankingPG = new RankingAbilitiesPG();
         this.leadsRankingPG = new RankingLeadsPG();
         this.pokemonDataPG = new DataPokemonPG();
+        this.metagamePG = new FormatMetagamePG();
 
         this.app = Express();
         this.app.get("/", this.homeHandler.bind(this));
@@ -105,6 +105,8 @@ export class MainWebApplication {
         this.app.get("/metagame/:month", this.metagameMonthHandler.bind(this));
         this.app.get("/metagame/:month/:format", this.metagameFormatHandler.bind(this));
         this.app.get("/metagame/:month/:format/:baseline", this.metagameFormatBaselineHandler.bind(this));
+
+        this.app.get("*", this.featureNotFoundhandler.bind(this));
     }
 
     /* Utils */
@@ -149,6 +151,9 @@ export class MainWebApplication {
 
     private serveNotFoundPage(genData: IGenerationData, response: Express.Response) {
         response.writeHead(404, { "Content-Type": "text/html; charset=utf-8" });
+        this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+            response.write(html);
+        }, this.notFoundPG);
         response.end();
     }
 
@@ -156,6 +161,20 @@ export class MainWebApplication {
 
     private homeHandler(request: Express.Request, response: Express.Response) {
         this.pokemonHomeHandler(request, response);
+    }
+
+    /* Not found */
+
+    private async featureNotFoundhandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        request.params.month = "last";
+        genData.feature = "";
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = true;
+        this.serveNotFoundPage(genData, response);
     }
 
     /* Pokemon */
@@ -608,6 +627,42 @@ export class MainWebApplication {
     }
 
     private async metagameFormatBaselineHandler(request: Express.Request, response: Express.Response) {
-        response.end();
+        const genData = newGenerationData();
+        genData.feature = "metagame";
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
+
+        if (!genData.isNotFound) {
+            genData.format = toId(request.params.format || "");
+            genData.formatName = getFormatName(genData.format);
+            const baselines = await
+                SmogonStatsAPI.gettBaselinesMeta(genData.year, genData.month, genData.format);
+            genData.isNotFound = (baselines.length === 0);
+            if (!genData.isNotFound) {
+                if (request.params.baseline === "default") {
+                    genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
+                } else {
+                    genData.baseline = parseInt(request.params.baseline, 10);
+                }
+                if (baselines.indexOf(genData.baseline) < 0) {
+                    this.serveNotFoundPage(genData, response);
+                } else {
+                    genData.statsData.metagameInfo = await SmogonStatsAPI
+                        .getMetagameStats(genData.year, genData.month, genData.format, genData.baseline);
+                    response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+                    this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                        response.write(html);
+                    }, this.metagamePG);
+                    response.end();
+                }
+            } else {
+                this.serveNotFoundPage(genData, response);
+            }
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
     }
 }

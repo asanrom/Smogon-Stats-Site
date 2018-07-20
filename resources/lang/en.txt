@@ -11,6 +11,12 @@
     description     A mobile-responsive website that shows Pokemon Showdown! usage stats, provided by Smogon University.
 @@
 
+@404
+    title       Page Not Found (404)
+    message     The page you are looking for was not found
+    button      Go to Main Page
+@@
+
 @months
     title       Months
     january     January
@@ -195,4 +201,12 @@
 
 @pkmdata.tooltips
     usage       % of battles where<br /> this pokemon was in<br /> the team of one or<br /> both of the players<br /> (Weighted)
+@@
+
+@metagame
+    playstyle   PlayStyle
+    usage       Usage
+    stall       Stalliness
+    mean        Mean
+    help        More negative = more offensive. More positive = more stall
 @@

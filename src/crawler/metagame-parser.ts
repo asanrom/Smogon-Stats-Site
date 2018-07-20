@@ -94,7 +94,7 @@ export function parseMetagameInformation(txt: string): FormatMetagame {
         }
     }
 
-    for (let i = 0; i < result.graph.length; i++) {
+    /*for (let i = 0; i < result.graph.length; i++) {
         if (isNaN(result.graph[i].value)) {
             if (i === 0 && result.graph.length > 1) {
                 result.graph[i].value = result.graph[i + 1].value - 0.25;
@@ -102,7 +102,7 @@ export function parseMetagameInformation(txt: string): FormatMetagame {
                 result.graph[i].value = result.graph[i - 1].value + 0.25;
             }
         }
-    }
+    }*/
 
     return result;
 }
