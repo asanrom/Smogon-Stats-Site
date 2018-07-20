@@ -8,7 +8,11 @@
 import * as Express from "express";
 import * as XML from "xml";
 import { toId } from "../utils/text-utils";
-import { callAPIFormatsPokemon } from "./formats";
+import {
+    callAPIFormatsAbilities, callAPIFormatsItems,
+    callAPIFormatsLeads, callAPIFormatsMetagame,
+    callAPIFormatsMoves, callAPIFormatsPokemon,
+} from "./formats";
 
 /**
  * API (web application).
@@ -52,7 +56,7 @@ export class APIWebApplication {
             response.write(XML({
                 error: [{ _attr: { code: 404 } },
                     "The API call you are looking for was not found."],
-            }, {indent: "  "}));
+            }, { indent: "  " }));
         } else {
             response.writeHead(404, { "Content-Type": "application/json; charset=utf-8" });
             response.write(JSON.stringify({
@@ -78,7 +82,7 @@ export class APIWebApplication {
     }
 
     private movesFormatsHandler(request: Express.Request, response: Express.Response) {
-        this.notFoundHandler(request, response);
+        callAPIFormatsMoves(request, response);
     }
 
     private movesRankingHandler(request: Express.Request, response: Express.Response) {
@@ -86,7 +90,7 @@ export class APIWebApplication {
     }
 
     private itemsFormatsHandler(request: Express.Request, response: Express.Response) {
-        this.notFoundHandler(request, response);
+        callAPIFormatsItems(request, response);
     }
 
     private itemsRankingHandler(request: Express.Request, response: Express.Response) {
@@ -94,7 +98,7 @@ export class APIWebApplication {
     }
 
     private abilitiesFormatsHandler(request: Express.Request, response: Express.Response) {
-        this.notFoundHandler(request, response);
+        callAPIFormatsAbilities(request, response);
     }
 
     private abilitiesRankingHandler(request: Express.Request, response: Express.Response) {
@@ -102,7 +106,7 @@ export class APIWebApplication {
     }
 
     private leadsFormatsHandler(request: Express.Request, response: Express.Response) {
-        this.notFoundHandler(request, response);
+        callAPIFormatsLeads(request, response);
     }
 
     private leadsRankingHandler(request: Express.Request, response: Express.Response) {
@@ -110,7 +114,7 @@ export class APIWebApplication {
     }
 
     private metagameFormatsHandler(request: Express.Request, response: Express.Response) {
-        this.notFoundHandler(request, response);
+        callAPIFormatsMetagame(request, response);
     }
 
     private metagameDataHandler(request: Express.Request, response: Express.Response) {
