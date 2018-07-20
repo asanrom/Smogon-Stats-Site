@@ -8,7 +8,8 @@
         "no-console": false,
         "triple-equals": true,
         "indent": [true, "spaces", 4],
-        "no-var-requires": false
+        "no-var-requires": false,
+        "object-literal-sort-keys": false
     },
     "rulesDirectory": []
 }

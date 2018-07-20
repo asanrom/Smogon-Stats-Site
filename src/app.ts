@@ -17,6 +17,7 @@ import * as Path from "path";
 import { Config } from "./config";
 import { Logger } from "./utils/logs";
 import { ControlPanelWebApplication } from "./web-admin/web-admin";
+import { APIWebApplication } from "./web-api/web-api";
 import { MainWebApplication } from "./web-main/web-main";
 
 /**
@@ -26,6 +27,7 @@ export class SmogonUsageStatsSite {
     private app: express.Express;
     private controlPanel: ControlPanelWebApplication;
     private mainApp: MainWebApplication;
+    private apiApp: APIWebApplication;
 
     /**
      * Creates a new instance of SmogonUsageStatsSite.
@@ -34,6 +36,7 @@ export class SmogonUsageStatsSite {
         this.app = express();
         this.controlPanel = new ControlPanelWebApplication();
         this.mainApp = new MainWebApplication();
+        this.apiApp = new APIWebApplication();
         this.configureApplication();
     }
 
@@ -92,7 +95,7 @@ export class SmogonUsageStatsSite {
         this.app.use("/favicon.ico", express.static(Path.resolve(__dirname, "../public/images/favicon.ico")));
         /* Modules */
         this.app.use(this.controlPanel.app);
+        this.app.use(this.apiApp.app);
         this.app.use(this.mainApp.app);
     }
-
 }

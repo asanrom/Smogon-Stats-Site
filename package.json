@@ -27,7 +27,8 @@
     "express": "4.16.3",
     "express-fileupload": "0.4.0",
     "material-design-icons": "3.0.1",
-    "mongodb": "3.0.10"
+    "mongodb": "3.0.10",
+    "xml": "1.0.1"
   },
   "peerDependencies": {
     "typescript": "^2.8"
@@ -50,6 +51,7 @@
     "@types/express-fileupload": "^0.1.1",
     "@types/mongodb": "^3.0.21",
     "@types/node": "^10.1.4",
+    "@types/xml": "^1.0.2",
     "node-minify": "^3.1.0",
     "rimraf": "^2.6.1",
     "tslint": "^5.4.3",
