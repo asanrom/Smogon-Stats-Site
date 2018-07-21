@@ -10,6 +10,7 @@
 import { Language } from "../../utils/languages";
 import { addLeftZeros, escapeHTML } from "../../utils/text-utils";
 import { getMonth } from "../../utils/time-utils";
+import { pkgVersion } from "../../utils/version";
 import { IGenerationData, IPageGenerator, PrintFunction } from "./page-generator";
 
 const META_TAGS = "<meta charset=\"utf-8\">" +
@@ -20,7 +21,7 @@ const META_TAGS = "<meta charset=\"utf-8\">" +
 
 const STYLE_REFS = "<link rel=\"stylesheet\" href=\"/static/lib/mdl/material.min.css\" />" +
     "<link href=\"/md-icons/iconfont/material-icons.css\" rel=\"stylesheet\">" +
-    "<link href=\"/static/style/default.css\" rel=\"stylesheet\">";
+    "<link href=\"/static/style/default-min.css?" + pkgVersion() + "\" rel=\"stylesheet\">";
 
 const SCRIPT_REFS = "<script type=\"text/javascript\" src=\"/static/lib/jquery.min.js\"></script>" +
     "<script type=\"text/javascript\" src=\"/static/lib/mdl/material.min.js\"></script>";

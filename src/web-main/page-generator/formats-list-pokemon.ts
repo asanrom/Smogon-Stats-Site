@@ -12,6 +12,7 @@ import { Language } from "../../utils/languages";
 import { getPokemonName } from "../../utils/pokemon-names";
 import { Sprites } from "../../utils/sprites";
 import { addLeftZeros, escapeHTML } from "../../utils/text-utils";
+import { pkgVersion } from "../../utils/version";
 import { IGenerationData, IPageGenerator, PrintFunction } from "./page-generator";
 
 export class FormatsListPokemonPG implements IPageGenerator {
@@ -92,7 +93,8 @@ export class FormatsListPokemonPG implements IPageGenerator {
 
         print("</div>");
         print("</div>");
-        print("<script type=\"text/javascript\" src=\"/static/js/format-list.js\"></script>");
+        print("<script type=\"text/javascript\" src=\"/static/js/format-list-min.js?"
+            + pkgVersion() + "\"></script>");
     }
 
     private getFormatBaselineURL(data: IGenerationData, format: string, baseline: number): string {

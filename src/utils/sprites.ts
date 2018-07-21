@@ -9,6 +9,7 @@
 
 import { PokemonData } from "./pokemon-data";
 import { toId } from "./text-utils";
+import { pkgVersion } from "./version";
 
 /**
  * Sprites for pokemon and items.
@@ -40,8 +41,8 @@ export class Sprites {
         const top = Math.floor(num / 12) * 30;
         const left = (num % 12) * 40;
 
-        return "background:transparent url(/static/images/sprites/smicons-sheet.png?v1) no-repeat scroll -"
-            + left + "px -" + top + "px;";
+        return "background:transparent url(/static/images/sprites/smicons-sheet.png?"
+            + pkgVersion() + ") no-repeat scroll -" + left + "px -" + top + "px;";
     }
 
     /**
@@ -60,8 +61,8 @@ export class Sprites {
         const top = Math.floor(num / 16) * 24;
         const left = (num % 16) * 24;
 
-        return "background:transparent url(/static/images/sprites/itemicons-sheet.png?v1) no-repeat scroll -"
-            + left + "px -" + top + "px;";
+        return "background:transparent url(/static/images/sprites/itemicons-sheet.png?"
+            + pkgVersion() + ") no-repeat scroll -" + left + "px -" + top + "px;";
     }
 
     /**

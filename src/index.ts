@@ -6,6 +6,7 @@
 "use strict";
 
 import * as Cluster from "cluster";
+import * as FS from "fs";
 import * as Path from "path";
 import * as Util from "util";
 import { Config } from "./config";
@@ -13,7 +14,9 @@ import { CrashGuard } from "./crashguard";
 import { AbuseMonitor } from "./utils/abuse-monitor";
 import { Logger } from "./utils/logs";
 
-const Package = require("./../package.json");
+const Package = JSON.parse(
+    FS.readFileSync(Path.resolve(__dirname, "../package.json")).toString(),
+);
 console.log("Smogon Stats Site @ Version " + Package.version);
 
 Logger.getInstance().setPath(Config.logsPath);
