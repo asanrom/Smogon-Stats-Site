@@ -11,7 +11,7 @@ import { getFormatName } from "../../utils/formats-names";
 import { Language } from "../../utils/languages";
 import { getItemName } from "../../utils/pokemon-names";
 import { Sprites } from "../../utils/sprites";
-import { addLeftZeros, escapeHTML, toId } from "../../utils/text-utils";
+import { toId } from "../../utils/text-utils";
 import { IGenerationData, IPageGenerator, PrintFunction } from "./page-generator";
 
 export class RankingItemsPG implements IPageGenerator {

@@ -9,9 +9,9 @@
 
 import { getFormatName } from "../../utils/formats-names";
 import { Language } from "../../utils/languages";
-import { getItemName, getPokemonName } from "../../utils/pokemon-names";
+import { getPokemonName } from "../../utils/pokemon-names";
 import { Sprites } from "../../utils/sprites";
-import { addLeftZeros, escapeHTML, toId } from "../../utils/text-utils";
+import { toId } from "../../utils/text-utils";
 import { IGenerationData, IPageGenerator, PrintFunction } from "./page-generator";
 
 export class RankingLeadsPG implements IPageGenerator {

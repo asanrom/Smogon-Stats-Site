@@ -7,10 +7,7 @@
 
 import * as Crypto from "crypto";
 import * as Express from "express";
-import * as Path from "path";
-
 import { Config } from "../config";
-import { IMonthStatus } from "../model/interfaces";
 import { Storage } from "./../storage/storage";
 import { Logger } from "./../utils/logs";
 import { generateControlPanelPage, generateLoginPage } from "./page-generator";

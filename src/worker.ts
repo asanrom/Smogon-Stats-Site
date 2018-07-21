@@ -5,7 +5,6 @@
 
 "use strict";
 
-import * as Util from "util";
 import { SmogonUsageStatsSite } from "./app";
 import { CrashGuard } from "./crashguard";
 import { Storage } from "./storage/storage";

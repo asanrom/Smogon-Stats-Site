@@ -8,7 +8,6 @@
 "use strict";
 
 import { IPokemonUsage } from "../../model/interfaces";
-import { getFormatName } from "../../utils/formats-names";
 import { Language } from "../../utils/languages";
 import { PokemonData } from "../../utils/pokemon-data";
 import { getAbilitiesName, getItemName, getMovesName, getNatureName, getPokemonName } from "../../utils/pokemon-names";
@@ -117,7 +116,7 @@ export class DataPokemonPG implements IPageGenerator {
             print("<td width=\"1rem\" class=\"mdl-data-table__cell--non-numeric mid-screen\">");
             print("<div id=\"" + "rawp-tooltip" + "\" class=\"icon material-icons\">help</div>");
             print("<div class=\"mdl-tooltip mdl-tooltip--large\" data-mdl-for=\"" + "rawp-tooltip" + "\">");
-            print(language.getHtml("pkmdata.tooltips.raw"));
+            print(language.getHtml("pkmdata.tooltips.rawp"));
             print("</div></td>");
             print("<td class=\"mdl-data-table__cell--non-numeric\"><b>");
             print(language.getText("pkmdata.raw") + " (%)</b></td>");
@@ -139,7 +138,7 @@ export class DataPokemonPG implements IPageGenerator {
             print("<td width=\"1rem\" class=\"mdl-data-table__cell--non-numeric mid-screen\">");
             print("<div id=\"" + "realp-tooltip" + "\" class=\"icon material-icons\">help</div>");
             print("<div class=\"mdl-tooltip mdl-tooltip--large\" data-mdl-for=\"" + "realp-tooltip" + "\">");
-            print(language.getHtml("pkmdata.tooltips.real"));
+            print(language.getHtml("pkmdata.tooltips.realp"));
             print("</div></td>");
             print("<td class=\"mdl-data-table__cell--non-numeric\"><b>");
             print(language.getText("pkmdata.real") + " (%)</b></td>");
@@ -278,22 +277,22 @@ export class DataPokemonPG implements IPageGenerator {
                 print(this.getNatureTooltip(spread.nature, language.getHtml("pkmdata.neutral")));
                 print("</div></td>");
                 print("<td class=\"mdl-data-table__cell--non-numeric\">");
-                const evsTxt = Math.floor(spread.hp) + " HP / "
-                    + Math.floor(spread.atk) + " Atk / "
-                    + Math.floor(spread.def) + " Def / "
-                    + Math.floor(spread.spa) + " Spa / "
-                    + Math.floor(spread.spd) + " Spd / "
-                    + Math.floor(spread.spe) + " Spe";
+                const evsTxt = this.evsNumber(spread.hp) + " HP / "
+                    + this.evsNumber(spread.atk) + " Atk / "
+                    + this.evsNumber(spread.def) + " Def / "
+                    + this.evsNumber(spread.spa) + " Spa / "
+                    + this.evsNumber(spread.spd) + " Spd / "
+                    + this.evsNumber(spread.spe) + " Spe";
                 print("<span class=\"mid-screen\">" + evsTxt + "</span>");
                 print("<span class=\"small-screen-sub\">");
                 print("<div id=\"spread-evs-" + j + "\" class=\"icon material-icons\">more_horiz</div>");
                 print("<div class=\"mdl-tooltip mdl-tooltip--large\" data-mdl-for=\"spread-evs-" + j + "\">");
-                print(Math.floor(spread.hp) + " HP / "
-                    + Math.floor(spread.atk) + " Atk /<br />"
-                    + Math.floor(spread.def) + " Def / "
-                    + Math.floor(spread.spa) + " Spa /<br />"
-                    + Math.floor(spread.spd) + " Spd / "
-                    + Math.floor(spread.spe) + " Spe");
+                print(this.evsNumber(spread.hp) + " HP / "
+                    + this.evsNumber(spread.atk) + " Atk /<br />"
+                    + this.evsNumber(spread.def) + " Def / "
+                    + this.evsNumber(spread.spa) + " Spa /<br />"
+                    + this.evsNumber(spread.spd) + " Spd / "
+                    + this.evsNumber(spread.spe) + " Spe");
                 print("</div></span></td>");
                 print("<td>" + this.prettyPercent(spread.usage) + "</td>");
                 print("</tr>");
@@ -421,6 +420,14 @@ export class DataPokemonPG implements IPageGenerator {
             realp: 0,
             usage: 0,
         };
+    }
+
+    private evsNumber(stat: number): string {
+        if (stat === null || isNaN(stat)) {
+            return "?";
+        } else {
+            return "" + Math.floor(stat);
+        }
     }
 
     private getNatureTooltip(nature: string, neutral: string): string {

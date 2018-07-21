@@ -10,6 +10,7 @@ import * as Path from "path";
 import { isDef } from "./utils/object-utils";
 
 const DEFAULT_CONFIG_FILE = Path.resolve(__dirname, "../config-example.json");
+const CONFIG_FILE = Path.resolve(__dirname, "../config.json");
 
 /**
  * Application configuration.
@@ -49,10 +50,10 @@ export class Config {
 if (process.argv[2]) {
     Config.configFile = Path.resolve(__dirname, "..", process.argv[2]);
 } else {
-    if (FS.existsSync(Path.resolve(__dirname, "../config.json"))) {
-        Config.configFile = Path.resolve(__dirname, "../config.json");
+    if (FS.existsSync(CONFIG_FILE)) {
+        Config.configFile = CONFIG_FILE;
     } else {
-        Config.configFile = Path.resolve(__dirname, "../config-example.json");
+        Config.configFile = DEFAULT_CONFIG_FILE;
     }
 }
 

@@ -7,9 +7,7 @@
 
 "use strict";
 
-import * as FS from "fs";
 import { MongoClient } from "mongodb";
-import * as Path from "path";
 import { Config } from "../config";
 import { toId } from "../utils/text-utils";
 import { IStorage } from "./storage-interface";

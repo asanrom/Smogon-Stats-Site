@@ -13,9 +13,7 @@ import { Logger } from "./utils/logs";
  * @param error The uncaught exception.
  */
 function logCrash(error: Error) {
-    // Logger.getInstance().error(error);
-    console.log(error.message);
-    console.log(error.stack);
+    Logger.getInstance().error(error);
 }
 
 /**

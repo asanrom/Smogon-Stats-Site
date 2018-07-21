@@ -200,7 +200,14 @@
 @@
 
 @pkmdata.tooltips
-    usage       % of battles where<br /> this pokemon was in<br /> the team of one or<br /> both of the players<br /> (Weighted)
+    usage       % of battles where<br /> this Pokemon was in<br /> the team of one or<br /> both of the players<br /> (Weighted)
+    raw         Number of battles where<br /> this Pokemon was in<br /> the team of one or<br /> both of the players<br /> (Unweighted)
+    rawp        % of battles where<br /> this Pokemon was in<br /> the team of one or<br /> both of the players<br /> (Unweighted)
+    real        Number of battles<br /> where this Pokemon<br /> actually appears
+    realp       % of battles<br /> where this Pokemon<br /> actually appears
+    rawc        Number of times<br /> this Pokemon was used
+    avg         Average weight
+    vc          A measure of how far<br /> a Pokemon can take you
 @@
 
 @metagame

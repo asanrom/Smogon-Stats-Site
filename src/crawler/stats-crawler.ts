@@ -20,7 +20,6 @@ import { LeadsRanking } from "../model/ranking-leads";
 import { MovesRanking } from "../model/ranking-moves";
 import { PokemonRanking } from "../model/ranking-pokemon";
 import { addLeftZeros } from "../utils/text-utils";
-import { Config } from "./../config";
 import { AbilitiesFormatsList } from "./../model/formats-list-abilities";
 import { ItemsFormatsList } from "./../model/formats-list-items";
 import { LeadsFormatsList } from "./../model/formats-list-leads";

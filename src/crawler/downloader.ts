@@ -12,7 +12,7 @@ import * as HTTPS from "https";
 import * as URL from "url";
 import { Config } from "../config";
 import { Logger } from "../utils/logs";
-import { addLeftZeros, toId } from "../utils/text-utils";
+import { addLeftZeros } from "../utils/text-utils";
 
 type WGetCallback = (error: Error, result: string) => void;
 

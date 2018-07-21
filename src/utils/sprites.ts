@@ -7,9 +7,6 @@
 
 "use strict";
 
-import * as FS from "fs";
-import * as Path from "path";
-
 import { PokemonData } from "./pokemon-data";
 import { toId } from "./text-utils";
 

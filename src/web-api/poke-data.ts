@@ -12,7 +12,7 @@ import { getFormatName } from "../utils/formats-names";
 import { getAbilitiesName, getItemName, getMovesName, getNatureName, getPokemonName } from "../utils/pokemon-names";
 import { toId } from "../utils/text-utils";
 import { SmogonStatsAPI } from "./api";
-import { checkNumberAttrFilter, parseNumberAttrFilter, parseParameters } from "./params";
+import { parseParameters } from "./params";
 
 /**
  * Checks if a month exists.

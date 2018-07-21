@@ -7,7 +7,8 @@
 
 import * as Express from "express";
 import * as XML from "xml";
-import { toId } from "../utils/text-utils";
+import { addLeftZeros, toId } from "../utils/text-utils";
+import { SmogonStatsAPI } from "./api";
 import {
     callAPIFormatsAbilities, callAPIFormatsItems,
     callAPIFormatsLeads, callAPIFormatsMetagame,
@@ -65,6 +66,9 @@ export class APIWebApplication {
         this.app.get("/api-:mode/metagame/formats", this.metagameFormatsHandler.bind(this));
         this.app.get("/api-:mode/metagame/data", this.metagameDataHandler.bind(this));
 
+        this.app.get("/api/months", this.monthsHandler.bind(this));
+        this.app.get("/api-:mode/months", this.monthsHandler.bind(this));
+
         this.app.get("/api/*", this.notFoundHandler.bind(this));
         this.app.get("/api-:mode/*", this.notFoundHandler.bind(this));
     }
@@ -89,6 +93,40 @@ export class APIWebApplication {
                     message: "The API call you are looking for was not found.",
                 },
             }, null, 2));
+        }
+        response.end();
+    }
+
+    private async monthsHandler(request: Express.Request, response: Express.Response) {
+        if (request.params.mode) {
+            request.query["return-as"] = request.params.mode;
+        }
+        const months = await SmogonStatsAPI.getMonths();
+        if (toId(request.query["return-as"]) === "xml") {
+            const result = { months: [] };
+            for (const month of months) {
+                result.months.push({
+                    month: [{
+                        _attr: {
+                            year: month.year,
+                            month: month.month,
+                        },
+                    }, (month.year + "-" + addLeftZeros(month.month, 2))],
+                });
+            }
+            response.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
+            response.write(XML(result, { indent: "  " }));
+        } else {
+            const result = { months: [] };
+            for (const month of months) {
+                result.months.push({
+                    id: (month.year + "-" + addLeftZeros(month.month, 2)),
+                    year: month.year,
+                    month: month.month,
+                });
+            }
+            response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+            response.write(JSON.stringify(result, null, 2));
         }
         response.end();
     }

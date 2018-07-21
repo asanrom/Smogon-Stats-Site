@@ -13,7 +13,6 @@ import * as Path from "path";
 
 import { Config } from "../config";
 import { addLeftZeros } from "./text-utils";
-import { dateDiff, ISimpleDate } from "./time-utils";
 
 /**
  * Represents a logger for the application. Uses the Singleton pattern.

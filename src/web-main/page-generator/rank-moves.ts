@@ -12,7 +12,7 @@ import { Language } from "../../utils/languages";
 import { PokemonData } from "../../utils/pokemon-data";
 import { getMovesName } from "../../utils/pokemon-names";
 import { Sprites } from "../../utils/sprites";
-import { addLeftZeros, escapeHTML, toId } from "../../utils/text-utils";
+import { toId } from "../../utils/text-utils";
 import { IGenerationData, IPageGenerator, PrintFunction } from "./page-generator";
 
 export class RankingMovesPG implements IPageGenerator {

@@ -9,10 +9,9 @@ import * as Express from "express";
 import * as XML from "xml";
 import { IMonthStatus } from "../model/interfaces";
 import { getFormatName } from "../utils/formats-names";
-import { getAbilitiesName, getItemName, getMovesName, getPokemonName } from "../utils/pokemon-names";
 import { capitalize, toId } from "../utils/text-utils";
 import { SmogonStatsAPI } from "./api";
-import { checkNumberAttrFilter, parseNumberAttrFilter, parseParameters } from "./params";
+import { parseParameters } from "./params";
 
 /**
  * Checks if a month exists.
