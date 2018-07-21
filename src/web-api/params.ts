@@ -58,16 +58,17 @@ export function parseParameters(request: Express.Request): IParameters {
  * Number attribute filter
  */
 export interface INumberAttrFilter {
-    operator: string;
-    value: number;
+    conditions: Array<{
+        operator: string;
+        value: number;
+    }>;
 }
 
 /**
- * Parser a filter from an string.
- * @param userInput     The input string to parse.
- * @returns             The filter.
+ * Parses a single condition.
+ * @param userInput User Input to parse.
  */
-export function parseNumberAttrFilter(userInput: string): INumberAttrFilter {
+function parseSingleCondition(userInput: string): { operator: string, value: number } {
     if (!userInput) {
         return null;
     }
@@ -80,6 +81,11 @@ export function parseNumberAttrFilter(userInput: string): INumberAttrFilter {
     } else if (userInput.indexOf("<=") === 0) {
         return {
             operator: "<=",
+            value: Number(userInput.substr(2)),
+        };
+    } else if (userInput.indexOf("!=") === 0) {
+        return {
+            operator: "!=",
             value: Number(userInput.substr(2)),
         };
     } else if (userInput.indexOf(">") === 0) {
@@ -106,21 +112,53 @@ export function parseNumberAttrFilter(userInput: string): INumberAttrFilter {
 }
 
 /**
+ * Parser a filter from an string.
+ * @param userInput     The input string to parse.
+ * @returns             The filter.
+ */
+export function parseNumberAttrFilter(userInput: string): INumberAttrFilter {
+    if (!userInput) {
+        return null;
+    }
+    const filter: INumberAttrFilter = {
+        conditions: [],
+    };
+    const parts = userInput.split(",");
+    for (const part of parts) {
+        filter.conditions.push(parseSingleCondition(part));
+    }
+    return filter;
+}
+
+/**
  * Checks if a value passes a filter.
  * @param filter    The filter.
  * @param value     The value to check.
  */
 export function checkNumberAttrFilter(filter: INumberAttrFilter, value: number): boolean {
-    switch (filter.operator) {
-        case ">":
-            return value > filter.value;
-        case "<":
-            return value < filter.value;
-        case ">=":
-            return value >= filter.value;
-        case "<=":
-            return value <= filter.value;
-        default:
-            return value === filter.value;
+    let result = true;
+    for (const cond of filter.conditions) {
+        if (cond) {
+            switch (cond.operator) {
+                case ">":
+                    result = result && value > cond.value;
+                    break;
+                case "<":
+                    result = result && value < cond.value;
+                    break;
+                case ">=":
+                    result = result && value >= cond.value;
+                    break;
+                case "<=":
+                    result = result && value <= cond.value;
+                    break;
+                case "!=":
+                    result = result && value !== cond.value;
+                    break;
+                default:
+                    result = result && value === cond.value;
+            }
+        }
     }
+    return result;
 }
