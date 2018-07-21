@@ -30,7 +30,7 @@ export class PokemonData {
      */
     constructor(data: any) {
         if (typeof data === "object" && data !== null) {
-            this.name = data.name || name;
+            this.name = data.name || "";
             this.raw = data.raw || 0;
             this.avgWeight = data.avgWeight || 0;
             this.viability = data.viability || 0;

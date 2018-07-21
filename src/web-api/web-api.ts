@@ -13,6 +13,8 @@ import {
     callAPIFormatsLeads, callAPIFormatsMetagame,
     callAPIFormatsMoves, callAPIFormatsPokemon,
 } from "./formats";
+import { callAPIMetagame } from "./metagame";
+import { callAPIPokemonData } from "./poke-data";
 import {
     callAPIRankingAbilities, callAPIRankingItems,
     callAPIRankingLeads, callAPIRankingMoves,
@@ -109,7 +111,7 @@ export class APIWebApplication {
         if (request.params.mode) {
             request.query["return-as"] = request.params.mode;
         }
-        this.notFoundHandler(request, response);
+        callAPIPokemonData(request, response);
     }
 
     private movesFormatsHandler(request: Express.Request, response: Express.Response) {
@@ -179,6 +181,6 @@ export class APIWebApplication {
         if (request.params.mode) {
             request.query["return-as"] = request.params.mode;
         }
-        this.notFoundHandler(request, response);
+        callAPIMetagame(request, response);
     }
 }
