@@ -93,6 +93,7 @@ export class SmogonUsageStatsSite {
         this.app.use("/md-icons", express.static(require("material-design-icons").STATIC_PATH));
         this.app.use("/static", express.static(Path.resolve(__dirname, "../public")));
         this.app.use("/favicon.ico", express.static(Path.resolve(__dirname, "../public/images/favicon.ico")));
+        this.app.use("/robots.txt", express.static(Path.resolve(__dirname, "../public/robots.txt")));
         /* Modules */
         this.app.use(this.controlPanel.app);
         this.app.use(this.apiApp.app);
