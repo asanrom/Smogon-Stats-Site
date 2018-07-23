@@ -42,12 +42,17 @@ export class BasePG implements IPageGenerator {
                         nestedGenerator?: IPageGenerator) {
         const print = printFunction;
         print("<!DOCTYPE html><html><head>");
+        let shortTitle = language.getText("header.short-title", {
+            month: language.getText("months." + getMonth(data.month)),
+            year: (data.year || 0),
+        });
 
         /* Head */
         print(META_TAGS);
         print(STYLE_REFS);
         print(SCRIPT_REFS);
-        print("<title>" + language.getText("site.title") + "</title>");
+        print("<title>" + this.generateTitle(data, shortTitle)
+            + language.getText("site.title") + "</title>");
         print("<meta name=\"description\" content=\"" + language.getText("site.description") + "\">");
 
         /* Body */
@@ -60,10 +65,6 @@ export class BasePG implements IPageGenerator {
         print("<div class=\"mdl-layout__header-row\">");
 
         /* Header: Title */
-        let shortTitle = language.getText("header.short-title", {
-            month: language.getText("months." + getMonth(data.month)),
-            year: (data.year || 0),
-        });
         if (data.isNotFound) {
             shortTitle = language.getText("header.not-found");
         }
@@ -194,6 +195,8 @@ export class BasePG implements IPageGenerator {
         print("<div class=\"mdl-logo\">"
             + language.getText("footer.logo") + "</div>");
         print("<ul class=\"mdl-mini-footer__link-list\">");
+        print("<li><a href=\"/api-reference/\" target=\"_blank\">"
+            + language.getText("footer.api") + "</a></li>");
         print("<li><a href=\"https://github.com/asanrom/Smogon-Stats-Site\" target=\"_blank\">"
             + language.getText("footer.github") + "</a></li>");
         print("<li><a href=\"https://www.smogon.com/stats/\" target=\"_blank\">"
@@ -206,6 +209,23 @@ export class BasePG implements IPageGenerator {
         print("</div>");
         print("</div>");
         print("</body></html>");
+    }
+
+    private generateTitle(data: IGenerationData, shortTitle: string): string {
+        let title = "";
+        if (data.targetName) {
+            title += data.targetName + " - ";
+        }
+        if (data.formatName) {
+            title += "[" + data.baseline + "] - " + data.formatName + " - ";
+        }
+        if (data.feature) {
+            title += data.feature.toUpperCase() + " - ";
+        }
+        if (!data.isNotFound) {
+            title += "[" + shortTitle + "] - ";
+        }
+        return escapeHTML(title);
     }
 
     private getTabURL(feature: string, data: IGenerationData): string {

@@ -115,7 +115,7 @@ export class MainWebApplication {
         if (request.cookies.lang) {
             return request.cookies.lang;
         } else if (typeof request.headers["accept-language"] === "string") {
-            const locale = (request.headers["accept-language"] + "").split(",")[0].toLowerCase().trim();
+            const locale = (request.headers["accept-language"] + "").substr(0, 2).toLowerCase();;
             if (Language.list().indexOf(locale) >= 0) {
                 return locale;
             } else {

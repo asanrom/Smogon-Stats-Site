@@ -8,6 +8,7 @@
 import { IMonthStatus } from "../model/interfaces";
 import { addLeftZeros, capitalize } from "../utils/text-utils";
 import { getMonth } from "../utils/time-utils";
+import { pkgVersion } from "../utils/version";
 
 export type PrintFunction = (arg: string) => void;
 
@@ -19,12 +20,12 @@ const META_TAGS = "<meta charset=\"utf-8\">" +
 
 const STYLE_REFS = "<link rel=\"stylesheet\" href=\"/static/lib/mdl/material.min.css\" />" +
     "<link href=\"/md-icons/iconfont/material-icons.css\" rel=\"stylesheet\">" +
-    "<link rel=\"stylesheet\" href=\"/static/style/control-panel.css\" />";
+    "<link rel=\"stylesheet\" href=\"/static/style/control-panel.css?" + pkgVersion() + "\" />";
 
 const SCRIPT_REFS = "<script type=\"text/javascript\" src=\"/static/lib/mdl/material.min.js\"></script>";
 
 const SCRIPT_REFS2 = "<script type=\"text/javascript\" src=\"/static/lib/jquery.min.js\"></script>" +
-    "<script type=\"text/javascript\" src=\"/static/js/control-panel.js\"></script>";
+    "<script type=\"text/javascript\" src=\"/static/js/control-panel.js?" + pkgVersion() + "\"></script>";
 
 /**
  * Generates the login page.
