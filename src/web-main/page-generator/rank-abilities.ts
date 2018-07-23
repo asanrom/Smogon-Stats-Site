@@ -10,7 +10,7 @@
 import { getFormatName } from "../../utils/formats-names";
 import { Language } from "../../utils/languages";
 import { getAbilitiesName } from "../../utils/pokemon-names";
-import { toId } from "../../utils/text-utils";
+import { addLeftZeros, toId } from "../../utils/text-utils";
 import { IGenerationData, IPageGenerator, PrintFunction } from "./page-generator";
 
 export class RankingAbilitiesPG implements IPageGenerator {
@@ -28,13 +28,26 @@ export class RankingAbilitiesPG implements IPageGenerator {
 
         if (formatRanking) {
             /* Title */
-            print("<div class=\"container padded\" style=\"text-align: center;\">");
+            print("<div class=\"container padded txtcenter\">");
             print("<h3 align=\"center\">" + getFormatName(data.format)
                 + " - " + data.baseline + "</h3>");
-
-            /* Format stats */
-            print("<p><b>" + language.getText("rank.abilities.total") + ":</b> "
-                + Math.floor(formatRanking.totalAbilities) + "</p>");
+            if (data.statsData.baselines) {
+                print("<p>");
+                for (const baseline of data.statsData.baselines) {
+                    if (baseline === data.baseline) {
+                        print("<button class=\"mdl-button mdl-js-button pokemon-nav-button"
+                            + " mdl-button--raised mdl-button--colored\" disabled>"
+                            + baseline + "</button>");
+                    } else {
+                        print("<a href=\"" + this.getBaselineURL(data, baseline) + "\">");
+                        print("<button class=\"mdl-button mdl-js-button pokemon-nav-button"
+                            + " mdl-button--raised mdl-button--colored\">"
+                            + baseline + "</button>");
+                        print("</a>");
+                    }
+                }
+                print("</p>");
+            }
             print("</div>");
 
             print("<div class=\"main-table-container\">");
@@ -59,11 +72,27 @@ export class RankingAbilitiesPG implements IPageGenerator {
                 print("</tr>");
             }
             print("</tbody></table></div>");
+
+            print("<div class=\"container padded txtcenter\">");
+            print("<p><b>" + language.getText("rank.abilities.total") + ":</b> "
+                + Math.floor(formatRanking.totalAbilities) + "</p>");
+            print("</div>");
         }
     }
 
     private getTargetURL(target: string): string {
         return "https://dex.pokemonshowdown.com/abilities/" + toId(target);
+    }
+
+    private getBaselineURL(data: IGenerationData, baseline: number): string {
+        let url = "/" + (data.feature || "pokemon");
+        if (!data.isNotFound) {
+            url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
+        }
+        if (data.format) {
+            url += "/" + data.format + "/" + baseline;
+        }
+        return url;
     }
 
     private prettyPercent(percent: number): string {

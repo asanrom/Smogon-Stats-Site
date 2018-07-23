@@ -115,7 +115,7 @@ export class MainWebApplication {
         if (request.cookies.lang) {
             return request.cookies.lang;
         } else if (typeof request.headers["accept-language"] === "string") {
-            const locale = (request.headers["accept-language"] + "").substr(0, 2).toLowerCase();;
+            const locale = (request.headers["accept-language"] + "").substr(0, 2).toLowerCase();
             if (Language.list().indexOf(locale) >= 0) {
                 return locale;
             } else {
@@ -225,6 +225,7 @@ export class MainWebApplication {
             genData.formatName = getFormatName(genData.format);
             const baselines = await
                 SmogonStatsAPI.getBaselinesPkmn(genData.year, genData.month, genData.format);
+            genData.statsData.baselines = baselines;
             if (baselines.length !== 0) {
                 if (request.params.baseline === "default") {
                     genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
@@ -264,6 +265,7 @@ export class MainWebApplication {
             genData.formatName = getFormatName(genData.format);
             const baselines = await
                 SmogonStatsAPI.getBaselinesPkmn(genData.year, genData.month, genData.format);
+            genData.statsData.baselines = baselines;
             if (baselines.length !== 0) {
                 if (request.params.baseline === "default") {
                     genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
@@ -342,6 +344,7 @@ export class MainWebApplication {
             genData.formatName = getFormatName(genData.format);
             const baselines = await
                 SmogonStatsAPI.getBaselinesMvs(genData.year, genData.month, genData.format);
+            genData.statsData.baselines = baselines;
             if (baselines.length !== 0) {
                 if (request.params.baseline === "default") {
                     genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
@@ -415,6 +418,7 @@ export class MainWebApplication {
             genData.formatName = getFormatName(genData.format);
             const baselines = await
                 SmogonStatsAPI.getbaselinesItms(genData.year, genData.month, genData.format);
+            genData.statsData.baselines = baselines;
             if (baselines.length !== 0) {
                 if (request.params.baseline === "default") {
                     genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
@@ -488,6 +492,7 @@ export class MainWebApplication {
             genData.formatName = getFormatName(genData.format);
             const baselines = await
                 SmogonStatsAPI.getBaselinesAbl(genData.year, genData.month, genData.format);
+            genData.statsData.baselines = baselines;
             if (baselines.length !== 0) {
                 if (request.params.baseline === "default") {
                     genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
@@ -561,6 +566,7 @@ export class MainWebApplication {
             genData.formatName = getFormatName(genData.format);
             const baselines = await
                 SmogonStatsAPI.getBaselinesLeads(genData.year, genData.month, genData.format);
+            genData.statsData.baselines = baselines;
             if (baselines.length !== 0) {
                 if (request.params.baseline === "default") {
                     genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
@@ -634,6 +640,7 @@ export class MainWebApplication {
             genData.formatName = getFormatName(genData.format);
             const baselines = await
                 SmogonStatsAPI.gettBaselinesMeta(genData.year, genData.month, genData.format);
+            genData.statsData.baselines = baselines;
             if (baselines.length !== 0) {
                 if (request.params.baseline === "default") {
                     genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);

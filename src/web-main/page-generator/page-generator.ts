@@ -42,6 +42,7 @@ export interface IGenerationData {
     target: string;
     targetName: string;
     statsData: {
+        baselines: number[],
         formatsPokemon: PokemonFormatsList,
         formatsMoves: MovesFormatsList,
         formatsItems: ItemsFormatsList,
@@ -73,6 +74,7 @@ export function newGenerationData(): IGenerationData {
         month: 0,
         months: [],
         statsData: {
+            baselines: null,
             formatsAbilities: null,
             formatsItems: null,
             formatsLeads: null,
