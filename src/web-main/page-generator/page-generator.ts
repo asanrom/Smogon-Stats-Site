@@ -39,6 +39,7 @@ export interface IGenerationData {
     format: string;
     formatName: string;
     baseline: number;
+    trending: boolean;
     target: string;
     targetName: string;
     statsData: {
@@ -57,6 +58,14 @@ export interface IGenerationData {
         metagameInfo: FormatMetagame,
         pokemonData: PokemonData,
     };
+    previusMonth: {
+        month: IMonthStatus,
+        rankingPokemon: PokemonRanking,
+        rankingMoves: MovesRanking,
+        rankingItems: ItemsRanking,
+        rankingAbilities: AbilitiesRanking,
+        rankingLeads: LeadsRanking,
+    };
 }
 
 /**
@@ -73,6 +82,14 @@ export function newGenerationData(): IGenerationData {
         language: "",
         month: 0,
         months: [],
+        previusMonth: {
+            month: null,
+            rankingPokemon: null,
+            rankingMoves: null,
+            rankingItems: null,
+            rankingAbilities: null,
+            rankingLeads: null,
+        },
         statsData: {
             baselines: null,
             formatsAbilities: null,
@@ -91,6 +108,7 @@ export function newGenerationData(): IGenerationData {
         },
         target: "",
         targetName: "",
+        trending: false,
         year: 0,
     };
 }

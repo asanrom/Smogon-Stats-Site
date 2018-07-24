@@ -385,7 +385,7 @@ export class DataPokemonPG implements IPageGenerator {
             url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
         }
         url += "/" + data.format + "/" + data.baseline;
-        url += "/" + target;
+        url += "/details/" + target;
         return url;
     }
 

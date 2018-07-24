@@ -41,6 +41,7 @@
 
 @footer
     logo        Smogon Usage Stats
+    api         API Reference
     github      GitHub Repository
     source      Source
 @@
@@ -67,6 +68,9 @@
 
     metagame.title  Metagame stats
     metagame.text   Metagame
+
+    charts.title    Evolution charts
+    charts.text     Charts
 @@
 
 @chips
@@ -171,6 +175,11 @@
         usage       Usage
         raw         Raw
     @@
+@@
+
+@format
+    ranking     Ranking
+    trending    Trending
 @@
 
 @pkmdata

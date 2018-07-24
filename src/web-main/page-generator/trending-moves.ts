@@ -2,20 +2,23 @@
  * Page-Generator
  * Smogon Stats Site - https://github.com/asanrom/Smogon-Stats-Site
  *
- * Moves usage ranking.
+ * Moves usage trending.
  */
 
 "use strict";
 
+import { IMoveUsage } from "../../model/interfaces";
+import { MovesRanking } from "../../model/ranking-moves";
 import { getFormatName } from "../../utils/formats-names";
 import { Language } from "../../utils/languages";
 import { PokemonData } from "../../utils/pokemon-data";
 import { getMovesName } from "../../utils/pokemon-names";
 import { Sprites } from "../../utils/sprites";
 import { addLeftZeros, toId } from "../../utils/text-utils";
+import { getMonth } from "../../utils/time-utils";
 import { IGenerationData, IPageGenerator, PrintFunction } from "./page-generator";
 
-export class RankingMovesPG implements IPageGenerator {
+export class TrendingMovesPG implements IPageGenerator {
 
     /**
      * Generates a web page.
@@ -27,8 +30,9 @@ export class RankingMovesPG implements IPageGenerator {
     public generateHTML(data: IGenerationData, language: Language, print: PrintFunction,
                         nestedGenerator?: IPageGenerator) {
         const formatRanking = data.statsData.rankingMoves;
+        const prevRanking = data.previusMonth.rankingMoves;
 
-        if (formatRanking) {
+        if (formatRanking && prevRanking) {
             /* Title */
             print("<div class=\"container padded txtcenter\">");
             print("<h3 align=\"center\">" + getFormatName(data.format)
@@ -51,37 +55,49 @@ export class RankingMovesPG implements IPageGenerator {
                 print("</p>");
             }
             print("<p>");
-            print("<button class=\"mdl-button mdl-js-button pokemon-nav-button"
-                + " mdl-button--raised mdl-button--accent\" disabled>"
-                + language.getText("format.ranking") + "</button>");
-            print("<a href=\"" + this.getTrendingURL(data) + "\">");
+            print("<a href=\"" + this.getRankingURL(data) + "\">");
             print("<button class=\"mdl-button mdl-js-button pokemon-nav-button"
                 + " mdl-button--raised mdl-button--accent\">"
-                + language.getText("format.trending") + "</button>");
+                + language.getText("format.ranking") + "</button>");
             print("</a>");
+            print("<button class=\"mdl-button mdl-js-button pokemon-nav-button"
+                + " mdl-button--raised mdl-button--accent\" disabled>"
+                + language.getText("format.trending") + "</button>");
             print("</p>");
+
+            if (data.previusMonth.month) {
+                const month1 = language.getText("header.short-title", {
+                    month: language.getText("months." + getMonth(data.previusMonth.month.month)),
+                    year: (data.previusMonth.month.year || 0),
+                });
+                const month2 = language.getText("header.short-title", {
+                    month: language.getText("months." + getMonth(data.month)),
+                    year: (data.year || 0),
+                });
+                print("<p><b>" + month1 + "</b> \u2192 <b>" + month2 + "</b></p>");
+            }
             print("</div>");
 
             print("<div class=\"main-table-container\">");
             print("<table class=\"container limited-width main-table mdl-data-table mdl-js-data-table\">");
             /* Table head */
             print("<thead><tr>");
-            print("<th class=\"mid-screen\" width=\"3rem\">#</th>");
             print("<th width=\"1rem\" class=\"mdl-data-table__cell--non-numeric mid-screen\">"
                 + "<img class=\"type-image\" src=\"" + Sprites.getTypeIcon("") + "\" /></div></th>");
             print("<th width=\"1rem\" class=\"mdl-data-table__cell--non-numeric mid-screen\">"
                 + "<img class=\".caregory-image\" src=\"" + Sprites.getCategoryIcon("") + "\" /></div></th>");
             print("<th class=\"mdl-data-table__cell--non-numeric\">"
                 + language.getText("rank.moves.move") + "</th>");
-            print("<th>" + language.getText("rank.moves.usage") + " %</th>");
-            print("<th class=\"large-screen\">" + language.getText("rank.moves.raw") + "</th>");
+            print("<th class=\"mid-screen\">#</th>");
+            print("<th class=\"mid-screen\">" + language.getText("rank.moves.usage") + "</th>");
+            print("<th>\u2206 " + language.getText("rank.moves.usage") + "</th>");
             print("</tr></thead>");
             /* Table body */
             print("<tbody>");
             for (const move of formatRanking.moves) {
                 const moveData = PokemonData.getMoves()[move.name] || {};
-                print("<tr><td class=\"mid-screen\"><b>" + move.pos + "</b></td>");
-                print("<td width=\"1rem\" class=\"mdl-data-table__cell--non-numeric mid-screen\">"
+                const prevMove = this.searchMove(prevRanking, move.name);
+                print("<tr><td width=\"1rem\" class=\"mdl-data-table__cell--non-numeric mid-screen\">"
                     + "<img class=\"type-image\" src=\"" + Sprites.getTypeIcon(moveData.type)
                     + "\" /></div></td>");
                 print("<td width=\"1rem\" class=\"mdl-data-table__cell--non-numeric mid-screen\">"
@@ -90,16 +106,47 @@ export class RankingMovesPG implements IPageGenerator {
                 print("<td class=\"mdl-data-table__cell--non-numeric\">" + "<a href=\""
                     + this.getTargetURL(move.name)
                     + "\" target=\"_blank\"><b>" + getMovesName(move.name) + "</b></a></td>");
-                print("<td><b>" + this.prettyPercent(move.usage) + "</b></td>");
-                print("<td class=\"large-screen\">" + Math.floor(move.raw) + "</td>");
+                if (prevMove) {
+                    print("<td class=\"mid-screen " + this.getSigClass(move.pos - prevMove.pos)
+                        + "\">" + prevMove.pos + " \u2192 " + move.pos + "</td>");
+                    print("<td class=\"mid-screen " + this.getSigClass(move.usage - prevMove.usage)
+                        + "\"><b>" + this.prettyPercent(prevMove.usage) + " \u2192 "
+                        + this.prettyPercent(move.usage) + "</b></td>");
+                    print("<td class=\"" + this.getSigClass(move.usage - prevMove.usage)
+                        + "\"><b>" + this.prettyPercentSig(move.usage - prevMove.usage) + "</b></td>");
+                } else {
+                    print("<td class=\"mid-screen\">" + "???" + " \u2192 " + move.pos + "</td>");
+                    print("<td class=\"mid-screen\"><b>" + "???" + " \u2192 "
+                        + this.prettyPercent(move.usage) + "</b></td>");
+                    print("<td><b>" + "???" + "</b></td>");
+                }
                 print("</tr>");
             }
             print("</tbody></table></div>");
 
             print("<div class=\"container padded txtcenter\">");
             print("<p><b>" + language.getText("rank.moves.total") + ":</b> "
+                + Math.floor(prevRanking.totalMoves) + " \u2192 "
                 + Math.floor(formatRanking.totalMoves) + "</p>");
             print("</div>");
+        }
+    }
+
+    private searchMove(ranking: MovesRanking, moveId: string): IMoveUsage {
+        for (const move of ranking.moves) {
+            if (move.name === moveId) {
+                return move;
+            }
+        }
+    }
+
+    private getSigClass(num: number): string {
+        if (num < 0) {
+            return "negative";
+        } else if (num > 0) {
+            return "positive";
+        } else {
+            return "zero";
         }
     }
 
@@ -108,23 +155,23 @@ export class RankingMovesPG implements IPageGenerator {
     }
 
     private getBaselineURL(data: IGenerationData, baseline: number): string {
-        let url = "/" + (data.feature || "pokemon");
+        let url = "/" + (data.feature || "moves");
         if (!data.isNotFound) {
             url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
         }
         if (data.format) {
-            url += "/" + data.format + "/" + baseline;
+            url += "/" + data.format + "/" + baseline + "/trending";
         }
         return url;
     }
 
-    private getTrendingURL(data: IGenerationData): string {
+    private getRankingURL(data: IGenerationData): string {
         let url = "/" + data.feature;
         if (!data.isNotFound) {
             url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
         }
         if (data.format) {
-            url += "/" + data.format + "/" + data.baseline + "/trending";
+            url += "/" + data.format + "/" + data.baseline;
         }
         return url;
     }
@@ -137,5 +184,20 @@ export class RankingMovesPG implements IPageGenerator {
             d += "0";
         }
         return e + "." + d + "%";
+    }
+
+    private prettyPercentSig(percent: number): string {
+        let sig = "+";
+        if (percent < 0) {
+            sig = "-";
+            percent = Math.abs(percent);
+        }
+        const p = Math.floor(percent * 1000) / 1000;
+        const e = Math.floor(p);
+        let d = "" + Math.floor((p - e) * 1000);
+        while (d.length < 3) {
+            d += "0";
+        }
+        return sig + e + "." + d + "%";
     }
 }

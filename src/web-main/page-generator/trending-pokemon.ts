@@ -2,19 +2,22 @@
  * Page-Generator
  * Smogon Stats Site - https://github.com/asanrom/Smogon-Stats-Site
  *
- * Pokemon usage ranking.
+ * Pokemon usage trending.
  */
 
 "use strict";
 
+import { IPokemonUsage } from "../../model/interfaces";
+import { PokemonRanking } from "../../model/ranking-pokemon";
 import { getFormatName } from "../../utils/formats-names";
 import { Language } from "../../utils/languages";
 import { getPokemonName } from "../../utils/pokemon-names";
 import { Sprites } from "../../utils/sprites";
 import { addLeftZeros } from "../../utils/text-utils";
+import { getMonth } from "../../utils/time-utils";
 import { IGenerationData, IPageGenerator, PrintFunction } from "./page-generator";
 
-export class RankingPokemonPG implements IPageGenerator {
+export class TrendingPokemonPG implements IPageGenerator {
 
     /**
      * Generates a web page.
@@ -26,8 +29,9 @@ export class RankingPokemonPG implements IPageGenerator {
     public generateHTML(data: IGenerationData, language: Language, print: PrintFunction,
                         nestedGenerator?: IPageGenerator) {
         const formatRanking = data.statsData.rankingPokemon;
+        const prevRanking = data.previusMonth.rankingPokemon;
 
-        if (formatRanking) {
+        if (formatRanking && prevRanking) {
             /* Title */
             print("<div class=\"container padded txtcenter\">");
             print("<h3 align=\"center\">" + getFormatName(data.format)
@@ -50,57 +54,106 @@ export class RankingPokemonPG implements IPageGenerator {
                 print("</p>");
             }
             print("<p>");
-            print("<button class=\"mdl-button mdl-js-button pokemon-nav-button"
-                + " mdl-button--raised mdl-button--accent\" disabled>"
-                + language.getText("format.ranking") + "</button>");
-            print("<a href=\"" + this.getTrendingURL(data) + "\">");
+            print("<a href=\"" + this.getRankingURL(data) + "\">");
             print("<button class=\"mdl-button mdl-js-button pokemon-nav-button"
                 + " mdl-button--raised mdl-button--accent\">"
-                + language.getText("format.trending") + "</button>");
+                + language.getText("format.ranking") + "</button>");
             print("</a>");
+            print("<button class=\"mdl-button mdl-js-button pokemon-nav-button"
+                + " mdl-button--raised mdl-button--accent\" disabled>"
+                + language.getText("format.trending") + "</button>");
             print("</p>");
+
+            if (data.previusMonth.month) {
+                const month1 = language.getText("header.short-title", {
+                    month: language.getText("months." + getMonth(data.previusMonth.month.month)),
+                    year: (data.previusMonth.month.year || 0),
+                });
+                const month2 = language.getText("header.short-title", {
+                    month: language.getText("months." + getMonth(data.month)),
+                    year: (data.year || 0),
+                });
+                print("<p><b>" + month1 + "</b> \u2192 <b>" + month2 + "</b></p>");
+            }
+
             print("</div>");
 
             print("<div class=\"main-table-container\">");
             print("<table class=\"container limited-width main-table mdl-data-table mdl-js-data-table\">");
             /* Table head */
+            // \u2206
+            // \u2192
             print("<thead><tr>");
-            print("<th class=\"mid-screen\" width=\"3rem\">#</th>");
             print("<th width=\"1rem\" class=\"mdl-data-table__cell--non-numeric mid-screen\">"
                 + "<div class=\"picon\" style=\"" + Sprites.getPokemonIcon("") + "\"></div></th>");
             print("<th class=\"mdl-data-table__cell--non-numeric\">"
                 + language.getText("rank.pokemon.pokemon") + "</th>");
-            print("<th>" + language.getText("rank.pokemon.usage") + " %</th>");
-            print("<th class=\"mid-screen\">" + language.getText("rank.pokemon.raw") + "</th>");
-            print("<th class=\"mid-screen\">" + language.getText("rank.pokemon.raw") + " %</th>");
-            print("<th class=\"large-screen\">" + language.getText("rank.pokemon.real") + "</th>");
-            print("<th class=\"large-screen\">" + language.getText("rank.pokemon.real") + " %</th>");
+            print("<th class=\"mid-screen\">#</th>");
+            print("<th class=\"mid-screen\">" + language.getText("rank.pokemon.usage") + " %</th>");
+            print("<th>\u2206 " + language.getText("rank.pokemon.usage") + "</th>");
+            print("<th class=\"large-screen\">\u2206 " + language.getText("rank.pokemon.raw") + "</th>");
+            print("<th class=\"large-screen\">\u2206 " + language.getText("rank.pokemon.real") + "</th>");
             print("</tr></thead>");
             /* Table body */
             print("<tbody>");
             for (const pokemon of formatRanking.pokemon) {
-                print("<tr><td class=\"mid-screen\"><b>" + pokemon.pos + "</b></td>");
-                print("<td class=\"mdl-data-table__cell--non-numeric mid-screen\">"
+                const prevPoke = this.searchPokemon(prevRanking, pokemon.name);
+                print("<tr><td class=\"mdl-data-table__cell--non-numeric mid-screen\">"
                     + "<div class=\"picon\" style=\"" + Sprites.getPokemonIcon(pokemon.name)
                     + "\"></div></td>");
                 print("<td class=\"mdl-data-table__cell--non-numeric\">" + "<a href=\""
                     + this.getTargetURL(data, pokemon.name)
                     + "\"><b>" + getPokemonName(pokemon.name) + "</b></a></td>");
-                print("<td><b>" + this.prettyPercent(pokemon.usage) + "</b></td>");
-                print("<td class=\"mid-screen\">" + Math.floor(pokemon.raw) + "</td>");
-                print("<td class=\"mid-screen\">" + this.prettyPercent(pokemon.rawp) + "</td>");
-                print("<td class=\"large-screen\">" + Math.floor(pokemon.real) + "</td>");
-                print("<td class=\"large-screen\">" + this.prettyPercent(pokemon.realp) + "</td>");
+                if (prevPoke) {
+                    print("<td class=\"mid-screen " + this.getSigClass(pokemon.pos - prevPoke.pos)
+                        + "\">" + prevPoke.pos + " \u2192 " + pokemon.pos + "</td>");
+                    print("<td class=\"mid-screen " + this.getSigClass(pokemon.usage - prevPoke.usage)
+                        + "\"><b>" + this.prettyPercent(prevPoke.usage) + " \u2192 "
+                        + this.prettyPercent(pokemon.usage) + "</b></td>");
+                    print("<td class=\"" + this.getSigClass(pokemon.usage - prevPoke.usage)
+                        + "\"><b>" + this.prettyPercentSig(pokemon.usage - prevPoke.usage) + "</b></td>");
+                    print("<td class=\"large-screen " + this.getSigClass(pokemon.rawp - prevPoke.rawp)
+                        + "\">" + this.prettyPercentSig(pokemon.rawp - prevPoke.rawp) + "</td>");
+                    print("<td class=\"large-screen " + this.getSigClass(pokemon.realp - prevPoke.realp)
+                        + "\">" + this.prettyPercentSig(pokemon.realp - prevPoke.realp) + "</td>");
+                } else {
+                    print("<td class=\"mid-screen\">" + "???" + " \u2192 " + pokemon.pos + "</td>");
+                    print("<td class=\"mid-screen\"><b>" + "???" + " \u2192 "
+                        + this.prettyPercent(pokemon.usage) + "</b></td>");
+                    print("<td><b>" + "???" + "</b></td>");
+                    print("<td class=\"large-screen\">" + "???" + "</td>");
+                    print("<td class=\"large-screen\">" + "???" + "</td>");
+                }
                 print("</tr>");
             }
             print("</tbody></table></div>");
 
             print("<div class=\"container padded txtcenter\">");
             print("<p><b>" + language.getText("rank.pokemon.total") + ":</b> "
+                + Math.floor(prevRanking.totalBattles) + " \u2192 "
                 + Math.floor(formatRanking.totalBattles) + "</p>");
             print("<p><b>" + language.getText("rank.pokemon.avg") + ":</b> "
+                + this.prettyDecimal(prevRanking.avgWeightTeam) + " \u2192 "
                 + this.prettyDecimal(formatRanking.avgWeightTeam) + "</p>");
             print("</div>");
+        }
+    }
+
+    private searchPokemon(ranking: PokemonRanking, pokemonId: string): IPokemonUsage {
+        for (const pokemon of ranking.pokemon) {
+            if (pokemon.name === pokemonId) {
+                return pokemon;
+            }
+        }
+    }
+
+    private getSigClass(num: number): string {
+        if (num < 0) {
+            return "negative";
+        } else if (num > 0) {
+            return "positive";
+        } else {
+            return "zero";
         }
     }
 
@@ -122,18 +175,18 @@ export class RankingPokemonPG implements IPageGenerator {
             url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
         }
         if (data.format) {
-            url += "/" + data.format + "/" + baseline;
+            url += "/" + data.format + "/" + baseline + "/trending";
         }
         return url;
     }
 
-    private getTrendingURL(data: IGenerationData): string {
+    private getRankingURL(data: IGenerationData): string {
         let url = "/" + data.feature;
         if (!data.isNotFound) {
             url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
         }
         if (data.format) {
-            url += "/" + data.format + "/" + data.baseline + "/trending";
+            url += "/" + data.format + "/" + data.baseline;
         }
         return url;
     }
@@ -146,6 +199,21 @@ export class RankingPokemonPG implements IPageGenerator {
             d += "0";
         }
         return e + "." + d + "%";
+    }
+
+    private prettyPercentSig(percent: number): string {
+        let sig = "+";
+        if (percent < 0) {
+            sig = "-";
+            percent = Math.abs(percent);
+        }
+        const p = Math.floor(percent * 1000) / 1000;
+        const e = Math.floor(p);
+        let d = "" + Math.floor((p - e) * 1000);
+        while (d.length < 3) {
+            d += "0";
+        }
+        return sig + e + "." + d + "%";
     }
 
     private prettyDecimal(dec: number): string {

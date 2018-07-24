@@ -6,6 +6,7 @@
 "use strict";
 
 import * as Express from "express";
+import { IMonthStatus } from "../model/interfaces";
 import { getFormatName } from "../utils/formats-names";
 import { Language } from "../utils/languages";
 import { getPokemonName } from "../utils/pokemon-names";
@@ -27,6 +28,11 @@ import { RankingItemsPG } from "./page-generator/rank-items";
 import { RankingLeadsPG } from "./page-generator/rank-leads";
 import { RankingMovesPG } from "./page-generator/rank-moves";
 import { RankingPokemonPG } from "./page-generator/rank-pokemon";
+import { TrendingAbilitiesPG } from "./page-generator/trending-abilities";
+import { TrendingItemsPG } from "./page-generator/trending-items";
+import { TrendingLeadsPG } from "./page-generator/trending-leads";
+import { TrendingMovesPG } from "./page-generator/trending-moves";
+import { TrendingPokemonPG } from "./page-generator/trending-pokemon";
 
 /**
  * Main web application.
@@ -45,11 +51,18 @@ export class MainWebApplication {
     private metagameFormatsPG: FormatsListMetaPG;
 
     private pokemonRankingPG: RankingPokemonPG;
-    private pokemonDataPG: DataPokemonPG;
     private movesRankingPG: RankingMovesPG;
     private itemsRankingPG: RankingItemsPG;
     private abilitiesRankingPG: RankingAbilitiesPG;
     private leadsRankingPG: RankingLeadsPG;
+
+    private pokemonTrendingPG: TrendingPokemonPG;
+    private movesTrendingPG: TrendingMovesPG;
+    private itemsTrendingPG: TrendingItemsPG;
+    private abilitiesTrendingPG: TrendingAbilitiesPG;
+    private leadsTrendingPG: TrendingLeadsPG;
+
+    private pokemonDataPG: DataPokemonPG;
     private metagamePG: FormatMetagamePG;
 
     /**
@@ -71,6 +84,11 @@ export class MainWebApplication {
         this.leadsRankingPG = new RankingLeadsPG();
         this.pokemonDataPG = new DataPokemonPG();
         this.metagamePG = new FormatMetagamePG();
+        this.pokemonTrendingPG = new TrendingPokemonPG();
+        this.movesTrendingPG = new TrendingMovesPG();
+        this.itemsTrendingPG = new TrendingItemsPG();
+        this.abilitiesTrendingPG = new TrendingAbilitiesPG();
+        this.leadsTrendingPG = new TrendingLeadsPG();
 
         this.app = Express();
         this.app.get("/", this.homeHandler.bind(this));
@@ -79,27 +97,32 @@ export class MainWebApplication {
         this.app.get("/pokemon/:month", this.pokemonMonthHandler.bind(this));
         this.app.get("/pokemon/:month/:format", this.pokemonFormatHandler.bind(this));
         this.app.get("/pokemon/:month/:format/:baseline", this.pokemonFormatBaselineHandler.bind(this));
-        this.app.get("/pokemon/:month/:format/:baseline/:target", this.pokemonTargetHandler.bind(this));
+        this.app.get("/pokemon/:month/:format/:baseline/trending", this.pokemonTrendingHandler.bind(this));
+        this.app.get("/pokemon/:month/:format/:baseline/details/:target", this.pokemonTargetHandler.bind(this));
 
         this.app.get("/moves", this.movesHomeHandler.bind(this));
         this.app.get("/moves/:month", this.movesMonthHandler.bind(this));
         this.app.get("/moves/:month/:format", this.movesFormatHandler.bind(this));
         this.app.get("/moves/:month/:format/:baseline", this.movesFormatBaselineHandler.bind(this));
+        this.app.get("/moves/:month/:format/:baseline/trending", this.movesTrendingHandler.bind(this));
 
         this.app.get("/items", this.itemsHomeHandler.bind(this));
         this.app.get("/items/:month", this.itemsMonthHandler.bind(this));
         this.app.get("/items/:month/:format", this.itemsFormatHandler.bind(this));
         this.app.get("/items/:month/:format/:baseline", this.itemsFormatBaselineHandler.bind(this));
+        this.app.get("/items/:month/:format/:baseline/trending", this.itemsTrendingHandler.bind(this));
 
         this.app.get("/abilities", this.abilitiesHomeHandler.bind(this));
         this.app.get("/abilities/:month", this.abilitiesMonthHandler.bind(this));
         this.app.get("/abilities/:month/:format", this.abilitiesFormatHandler.bind(this));
         this.app.get("/abilities/:month/:format/:baseline", this.abilitiesFormatBaselineHandler.bind(this));
+        this.app.get("/abilities/:month/:format/:baseline/trending", this.abilitiesTrendingHandler.bind(this));
 
         this.app.get("/leads", this.leadsHomeHandler.bind(this));
         this.app.get("/leads/:month", this.leadsMonthHandler.bind(this));
         this.app.get("/leads/:month/:format", this.leadsFormatHandler.bind(this));
         this.app.get("/leads/:month/:format/:baseline", this.leadsFormatBaselineHandler.bind(this));
+        this.app.get("/leads/:month/:format/:baseline/trending", this.leadsTrendingHandler.bind(this));
 
         this.app.get("/metagame", this.metagameHomeHandler.bind(this));
         this.app.get("/metagame/:month", this.metagameMonthHandler.bind(this));
@@ -147,6 +170,23 @@ export class MainWebApplication {
             }
         }
         return false;
+    }
+
+    private getPreviousMonth(genData: IGenerationData): IMonthStatus {
+        let prev = {
+            mid: 0,
+            month: 0,
+            year: 0,
+            status: "",
+            visible: true,
+        };
+        for (const month of genData.months) {
+            if (month.year === genData.year && month.month === genData.month) {
+                return prev;
+            }
+            prev = month;
+        }
+        return prev;
     }
 
     private serveNotFoundPage(genData: IGenerationData, response: Express.Response) {
@@ -241,6 +281,51 @@ export class MainWebApplication {
                     this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
                         response.write(html);
                     }, this.pokemonRankingPG);
+                    response.end();
+                }
+            } else {
+                this.serveNotFoundPage(genData, response);
+            }
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
+    }
+
+    private async pokemonTrendingHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.trending = true;
+        genData.feature = "pokemon";
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
+
+        if (!genData.isNotFound) {
+            genData.format = toId(request.params.format || "");
+            genData.formatName = getFormatName(genData.format);
+            const baselines = await
+                SmogonStatsAPI.getBaselinesPkmn(genData.year, genData.month, genData.format);
+            genData.statsData.baselines = baselines;
+            if (baselines.length !== 0) {
+                if (request.params.baseline === "default") {
+                    genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
+                } else {
+                    genData.baseline = parseInt(request.params.baseline, 10);
+                }
+                if (baselines.indexOf(genData.baseline) < 0) {
+                    this.serveNotFoundPage(genData, response);
+                } else {
+                    const prevMonth = this.getPreviousMonth(genData);
+                    genData.previusMonth.month = prevMonth;
+                    genData.statsData.rankingPokemon = await SmogonStatsAPI
+                        .getPokemonRanking(genData.year, genData.month, genData.format, genData.baseline);
+                    genData.previusMonth.rankingPokemon = await SmogonStatsAPI
+                        .getPokemonRanking(prevMonth.year, prevMonth.month, genData.format, genData.baseline);
+                    response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+                    this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                        response.write(html);
+                    }, this.pokemonTrendingPG);
                     response.end();
                 }
             } else {
@@ -370,6 +455,51 @@ export class MainWebApplication {
         }
     }
 
+    private async movesTrendingHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.feature = "moves";
+        genData.trending = true;
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
+
+        if (!genData.isNotFound) {
+            genData.format = toId(request.params.format || "");
+            genData.formatName = getFormatName(genData.format);
+            const baselines = await
+                SmogonStatsAPI.getBaselinesMvs(genData.year, genData.month, genData.format);
+            genData.statsData.baselines = baselines;
+            if (baselines.length !== 0) {
+                if (request.params.baseline === "default") {
+                    genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
+                } else {
+                    genData.baseline = parseInt(request.params.baseline, 10);
+                }
+                if (baselines.indexOf(genData.baseline) < 0) {
+                    this.serveNotFoundPage(genData, response);
+                } else {
+                    const prevMonth = this.getPreviousMonth(genData);
+                    genData.previusMonth.month = prevMonth;
+                    genData.statsData.rankingMoves = await SmogonStatsAPI
+                        .getMovesRanking(genData.year, genData.month, genData.format, genData.baseline);
+                    genData.previusMonth.rankingMoves = await SmogonStatsAPI
+                        .getMovesRanking(prevMonth.year, prevMonth.month, genData.format, genData.baseline);
+                    response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+                    this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                        response.write(html);
+                    }, this.movesTrendingPG);
+                    response.end();
+                }
+            } else {
+                this.serveNotFoundPage(genData, response);
+            }
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
+    }
+
     /* Items */
 
     private itemsHomeHandler(request: Express.Request, response: Express.Response) {
@@ -434,6 +564,51 @@ export class MainWebApplication {
                     this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
                         response.write(html);
                     }, this.itemsRankingPG);
+                    response.end();
+                }
+            } else {
+                this.serveNotFoundPage(genData, response);
+            }
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
+    }
+
+    private async itemsTrendingHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.feature = "items";
+        genData.trending = true;
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
+
+        if (!genData.isNotFound) {
+            genData.format = toId(request.params.format || "");
+            genData.formatName = getFormatName(genData.format);
+            const baselines = await
+                SmogonStatsAPI.getbaselinesItms(genData.year, genData.month, genData.format);
+            genData.statsData.baselines = baselines;
+            if (baselines.length !== 0) {
+                if (request.params.baseline === "default") {
+                    genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
+                } else {
+                    genData.baseline = parseInt(request.params.baseline, 10);
+                }
+                if (baselines.indexOf(genData.baseline) < 0) {
+                    this.serveNotFoundPage(genData, response);
+                } else {
+                    const prevMonth = this.getPreviousMonth(genData);
+                    genData.previusMonth.month = prevMonth;
+                    genData.statsData.rankingItems = await SmogonStatsAPI
+                        .getItemsRanking(genData.year, genData.month, genData.format, genData.baseline);
+                    genData.previusMonth.rankingItems = await SmogonStatsAPI
+                        .getItemsRanking(prevMonth.year, prevMonth.month, genData.format, genData.baseline);
+                    response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+                    this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                        response.write(html);
+                    }, this.itemsTrendingPG);
                     response.end();
                 }
             } else {
@@ -518,6 +693,51 @@ export class MainWebApplication {
         }
     }
 
+    private async abilitiesTrendingHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.feature = "abilities";
+        genData.trending = true;
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
+
+        if (!genData.isNotFound) {
+            genData.format = toId(request.params.format || "");
+            genData.formatName = getFormatName(genData.format);
+            const baselines = await
+                SmogonStatsAPI.getBaselinesAbl(genData.year, genData.month, genData.format);
+            genData.statsData.baselines = baselines;
+            if (baselines.length !== 0) {
+                if (request.params.baseline === "default") {
+                    genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
+                } else {
+                    genData.baseline = parseInt(request.params.baseline, 10);
+                }
+                if (baselines.indexOf(genData.baseline) < 0) {
+                    this.serveNotFoundPage(genData, response);
+                } else {
+                    const prevMonth = this.getPreviousMonth(genData);
+                    genData.previusMonth.month = prevMonth;
+                    genData.statsData.rankingAbilities = await SmogonStatsAPI
+                        .getAbilitiesRanking(genData.year, genData.month, genData.format, genData.baseline);
+                    genData.previusMonth.rankingAbilities = await SmogonStatsAPI
+                        .getAbilitiesRanking(prevMonth.year, prevMonth.month, genData.format, genData.baseline);
+                    response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+                    this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                        response.write(html);
+                    }, this.abilitiesTrendingPG);
+                    response.end();
+                }
+            } else {
+                this.serveNotFoundPage(genData, response);
+            }
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
+    }
+
     /* Leads */
 
     private leadsHomeHandler(request: Express.Request, response: Express.Response) {
@@ -582,6 +802,51 @@ export class MainWebApplication {
                     this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
                         response.write(html);
                     }, this.leadsRankingPG);
+                    response.end();
+                }
+            } else {
+                this.serveNotFoundPage(genData, response);
+            }
+        } else {
+            this.serveNotFoundPage(genData, response);
+        }
+    }
+
+    private async leadsTrendingHandler(request: Express.Request, response: Express.Response) {
+        const genData = newGenerationData();
+        genData.feature = "leads";
+        genData.trending = true;
+        genData.language = this.getLanguage(request);
+        genData.cookies = request.cookies || {};
+        genData.months = await SmogonStatsAPI.getMonths();
+        this.parseMonth(request, genData);
+        genData.isNotFound = !this.checkMonth(genData);
+
+        if (!genData.isNotFound) {
+            genData.format = toId(request.params.format || "");
+            genData.formatName = getFormatName(genData.format);
+            const baselines = await
+                SmogonStatsAPI.getBaselinesLeads(genData.year, genData.month, genData.format);
+            genData.statsData.baselines = baselines;
+            if (baselines.length !== 0) {
+                if (request.params.baseline === "default") {
+                    genData.baseline = SmogonStatsAPI.getDefaultBaseline(baselines);
+                } else {
+                    genData.baseline = parseInt(request.params.baseline, 10);
+                }
+                if (baselines.indexOf(genData.baseline) < 0) {
+                    this.serveNotFoundPage(genData, response);
+                } else {
+                    const prevMonth = this.getPreviousMonth(genData);
+                    genData.previusMonth.month = prevMonth;
+                    genData.statsData.rankingLeads = await SmogonStatsAPI
+                        .getLeadsRanking(genData.year, genData.month, genData.format, genData.baseline);
+                    genData.previusMonth.rankingLeads = await SmogonStatsAPI
+                        .getLeadsRanking(prevMonth.year, prevMonth.month, genData.format, genData.baseline);
+                    response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+                    this.basePG.generateHTML(genData, Language.get(genData.language), (html) => {
+                        response.write(html);
+                    }, this.leadsTrendingPG);
                     response.end();
                 }
             } else {

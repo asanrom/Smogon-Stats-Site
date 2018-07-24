@@ -8,7 +8,7 @@
 "use strict";
 
 import { Language } from "../../utils/languages";
-import { addLeftZeros, escapeHTML } from "../../utils/text-utils";
+import { addLeftZeros, capitalize, escapeHTML } from "../../utils/text-utils";
 import { getMonth } from "../../utils/time-utils";
 import { pkgVersion } from "../../utils/version";
 import { IGenerationData, IPageGenerator, PrintFunction } from "./page-generator";
@@ -195,7 +195,7 @@ export class BasePG implements IPageGenerator {
         print("<div class=\"mdl-logo\">"
             + language.getText("footer.logo") + "</div>");
         print("<ul class=\"mdl-mini-footer__link-list\">");
-        print("<li><a href=\"/api-reference/\" target=\"_blank\">"
+        print("<li><a href=\"/api/reference/\" target=\"_blank\">"
             + language.getText("footer.api") + "</a></li>");
         print("<li><a href=\"https://github.com/asanrom/Smogon-Stats-Site\" target=\"_blank\">"
             + language.getText("footer.github") + "</a></li>");
@@ -217,13 +217,14 @@ export class BasePG implements IPageGenerator {
             title += data.targetName + " - ";
         }
         if (data.formatName) {
-            title += "[" + data.baseline + "] - " + data.formatName + " - ";
-        }
-        if (data.feature) {
-            title += data.feature.toUpperCase() + " - ";
+            title += data.formatName + " - [" + data.baseline + "] - ";
         }
         if (!data.isNotFound) {
-            title += "[" + shortTitle + "] - ";
+            title += shortTitle + " - ";
+        }
+
+        if (data.feature) {
+            title += capitalize(data.feature) + " - ";
         }
         return escapeHTML(title);
     }
@@ -247,7 +248,10 @@ export class BasePG implements IPageGenerator {
         let url = "/" + (data.feature || "pokemon");
         url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
         if (data.format) {
-            url += "/" + data.format;
+            url += "/" + data.format + "/default";
+        }
+        if (data.trending) {
+            url += "/trending";
         }
         return url;
     }
@@ -257,6 +261,9 @@ export class BasePG implements IPageGenerator {
         url += "/" + data.year + "-" + addLeftZeros(data.month, 2);
         if (data.format) {
             url += "/" + data.format + "/" + data.baseline;
+        }
+        if (data.trending) {
+            url += "/trending";
         }
         return url;
     }
@@ -268,7 +275,7 @@ export class BasePG implements IPageGenerator {
             url += "/" + data.format + "/" + data.baseline;
         }
         if (data.target) {
-            url += "/" + data.target;
+            url += "/details/" + data.target;
         }
         return url;
     }
@@ -279,8 +286,11 @@ export class BasePG implements IPageGenerator {
         if (data.format) {
             url += "/" + data.format + "/" + data.baseline;
         }
+        if (data.trending) {
+            url += "/trending";
+        }
         if (data.target) {
-            url += "/" + data.target;
+            url += "/details/" + data.target;
         }
         return url;
     }

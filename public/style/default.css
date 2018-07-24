@@ -203,6 +203,10 @@ a {
 
 /* Other styles */
 
+.mdl-chip {
+    cursor: pointer;
+}
+
 .filter-match {
     background-color: gold;
 }
@@ -217,4 +221,16 @@ a {
     max-height: 300px;
     display: block;
     border: solid black 1px;
+}
+
+.positive {
+    color: green;
+}
+
+.negative {
+    color: red;
+}
+
+.zero {
+    color: grey;
 }
