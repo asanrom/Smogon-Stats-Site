@@ -87,6 +87,9 @@ export async function callAPIPokemonData(request: Express.Request, response: Exp
                 if (xml) {
                     response.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
                     const res = { result: [] };
+                    res.result.push({ feature: "pokemon/data" });
+                    res.result.push({ year: params.year });
+                    res.result.push({ month: params.month });
                     res.result.push({
                         format: [{ _attr: { id: params.format } },
                         getFormatName(params.format)],
@@ -211,6 +214,9 @@ export async function callAPIPokemonData(request: Express.Request, response: Exp
                     response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
                     const res: any = {
                         result: {
+                            feature: "pokemon/data",
+                            year: params.year,
+                            month: params.month,
                             format: {
                                 id: params.format,
                                 name: getFormatName(params.format),

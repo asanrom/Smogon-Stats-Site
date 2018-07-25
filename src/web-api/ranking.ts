@@ -119,6 +119,9 @@ export async function callAPIRankingPokemon(request: Express.Request, response: 
                 if (xml) {
                     response.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
                     const res = { result: [] };
+                    res.result.push({ feature: "pokemon/ranking" });
+                    res.result.push({ year: params.year });
+                    res.result.push({ month: params.month });
                     res.result.push({
                         format: [{ _attr: { id: params.format } },
                         getFormatName(params.format)],
@@ -148,6 +151,11 @@ export async function callAPIRankingPokemon(request: Express.Request, response: 
                 } else {
                     response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
                     const res = {
+                        feature: "pokemon/ranking",
+                        month: {
+                            year: params.year,
+                            month: params.month,
+                        },
                         result: {
                             format: {
                                 id: params.format,
@@ -238,6 +246,9 @@ export async function callAPIRankingMoves(request: Express.Request, response: Ex
                 if (xml) {
                     response.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
                     const res = { result: [] };
+                    res.result.push({ feature: "moves/ranking" });
+                    res.result.push({ year: params.year });
+                    res.result.push({ month: params.month });
                     res.result.push({
                         format: [{ _attr: { id: params.format } },
                         getFormatName(params.format)],
@@ -263,6 +274,11 @@ export async function callAPIRankingMoves(request: Express.Request, response: Ex
                 } else {
                     response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
                     const res = {
+                        feature: "moves/ranking",
+                        month: {
+                            year: params.year,
+                            month: params.month,
+                        },
                         result: {
                             format: {
                                 id: params.format,
@@ -349,6 +365,9 @@ export async function callAPIRankingItems(request: Express.Request, response: Ex
                 if (xml) {
                     response.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
                     const res = { result: [] };
+                    res.result.push({ feature: "items/ranking" });
+                    res.result.push({ year: params.year });
+                    res.result.push({ month: params.month });
                     res.result.push({
                         format: [{ _attr: { id: params.format } },
                         getFormatName(params.format)],
@@ -375,6 +394,11 @@ export async function callAPIRankingItems(request: Express.Request, response: Ex
                     response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
                     const res = {
                         result: {
+                            feature: "items/ranking",
+                            month: {
+                                year: params.year,
+                                month: params.month,
+                            },
                             format: {
                                 id: params.format,
                                 name: getFormatName(params.format),
@@ -460,6 +484,9 @@ export async function callAPIRankingAbilities(request: Express.Request, response
                 if (xml) {
                     response.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
                     const res = { result: [] };
+                    res.result.push({ feature: "abilities/ranking" });
+                    res.result.push({ year: params.year });
+                    res.result.push({ month: params.month });
                     res.result.push({
                         format: [{ _attr: { id: params.format } },
                         getFormatName(params.format)],
@@ -486,6 +513,11 @@ export async function callAPIRankingAbilities(request: Express.Request, response
                     response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
                     const res = {
                         result: {
+                            feature: "abilities/ranking",
+                            month: {
+                                year: params.year,
+                                month: params.month,
+                            },
                             format: {
                                 id: params.format,
                                 name: getFormatName(params.format),
@@ -575,6 +607,9 @@ export async function callAPIRankingLeads(request: Express.Request, response: Ex
                 if (xml) {
                     response.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
                     const res = { result: [] };
+                    res.result.push({ feature: "leads/ranking" });
+                    res.result.push({ year: params.year });
+                    res.result.push({ month: params.month });
                     res.result.push({
                         format: [{ _attr: { id: params.format } },
                         getFormatName(params.format)],
@@ -602,6 +637,11 @@ export async function callAPIRankingLeads(request: Express.Request, response: Ex
                     response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
                     const res = {
                         result: {
+                            feature: "leads/ranking",
+                            month: {
+                                year: params.year,
+                                month: params.month,
+                            },
                             format: {
                                 id: params.format,
                                 name: getFormatName(params.format),

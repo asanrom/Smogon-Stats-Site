@@ -12,6 +12,7 @@ import { reloadNames } from "./utils/formats-names";
 import { Language } from "./utils/languages";
 import { Logger } from "./utils/logs";
 import { PokemonData } from "./utils/pokemon-data";
+import { realoadAPIReference } from "./web-api/reference";
 
 CrashGuard.enable();
 
@@ -38,6 +39,7 @@ process.on("message", (message) => {
             break;
         case "reload":
             reloadNames();
+            realoadAPIReference();
             PokemonData.load();
             Language.loadLanguages();
             break;

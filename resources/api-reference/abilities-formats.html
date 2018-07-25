@@ -1,0 +1,409 @@
+<h1>Abilities: Formats list</h1>
+<p>Returns the list of available formats for the "Abilities" feature.</p>
+<h2>HTTP Request</h2>
+<div class="api-url">GET /api/abilities/formats</div>
+<div class="api-url">GET /api-xml/abilities/formats</div>
+<table class="desc-table">
+    <thead>
+        <tr>
+            <th colspan="2">Query parameters</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="table-section" colspan="2">Optional parameters</td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>month</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />The month when the usage stats were taken. Format:
+                <code>YYYY-MM</code>
+                <br />Example:
+                <code>2018-10</code>
+                <br />By default, it uses the latest month.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>baseline</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Filters by the baseline. List of conditions.
+                <br />Format:
+                <code>condition1, condition2...</code>
+                <br />Types of conditions:
+                <ul>
+                    <li>
+                        <code>&equals;<span class="kyw">number</span></code> - Equals</li>
+                    <li>
+                        <code>&excl;&equals;<span class="kyw">number</span></code> - Not equals</li>
+                    <li>
+                        <code>&gt;<span class="kyw">number</span></code> - Greater than</li>
+                    <li>
+                        <code>&gt;&equals;<span class="kyw">number</span></code> - Greater than or equals</li>
+                    <li>
+                        <code>&lt;<span class="kyw">number</span></code> - Lesser than</li>
+                    <li>
+                        <code>&lt;&equals;<span class="kyw">number</span></code> - Lesser than or equals</li>
+                </ul>
+                <br />Example:
+                <code>&gt;&equals;1500, &lt;2000</code>
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>abilities</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Filters by the number of abilities. List of conditions.
+                <br />Format:
+                <code>condition1, condition2...</code>
+                <br />Types of conditions:
+                <ul>
+                    <li>
+                        <code>&equals;<span class="kyw">number</span></code> - Equals</li>
+                    <li>
+                        <code>&excl;&equals;<span class="kyw">number</span></code> - Not equals</li>
+                    <li>
+                        <code>&gt;<span class="kyw">number</span></code> - Greater than</li>
+                    <li>
+                        <code>&gt;&equals;<span class="kyw">number</span></code> - Greater than or equals</li>
+                    <li>
+                        <code>&lt;<span class="kyw">number</span></code> - Lesser than</li>
+                    <li>
+                        <code>&lt;&equals;<span class="kyw">number</span></code> - Lesser than or equals</li>
+                </ul>
+                <br />Example:
+                <code>&equals;10000</code>
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>top-ability</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Filters by the most used ability.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>sorted-by</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Sorting criteria.
+                <br />Set to
+                <code>name</code> to sort alphabetically.
+                <br />Set to
+                <code>abilities</code> to sort by the number of abilities.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>search-for</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />The name or part of the name of the format you are looking for.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>return-as</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Sets the format for the result.
+                <br />Set as
+                <code>xml</code> to get the result as XML.
+                <br />Set as
+                <code>json</code> to get the result as JSON.
+                <br />Default format is
+                <code>json</code>.
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>Response</h2>
+<p>If you requested the response as JSON, the method will return a body with the following structure:</p>
+<div class="response">
+    {
+    <br />
+    <span class="indent">...</span>
+    <span class="str">"result"</span>: {
+    <br />
+    <span class="indent">......</span>
+    <span class="str">"feature"</span>:
+    <span class="str">"abilities/formats"</span>,
+    <br />
+    <span class="indent">......</span>
+    <span class="str">"month"</span>: {
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"year"</span>:
+    <span class="kyw"> number</span>,
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"month"</span>:
+    <span class="kyw"> number</span>
+    <br />
+    <span class="indent">......</span>
+    <span>},</span>
+    <br />
+    <span class="indent">......</span>
+    <span class="str">"formats"</span>: [
+    <br />
+    <span class="indent">.........</span>
+    <span>{</span>
+    <br />
+    <span class="indent">............</span>
+    <span class="str">"id"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">............</span>
+    <span class="str">"name"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">............</span>
+    <span class="str">"baseline"</span>:
+    <span class="kyw"> number</span>,
+    <br />
+    <span class="indent">............</span>
+    <span class="str">"abilities"</span>:
+    <span class="kyw"> number</span>,
+    <br />
+    <span class="indent">............</span>
+    <span class="str">"topAbility"</span>:
+    <span class="kyw"> string</span>
+    <br />
+    <span class="indent">.........</span>
+    <span>},</span>
+    <span class="kyw"> ...</span>
+    <br />
+    <span class="indent">......</span>
+    <span>]</span>
+    <br />
+    <span class="indent">...</span>
+    <span>}</span>
+    <br />
+    <span>}</span>
+</div>
+<p>If you requested the response as XML, the method will return a body with the following structure:</p>
+<div class="response">
+    &lt;result&gt;
+    <br />
+    <span class="indent">...</span>&lt;feature&gt;
+    <span class="kyw">abilities/formats</span>&lt;/feature&gt;
+    <br />
+    <span class="indent">...</span>&lt;year&gt;
+    <span class="kyw">number</span>&lt;/year&gt;
+    <br />
+    <span class="indent">...</span>&lt;month&gt;
+    <span class="kyw">number</span>&lt;/month&gt;
+    <br />
+    <span class="indent">...</span>&lt;formats&gt;
+    <br />
+    <span class="indent">......</span>&lt;format
+    <span class="str"> id</span>=
+    <span class="kyw">string</span>
+    <span class="str"> baseline</span>=
+    <span class="kyw">number</span>
+    <span class="str"> abilities</span>=
+    <span class="kyw">number</span>
+    <span class="str"> topAbility</span>=
+    <span class="kyw">string</span>&gt;
+    <span class="kyw">Format name (string)</span>&lt;/format&gt;
+    <br />
+    <span class="indent">......</span>
+    <span class="kyw">...</span>
+    <br />
+    <span class="indent">...</span>&lt;/formats&gt;
+    <br /> &lt;/result&gt;
+</div>
+<table class="desc-table">
+    <thead>
+        <tr>
+            <th colspan="2">Properties</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="first-col">
+                <code>feature</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />API feature you requested.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>year</code>
+            </td>
+            <td class="second-col">
+                <code>number</code>
+                <br />Year when the usage stats were taken.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>month</code>
+            </td>
+            <td class="second-col">
+                <code>number</code>
+                <br />Month of the year (01 - 12) when the usage stats were taken.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>id</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Format identifier.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>name</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Format name.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>baseline</code>
+            </td>
+            <td class="second-col">
+                <code>number</code>
+                <br />Baseline used for the usage stats compilation.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>abilities</code>
+            </td>
+            <td class="second-col">
+                <code>number</code>
+                <br />Total abilities counted.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>topAbility</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />The most used ability for the format.
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>Errors</h2>
+<table class="err-table">
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Error Code</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="err-tr">
+            <td class="second-col">
+                <code>404</code>
+            </td>
+            <td class="second-col">
+                <code>MONTH_NOT_AVAILABLE</code>
+            </td>
+            <td class="second-col">This error means the month you specified was not found.
+                <br />Maybe you spell it wrong or the month is not available.
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>Try it yourself</h2>
+<div class="try-div">
+    <form method="GET" target="_blank" action="/api/abilities/formats">
+        <table class="try-table">
+            <tr>
+                <td>
+                    <code>month</code>
+                </td>
+                <td>
+                    <input class="try-txt-field" type="text" name="month" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <code>baseline</code>
+                </td>
+                <td>
+                    <input class="try-txt-field" type="text" name="baseline" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <code>abilities</code>
+                </td>
+                <td>
+                    <input class="try-txt-field" type="text" name="abilities" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <code>top-ability</code>
+                </td>
+                <td>
+                    <input class="try-txt-field" type="text" name="top-ability" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>sorted-by</code>
+                </td>
+                <td>
+                    <select class="try-txt-field" name="sorted-by">
+                        <option value="name">Name (Alphabetically)</option>
+                        <option value="abilities">Number of abilities</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <code>search-for</code>
+                </td>
+                <td>
+                    <input class="try-txt-field" type="text" name="search-for" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <code>return-as</code>
+                </td>
+                <td>
+                    <select class="try-txt-field" name="return-as">
+                        <option value="json">JSON</option>
+                        <option value="xml">XML</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button class="try-button">SEND REQUEST</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</div>
+<br />

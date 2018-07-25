@@ -51,7 +51,7 @@ export class BasePG implements IPageGenerator {
         print(META_TAGS);
         print(STYLE_REFS);
         print(SCRIPT_REFS);
-        print("<title>" + this.generateTitle(data, shortTitle)
+        print("<title>" + this.generateTitle(data, shortTitle, language)
             + language.getText("site.title") + "</title>");
         print("<meta name=\"description\" content=\"" + language.getText("site.description") + "\">");
 
@@ -211,10 +211,13 @@ export class BasePG implements IPageGenerator {
         print("</body></html>");
     }
 
-    private generateTitle(data: IGenerationData, shortTitle: string): string {
+    private generateTitle(data: IGenerationData, shortTitle: string, lang: Language): string {
         let title = "";
         if (data.targetName) {
             title += data.targetName + " - ";
+        }
+        if (data.trending) {
+            title += lang.getText("format.trending") + " - ";
         }
         if (data.formatName) {
             title += data.formatName + " - [" + data.baseline + "] - ";
@@ -222,7 +225,6 @@ export class BasePG implements IPageGenerator {
         if (!data.isNotFound) {
             title += shortTitle + " - ";
         }
-
         if (data.feature) {
             title += capitalize(data.feature) + " - ";
         }

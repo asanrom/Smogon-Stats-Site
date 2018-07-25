@@ -21,6 +21,7 @@ import {
     callAPIRankingLeads, callAPIRankingMoves,
     callAPIRankingPokemon,
 } from "./ranking";
+import { apiReferenceWebHandler } from "./reference";
 
 /**
  * API (web application).
@@ -68,6 +69,12 @@ export class APIWebApplication {
 
         this.app.get("/api/months", this.monthsHandler.bind(this));
         this.app.get("/api-:mode/months", this.monthsHandler.bind(this));
+
+        this.app.get("/api/reference", this.referenceHandler.bind(this));
+        this.app.get("/api/reference/:page", this.referenceHandler.bind(this));
+
+        this.app.get("/api", this.redirectReferenceHandler.bind(this));
+        this.app.get("/api-:mode", this.redirectReferenceHandler.bind(this));
 
         this.app.get("/api/*", this.notFoundHandler.bind(this));
         this.app.get("/api-:mode/*", this.notFoundHandler.bind(this));
@@ -220,5 +227,14 @@ export class APIWebApplication {
             request.query["return-as"] = request.params.mode;
         }
         callAPIMetagame(request, response);
+    }
+
+    private referenceHandler(request: Express.Request, response: Express.Response) {
+        apiReferenceWebHandler(request, response);
+    }
+
+    private redirectReferenceHandler(request: Express.Request, response: Express.Response) {
+        response.writeHead(301, { Location: "/api/reference/" });
+        response.end();
     }
 }

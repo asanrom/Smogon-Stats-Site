@@ -1,0 +1,228 @@
+/* API reference style */
+
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    word-wrap: break-word;
+}
+
+h1 {
+    font-weight: normal;
+    font-size: 32px;
+}
+
+h2 {
+    font-weight: normal;
+    font-size: 24px;
+}
+
+h3 {
+    font-weight: normal;
+    font-size: 18px;
+}
+
+ul {
+    padding: 0 1.5rem;
+    list-style-type:circle;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: none;
+    color: blue;
+}
+
+.selected {
+    color: blue;
+}
+
+/* Layout */
+
+.menu {
+    position: fixed;
+    background-color: #f7f7f7;
+    top: 0.2rem;
+    bottom: 0.2rem;
+    left: 0.5rem;
+    width: 14rem;
+    padding-left: 0.5rem;
+    padding-right: 0;
+    line-height: 200%;
+    overflow-y: scroll;
+}
+.content {
+    position: absolute;
+    top: 0.2rem;
+    left: 16rem;
+    right: 1rem;
+}
+
+/* Containers */
+
+.api-url {
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #f7f7f7;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+code {
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.response {
+    font-family: monospace;
+    font-size: 16px;
+    background-color: #f7f7f7;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.example {
+    font-family: monospace;
+    font-size: 16px;
+    background-color: #f7f7f7;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.kyw {
+    color: deeppink;
+}
+
+.str {
+    color: limegreen;
+}
+
+.indent {
+    color: #f7f7f7;
+}
+
+/* Tables */
+
+.desc-table {
+    text-align: left;
+    border: 0;
+    font-size: 14px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.desc-table tr {
+    background: #78909c;
+    border: 0;
+    border-top: solid 1px #78909c;
+}
+
+.desc-table th {
+    padding: 1rem 0.5rem;
+    font-weight: bold;
+    color: #fff;
+    border: 0;
+}
+
+.desc-table td {
+    padding: 0.7rem 0.5rem;
+    color: black;
+    border: 0;
+    vertical-align: top;
+}
+
+.err-table {
+    text-align: left;
+    border: 0;
+    font-size: 14px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.err-table tr {
+    background: #78909c;
+    border: 0;
+    border-top: solid 1px #78909c;
+}
+
+.err-table th {
+    padding: 1rem 0.5rem;
+    font-weight: bold;
+    color: #fff;
+    border: 0;
+}
+
+.err-table td {
+    padding: 0.7rem 0.5rem;
+    color: black;
+    border: 0;
+    vertical-align: top;
+}
+
+@media (max-width: 900px) {
+    .desc-table td {
+        display: block;
+        width: 100%;
+    }
+}
+
+.first-col {
+    min-width: 214px;
+    background-color: rgba(255, 255, 255, 0.85);
+}
+
+.second-col {
+    background-color: rgba(255, 255, 255, 0.95);
+    line-height: 150%;
+}
+
+.table-section {
+    background-color: rgba(255, 255, 255, 0.75);
+    font-weight: bold;
+}
+
+.err-tr {
+    border-top: solid 1px #78909c;
+}
+
+.try-table {
+    border: 0;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.try-table td {
+    padding: 1rem;
+    border: 0;
+    vertical-align: middle;
+    text-align: left;
+    font-family: monospace;
+    font-weight: 16px;
+}
+
+.try-table tr {
+    border-top: solid 1px #78909c;
+}
+
+/* Other styles */
+
+.try-txt-field {
+    padding: 0.2rem;
+}
+
+.try-button {
+    padding: 0.3rem;
+    background: #78909c;
+    color: #fff;
+    border: solid 1px black;
+    cursor: pointer;
+}

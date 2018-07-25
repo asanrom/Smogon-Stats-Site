@@ -86,6 +86,9 @@ export async function callAPIMetagame(request: Express.Request, response: Expres
                 if (xml) {
                     response.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
                     const res = { result: [] };
+                    res.result.push({ feature: "metagame/data" });
+                    res.result.push({ year: params.year });
+                    res.result.push({ month: params.month });
                     res.result.push({
                         format: [{ _attr: { id: params.format } },
                         getFormatName(params.format)],
@@ -123,6 +126,9 @@ export async function callAPIMetagame(request: Express.Request, response: Expres
                     response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
                     const res: any = {
                         result: {
+                            feature: "metagame/data",
+                            year: params.year,
+                            month: params.month,
                             format: {
                                 id: params.format,
                                 name: getFormatName(params.format),

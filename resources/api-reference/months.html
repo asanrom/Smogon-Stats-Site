@@ -1,0 +1,140 @@
+<h1>Months list</h1>
+<p>Returns the list of available months.</p>
+<h2>HTTP Request</h2>
+<div class="api-url">GET /api/months</div>
+<div class="api-url">GET /api-xml/months</div>
+<table class="desc-table">
+    <thead>
+        <tr>
+            <th colspan="2">Query parameters</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="table-section" colspan="2">Optional parameters</td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>return-as</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Sets the format for the result.
+                <br />Set as
+                <code>xml</code> to get the result as XML.
+                <br />Set as
+                <code>json</code> to get the result as JSON.
+                <br />Default format is
+                <code>json</code>.
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>Response</h2>
+<p>If you requested the response as JSON, the method will return a body with the following structure:</p>
+<div class="response">
+    {
+    <br />
+    <span class="indent">..</span>
+    <span class="str">"months"</span>: [
+    <br />
+    <span class="indent">....</span>{
+    <br />
+    <span class="indent">......</span>
+    <span class="str">"id"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">......</span>
+    <span class="str">"year"</span>:
+    <span class="kyw"> number</span>,
+    <br />
+    <span class="indent">......</span>
+    <span class="str">"month"</span>:
+    <span class="kyw"> number</span>
+    <br />
+    <span class="indent">....</span>},
+    <span class="kyw"> ...</span>
+    <br />
+    <span class="indent">..</span>]
+    <br /> }
+</div>
+<p>If you requested the response as XML, the method will return a body with the following structure:</p>
+<div class="response">
+    &lt;months&gt;
+    <br />
+    <span class="indent">...</span>&lt;month
+    <span class="str"> year</span>=
+    <span class="kyw">number</span>
+    <span class="str"> month</span>=
+    <span class="kyw">number</span>>
+    <span class="kyw">YYYY-MM</span>&lt;/month&gt;
+    <br />
+    <span class="indent">...</span>
+    <span class="kyw">...</span>
+    <br /> &lt;/months&gt;
+</div>
+<table class="desc-table">
+    <thead>
+        <tr>
+            <th colspan="2">Properties</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="first-col">
+                <code>id</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Month identifier, formatted as
+                <b>YYYY-MM</b>. For example:
+                <b>2018-06</b>.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>year</code>
+            </td>
+            <td class="second-col">
+                <code>number</code>
+                <br />The year number. For example:
+                <b>2018</b>.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>month</code>
+            </td>
+            <td class="second-col">
+                <code>number</code>
+                <br />The month number (01 - 12). For example:
+                <b>06</b>.
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>Try it yourself</h2>
+<div class="try-div">
+    <form method="GET" target="_blank" action="/api/months">
+        <table class="try-table">
+            <tr>
+                <td>
+                    <code>return-as</code>
+                </td>
+                <td>
+                    <select class="try-txt-field" name="return-as">
+                        <option value="json">JSON</option>
+                        <option value="xml">XML</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button class="try-button">SEND REQUEST</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</div>
+<br />

@@ -1,0 +1,74 @@
+{
+    "methods": [
+        {
+            "id": "months",
+            "name": "Months list",
+            "content": "months.html"
+        },
+        {
+            "id": "pokemon-formats",
+            "name": "Pokemon: Formats list",
+            "content": "pokemon-formats.html"
+        },
+        {
+            "id": "pokemon-ranking",
+            "name": "Pokemon: Ranking",
+            "content": "pokemon-ranking.html"
+        },
+        {
+            "id": "pokemon-data",
+            "name": "Pokemon: Usage Data",
+            "content": "pokemon-data.html"
+        },
+        {
+            "id": "moves-formats",
+            "name": "Moves: Formats list",
+            "content": "moves-formats.html"
+        },
+        {
+            "id": "moves-ranking",
+            "name": "Moves: Ranking",
+            "content": "moves-ranking.html"
+        },
+        {
+            "id": "items-formats",
+            "name": "Items: Formats list",
+            "content": "items-formats.html"
+        },
+        {
+            "id": "items-ranking",
+            "name": "Items: Ranking",
+            "content": "items-ranking.html"
+        },
+        {
+            "id": "abilities-formats",
+            "name": "Abilities: Formats list",
+            "content": "abilities-formats.html"
+        },
+        {
+            "id": "abilities-ranking",
+            "name": "Abilities: Ranking",
+            "content": "abilities-ranking.html"
+        },
+        {
+            "id": "leads-formats",
+            "name": "Leads: Formats list",
+            "content": "leads-formats.html"
+        },
+        {
+            "id": "leads-ranking",
+            "name": "Leads: Ranking",
+            "content": "leads-ranking.html"
+        },
+        {
+            "id": "metagame-formats",
+            "name": "Metagame: Formats list",
+            "content": "metagame-formats.html"
+        },
+        {
+            "id": "metagame-data",
+            "name": "Metagame: Data",
+            "content": "metagame-data.html"
+        }
+    ]
+}

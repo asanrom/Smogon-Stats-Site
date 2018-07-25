@@ -1,0 +1,752 @@
+<h1>Pokemon: Usage Data</h1>
+<p>Returns the usage details of a pokemon (abilities, moves, items...).</p>
+<h2>HTTP Request</h2>
+<div class="api-url">GET /api/pokemon/data</div>
+<div class="api-url">GET /api-xml/pokemon/data</div>
+<table class="desc-table">
+    <thead>
+        <tr>
+            <th colspan="2">Query parameters</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="table-section" colspan="2">Required parameters</td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>format</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Name of the format you want to get the stats from.
+                <br />Example:
+                <code>[Gen 7] Ubers</code>
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>pokemon</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Name of the pokemon you want to get the stats from.
+                <br />Example:
+                <code>Pikachu</code>
+            </td>
+        </tr>
+        <tr>
+            <td class="table-section" colspan="2">Optional parameters</td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>baseline</code>
+            </td>
+            <td class="second-col">
+                <code>number</code>
+                <br />Ranking baseline you want to apply.
+                <br />Only certain baselines are available.
+                <br />If you do not specify a baseline. The default baseline is used.
+                <br />Examples:
+                <code>0</code>,
+                <code>1500</code>,
+                <code>1630</code>,
+                <code>1695</code>,
+                <code>1760</code>,
+                <code>1825</code>
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>month</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />The month when the usage stats were taken. Format:
+                <code>YYYY-MM</code>
+                <br />Example:
+                <code>2018-10</code>
+                <br />By default, it uses the latest month.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>select</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Selects the field you want to obtain.
+                <br />Available fields:
+                <code>abilities</code>,
+                <code>items</code>,
+                <code>moves</code>,
+                <code>spreads</code>,
+                <code>teammates</code>,
+                <code>counters</code>
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>return-as</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Sets the format for the result.
+                <br />Set as
+                <code>xml</code> to get the result as XML.
+                <br />Set as
+                <code>json</code> to get the result as JSON.
+                <br />Default format is
+                <code>json</code>.
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>Response</h2>
+<p>If you requested the response as JSON, the method will return a body with the following structure:</p>
+<div class="response">
+    {
+    <br />
+    <span class="indent">...</span>
+    <span class="str">"result"</span>: {
+    <br />
+    <span class="indent">......</span>
+    <span class="str">"feature"</span>:
+    <span class="str">"pokemon/data"</span>,
+    <br />
+    <span class="indent">......</span>
+    <span class="str">"month"</span>: {
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"year"</span>:
+    <span class="kyw"> number</span>,
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"month"</span>:
+    <span class="kyw"> number</span>
+    <br />
+    <span class="indent">......</span>
+    <span>},</span>
+    <br />
+    <span class="indent">......</span>
+    <span class="str">"format"</span>: {
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"id"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"name"</span>:
+    <span class="kyw"> string</span>
+    <br />
+    <span class="indent">......</span>
+    <span>},</span>
+    <br />
+    <span class="indent">......</span>
+    <span class="str">"pokemonData"</span>: {
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"id"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"name"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"rawCount"</span>:
+    <span class="kyw"> number</span>,
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"avgWeight"</span>:
+    <span class="kyw"> number</span>,
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"viabilityCeiling"</span>:
+    <span class="kyw"> number</span>,
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"abilities"</span>: [
+    <br />
+    <span class="indent">............</span>
+    <span>{</span>
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"id"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"name"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"usage"</span>:
+    <span class="kyw"> number</span>
+    <br />
+    <span class="indent">............</span>
+    <span>},</span>
+    <span class="kyw"> ...</span>
+    <br />
+    <span class="indent">.........</span>
+    <span>],</span>
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"items"</span>: [
+    <br />
+    <span class="indent">............</span>
+    <span>{</span>
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"id"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"name"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"usage"</span>:
+    <span class="kyw"> number</span>
+    <br />
+    <span class="indent">............</span>
+    <span>},</span>
+    <span class="kyw"> ...</span>
+    <br />
+    <span class="indent">.........</span>
+    <span>],</span>
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"moves"</span>: [
+    <br />
+    <span class="indent">............</span>
+    <span>{</span>
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"id"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"name"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"usage"</span>:
+    <span class="kyw"> number</span>
+    <br />
+    <span class="indent">............</span>
+    <span>},</span>
+    <span class="kyw"> ...</span>
+    <br />
+    <span class="indent">.........</span>
+    <span>],</span>
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"spreads"</span>: [
+    <br />
+    <span class="indent">............</span>
+    <span>{</span>
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"nature"</span>: {
+    <span class="str">"id"</span>:
+    <span class="kyw"> string</span>,
+    <span class="str">"name"</span>:
+    <span class="kyw"> string</span>, },
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"evs"</span>: {
+    <span class="str">"hp"</span>:
+    <span class="kyw"> number</span>,
+    <span class="str">"atk"</span>:
+    <span class="kyw"> number</span>,
+    <span class="str">"def"</span>:
+    <span class="kyw"> number</span>,
+    <span class="str">"spa"</span>:
+    <span class="kyw"> number</span>,
+    <span class="str">"spd"</span>:
+    <span class="kyw"> number</span>,
+    <span class="str">"spe"</span>:
+    <span class="kyw"> number</span>, },
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"usage"</span>:
+    <span class="kyw"> number</span>
+    <br />
+    <span class="indent">............</span>
+    <span>},</span>
+    <span class="kyw"> ...</span>
+    <br />
+    <span class="indent">.........</span>
+    <span>],</span>
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"teammates"</span>: [
+    <br />
+    <span class="indent">............</span>
+    <span>{</span>
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"id"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"name"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"usage"</span>:
+    <span class="kyw"> number</span>
+    <br />
+    <span class="indent">............</span>
+    <span>},</span>
+    <span class="kyw"> ...</span>
+    <br />
+    <span class="indent">.........</span>
+    <span>],</span>
+    <br />
+    <span class="indent">.........</span>
+    <span class="str">"counters"</span>: [
+    <br />
+    <span class="indent">............</span>
+    <span>{</span>
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"id"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"name"</span>:
+    <span class="kyw"> string</span>,
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"ko"</span>:
+    <span class="kyw"> number</span>,
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"switch"</span>:
+    <span class="kyw"> number</span>,
+    <br />
+    <span class="indent">...............</span>
+    <span class="str">"total"</span>:
+    <span class="kyw"> number</span>
+    <br />
+    <span class="indent">............</span>
+    <span>},</span>
+    <span class="kyw"> ...</span>
+    <br />
+    <span class="indent">.........</span>
+    <span>]</span>
+    <br />
+    <span class="indent">......</span>
+    <span>}</span>
+    <br />
+    <span class="indent">...</span>
+    <span>}</span>
+    <br />
+    <span>}</span>
+</div>
+<p>If you requested the response as XML, the method will return a body with the following structure:</p>
+<div class="response">
+    &lt;result&gt;
+    <br />
+    <span class="indent">...</span>&lt;feature&gt;
+    <span class="kyw">pokemon/data</span>&lt;/feature&gt;
+    <br />
+    <span class="indent">...</span>&lt;year&gt;
+    <span class="kyw">number</span>&lt;/year&gt;
+    <br />
+    <span class="indent">...</span>&lt;month&gt;
+    <span class="kyw">number</span>&lt;/month&gt;
+    <br />
+    <span class="indent">...</span>&lt;format
+    <span class="str"> id</span>=
+    <span class="kyw">string</span>&gt;
+    <span class="kyw">Format name (string)</span>&lt;/format&gt;
+    <br />
+    <span class="indent">...</span>&lt;baseline&gt;
+    <span class="kyw">number</span>&lt;/baseline&gt;
+    <br />
+    <span class="indent">...</span>&lt;pokemondata
+    <span class="str"> id</span>=
+    <span class="kyw">string</span>
+    <span class="str"> name</span>=
+    <span class="kyw">string</span>
+    <span class="str"> rawCount</span>=
+    <span class="kyw">number</span>
+    <span class="str"> avgWeight</span>=
+    <span class="kyw">number</span>
+    <span class="str"> viabilityCeiling</span>=
+    <span class="kyw">number</span>&gt;
+    <br />
+    <span class="indent">......</span>&lt;abilities&gt;
+    <br />
+    <span class="indent">.........</span>&lt;ability
+    <span class="str"> id</span>=
+    <span class="kyw">string</span>
+    <span class="str"> usage</span>=
+    <span class="kyw">number</span>&gt;
+    <span class="kyw">Ability name (string)</span>&lt;/ability&gt;
+    <br />
+    <span class="indent">.........</span>
+    <span class="kyw">...</span>
+    <br />
+    <span class="indent">......</span>&lt;/abilities&gt;
+    <br />
+    <span class="indent">......</span>&lt;items&gt;
+    <br />
+    <span class="indent">.........</span>&lt;item
+    <span class="str"> id</span>=
+    <span class="kyw">string</span>
+    <span class="str"> usage</span>=
+    <span class="kyw">number</span>&gt;
+    <span class="kyw">Item name (string)</span>&lt;/item&gt;
+    <br />
+    <span class="indent">.........</span>
+    <span class="kyw">...</span>
+    <br />
+    <span class="indent">......</span>&lt;/items&gt;
+    <br />
+    <span class="indent">......</span>&lt;moves&gt;
+    <br />
+    <span class="indent">.........</span>&lt;move
+    <span class="str"> id</span>=
+    <span class="kyw">string</span>
+    <span class="str"> usage</span>=
+    <span class="kyw">number</span>&gt;
+    <span class="kyw">Move name (string)</span>&lt;/move&gt;
+    <br />
+    <span class="indent">.........</span>
+    <span class="kyw">...</span>
+    <br />
+    <span class="indent">......</span>&lt;/moves&gt;
+    <br />
+    <span class="indent">......</span>&lt;spreads&gt;
+    <br />
+    <span class="indent">..........</span>&lt;spread
+    <span class="str"> usage</span>=
+    <span class="kyw">number</span>&gt;
+    <br />
+    <span class="indent">............</span>&lt;nature
+    <span class="str"> id</span>=
+    <span class="kyw">string</span>&gt;Nature name (String)&lt;/nature&gt;
+    <br />
+    <span class="indent">............</span>&lt;evs
+    <span class="str"> hp</span>=
+    <span class="kyw">number</span>
+    <span class="str"> atk</span>=
+    <span class="kyw">number</span>
+    <span class="str"> def</span>=
+    <span class="kyw">number</span>
+    <span class="str"> spa</span>=
+    <span class="kyw">number</span>
+    <span class="str"> spd</span>=
+    <span class="kyw">number</span>
+    <span class="str"> spe</span>=
+    <span class="kyw">number</span>
+    &gt;&lt;/evs&gt;
+    <br />
+    <span class="indent">.........</span>
+    </span>&lt;/spread&gt;
+    <br />
+    <span class="indent">.........</span>
+    <span class="kyw">...</span>
+    <br />
+    <span class="indent">......</span>&lt;/spreads&gt;
+    <br />
+    <span class="indent">......</span>&lt;teammates&gt;
+    <br />
+    <span class="indent">.........</span>&lt;teammate
+    <span class="str"> id</span>=
+    <span class="kyw">string</span>
+    <span class="str"> usage</span>=
+    <span class="kyw">number</span>&gt;
+    <span class="kyw">Ability name (string)</span>&lt;/teammate&gt;
+    <br />
+    <span class="indent">.........</span>
+    <span class="kyw">...</span>
+    <br />
+    <span class="indent">......</span>&lt;/teammates&gt;
+    <br />
+    <span class="indent">......</span>&lt;counters&gt;
+    <br />
+    <span class="indent">.........</span>&lt;counter
+    <span class="str"> id</span>=
+    <span class="kyw">string</span>
+    <span class="str"> ko</span>=
+    <span class="kyw">number</span>
+    <span class="str"> switch</span>=
+    <span class="kyw">number</span>
+    <span class="str"> total</span>=
+    <span class="kyw">number</span>&gt;
+    <span class="kyw">Ability name (string)</span>&lt;/counter&gt;
+    <br />
+    <span class="indent">.........</span>
+    <span class="kyw">...</span>
+    <br />
+    <span class="indent">......</span>&lt;/counters&gt;
+    <br />
+    <span class="indent">...</span>&lt;/pokemondata&gt;
+    <br /> &lt;/result&gt;
+</div>
+<table class="desc-table">
+    <thead>
+        <tr>
+            <th colspan="2">Properties</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="first-col">
+                <code>feature</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />API feature you requested.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>year</code>
+            </td>
+            <td class="second-col">
+                <code>number</code>
+                <br />Year when the usage stats were taken.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>month</code>
+            </td>
+            <td class="second-col">
+                <code>number</code>
+                <br />Month of the year (01 - 12) when the usage stats were taken.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>format</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Format name.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>baseline</code>
+            </td>
+            <td class="second-col">
+                <code>number</code>
+                <br />Baseline used for the usage stats compilation.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>id</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Pokemon identifier.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>name</code>
+            </td>
+            <td class="second-col">
+                <code>string</code>
+                <br />Pokemon name.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>rawCount</code>
+            </td>
+            <td class="second-col">
+                <code>number</code>
+                <br />Raw count for the pokemon.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>avgWeight</code>
+            </td>
+            <td class="second-col">
+                <code>number</code>
+                <br />Average weight for the pokemon.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>viabilityCeiling</code>
+            </td>
+            <td class="second-col">
+                <code>number</code>
+                <br />Viability ceiling for the pokemon.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>abilities</code>
+            </td>
+            <td class="second-col">
+                <code>array</code>
+                <br />Most used abilities.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>items</code>
+            </td>
+            <td class="second-col">
+                <code>array</code>
+                <br />Most used items.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>moves</code>
+            </td>
+            <td class="second-col">
+                <code>array</code>
+                <br />Most used moves.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>spreads</code>
+            </td>
+            <td class="second-col">
+                <code>array</code>
+                <br />Most used spreads.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>teammates</code>
+            </td>
+            <td class="second-col">
+                <code>array</code>
+                <br />Most common teammates.
+            </td>
+        </tr>
+        <tr>
+            <td class="first-col">
+                <code>counters</code>
+            </td>
+            <td class="second-col">
+                <code>array</code>
+                <br />Most used counters.
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>Errors</h2>
+<table class="err-table">
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Error Code</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="err-tr">
+            <td class="second-col">
+                <code>404</code>
+            </td>
+            <td class="second-col">
+                <code>MONTH_NOT_AVAILABLE</code>
+            </td>
+            <td class="second-col">This error means the month you specified was not found.
+                <br />Maybe you spell it wrong or the month is not available.
+            </td>
+        </tr>
+        <tr class="err-tr">
+            <td class="second-col">
+                <code>404</code>
+            </td>
+            <td class="second-col">
+                <code>FORMAT_NOT_FOUND</code>
+            </td>
+            <td class="second-col">This error means the format you specified was not found.
+                <br />Maybe you spell it wrong or the format is not available.
+            </td>
+        </tr>
+        <tr class="err-tr">
+            <td class="second-col">
+                <code>404</code>
+            </td>
+            <td class="second-col">
+                <code>BASELINE_NOT_AVAILABLE</code>
+            </td>
+            <td class="second-col">This error means you specified a baseline that is not available.
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>Try it yourself</h2>
+<div class="try-div">
+    <form method="GET" target="_blank" action="/api/pokemon/data">
+        <table class="try-table">
+            <tr>
+                <td>
+                    <code>format</code>
+                </td>
+                <td>
+                    <input class="try-txt-field" type="text" name="format" value="[Gen 7] OU" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <code>pokemon</code>
+                </td>
+                <td>
+                    <input class="try-txt-field" type="text" name="pokemon" value="Landorus-Therian" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <code>month</code>
+                </td>
+                <td>
+                    <input class="try-txt-field" type="text" name="month" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <code>baseline</code>
+                </td>
+                <td>
+                    <input class="try-txt-field" type="text" name="baseline" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <code>select</code>
+                </td>
+                <td>
+                    <input class="try-txt-field" type="text" name="select" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <code>return-as</code>
+                </td>
+                <td>
+                    <select class="try-txt-field" name="return-as">
+                        <option value="json">JSON</option>
+                        <option value="xml">XML</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button class="try-button">SEND REQUEST</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</div>
+<br />

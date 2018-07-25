@@ -157,9 +157,17 @@ export async function callAPIFormatsPokemon(request: Express.Request, response: 
         }
         if (xml) {
             response.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
-            const res = { result: [] };
+            const formatsRes = [];
+            const res: any = {
+                result: [
+                    { feature: "pokemon/formats" },
+                    { year: params.year },
+                    { month: params.month },
+                    { formats: formatsRes },
+                ],
+            };
             for (const r of result) {
-                res.result.push({
+                formatsRes.push({
                     format: [{
                         _attr: {
                             id: r.format.id,
@@ -175,9 +183,14 @@ export async function callAPIFormatsPokemon(request: Express.Request, response: 
             response.end();
         } else {
             response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
-            const res = { result: [] };
+            const res = {
+                result: {
+                    feature: "pokemon/formats",
+                    year: params.year, month: params.month, formats: [],
+                },
+            };
             for (const r of result) {
-                res.result.push({
+                res.result.formats.push({
                     id: r.format.id,
                     name: getFormatName(r.format.id),
                     baseline: r.format.baseline,
@@ -291,9 +304,17 @@ export async function callAPIFormatsMoves(request: Express.Request, response: Ex
         }
         if (xml) {
             response.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
-            const res = { result: [] };
+            const formatsRes = [];
+            const res: any = {
+                result: [
+                    { feature: "moves/formats" },
+                    { year: params.year },
+                    { month: params.month },
+                    { formats: formatsRes },
+                ],
+            };
             for (const r of result) {
-                res.result.push({
+                formatsRes.push({
                     format: [{
                         _attr: {
                             id: r.format.id,
@@ -308,9 +329,14 @@ export async function callAPIFormatsMoves(request: Express.Request, response: Ex
             response.end();
         } else {
             response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
-            const res = { result: [] };
+            const res = {
+                result: {
+                    feature: "moves/formats",
+                    year: params.year, month: params.month, formats: [],
+                },
+            };
             for (const r of result) {
-                res.result.push({
+                res.result.formats.push({
                     id: r.format.id,
                     name: getFormatName(r.format.id),
                     baseline: r.format.baseline,
@@ -423,9 +449,17 @@ export async function callAPIFormatsItems(request: Express.Request, response: Ex
         }
         if (xml) {
             response.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
-            const res = { result: [] };
+            const formatsRes = [];
+            const res: any = {
+                result: [
+                    { feature: "items/formats" },
+                    { year: params.year },
+                    { month: params.month },
+                    { formats: formatsRes },
+                ],
+            };
             for (const r of result) {
-                res.result.push({
+                formatsRes.push({
                     format: [{
                         _attr: {
                             id: r.format.id,
@@ -440,9 +474,14 @@ export async function callAPIFormatsItems(request: Express.Request, response: Ex
             response.end();
         } else {
             response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
-            const res = { result: [] };
+            const res = {
+                result: {
+                    feature: "items/formats",
+                    year: params.year, month: params.month, formats: [],
+                },
+            };
             for (const r of result) {
-                res.result.push({
+                res.result.formats.push({
                     id: r.format.id,
                     name: getFormatName(r.format.id),
                     baseline: r.format.baseline,
@@ -555,9 +594,17 @@ export async function callAPIFormatsAbilities(request: Express.Request, response
         }
         if (xml) {
             response.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
-            const res = { result: [] };
+            const formatsRes = [];
+            const res: any = {
+                result: [
+                    { feature: "abilities/formats" },
+                    { year: params.year },
+                    { month: params.month },
+                    { formats: formatsRes },
+                ],
+            };
             for (const r of result) {
-                res.result.push({
+                formatsRes.push({
                     format: [{
                         _attr: {
                             id: r.format.id,
@@ -572,9 +619,14 @@ export async function callAPIFormatsAbilities(request: Express.Request, response
             response.end();
         } else {
             response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
-            const res = { result: [] };
+            const res = {
+                result: {
+                    feature: "abilities/formats",
+                    year: params.year, month: params.month, formats: [],
+                },
+            };
             for (const r of result) {
-                res.result.push({
+                res.result.formats.push({
                     id: r.format.id,
                     name: getFormatName(r.format.id),
                     baseline: r.format.baseline,
@@ -687,9 +739,17 @@ export async function callAPIFormatsLeads(request: Express.Request, response: Ex
         }
         if (xml) {
             response.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
-            const res = { result: [] };
+            const formatsRes = [];
+            const res: any = {
+                result: [
+                    { feature: "leads/formats" },
+                    { year: params.year },
+                    { month: params.month },
+                    { formats: formatsRes },
+                ],
+            };
             for (const r of result) {
-                res.result.push({
+                formatsRes.push({
                     format: [{
                         _attr: {
                             id: r.format.id,
@@ -704,9 +764,14 @@ export async function callAPIFormatsLeads(request: Express.Request, response: Ex
             response.end();
         } else {
             response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
-            const res = { result: [] };
+            const res = {
+                result: {
+                    feature: "leads/formats",
+                    year: params.year, month: params.month, formats: [],
+                },
+            };
             for (const r of result) {
-                res.result.push({
+                res.result.formats.push({
                     id: r.format.id,
                     name: getFormatName(r.format.id),
                     baseline: r.format.baseline,
@@ -788,9 +853,17 @@ export async function callAPIFormatsMetagame(request: Express.Request, response:
         }
         if (xml) {
             response.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
-            const res = { result: [] };
+            const formatsRes = [];
+            const res: any = {
+                result: [
+                    { feature: "metagame/formats" },
+                    { year: params.year },
+                    { month: params.month },
+                    { formats: formatsRes },
+                ],
+            };
             for (const r of result) {
-                res.result.push({
+                formatsRes.push({
                     format: [{
                         _attr: {
                             id: r.format.id,
@@ -805,9 +878,14 @@ export async function callAPIFormatsMetagame(request: Express.Request, response:
             response.end();
         } else {
             response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
-            const res = { result: [] };
+            const res = {
+                result: {
+                    feature: "metagame/formats",
+                    year: params.year, month: params.month, formats: [],
+                },
+            };
             for (const r of result) {
-                res.result.push({
+                res.result.formats.push({
                     id: r.format.id,
                     name: getFormatName(r.format.id),
                     baseline: r.format.baseline,
