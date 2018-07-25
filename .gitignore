@@ -6,6 +6,9 @@
 *.log
 npm-debug.log*
 
+# Config
+/config.json
+
 # Dist
 /dist/
 

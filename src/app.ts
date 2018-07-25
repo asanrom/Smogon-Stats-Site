@@ -9,7 +9,7 @@
 
 import * as BodyParser from "body-parser";
 import * as CookieParser from "cookie-parser";
-import * as express from "express";
+import * as Express from "express";
 import * as FS from "fs";
 import * as HTTP from "http";
 import * as HTTPS from "https";
@@ -24,7 +24,7 @@ import { MainWebApplication } from "./web-main/web-main";
  * Represents the web application: Smogon Usage Stats Site.
  */
 export class SmogonUsageStatsSite {
-    private app: express.Express;
+    private app: Express.Express;
     private controlPanel: ControlPanelWebApplication;
     private mainApp: MainWebApplication;
     private apiApp: APIWebApplication;
@@ -33,7 +33,7 @@ export class SmogonUsageStatsSite {
      * Creates a new instance of SmogonUsageStatsSite.
      */
     constructor() {
-        this.app = express();
+        this.app = Express();
         this.controlPanel = new ControlPanelWebApplication();
         this.mainApp = new MainWebApplication();
         this.apiApp = new APIWebApplication();
@@ -85,18 +85,25 @@ export class SmogonUsageStatsSite {
     }
 
     private configureApplication() {
+        /* Firewall */
+        this.app.all("*", this.firewall.bind(this));
         /* Middleware */
         this.app.use(BodyParser.json());
         this.app.use(BodyParser.urlencoded({ extended: true }));
         this.app.use(CookieParser());
         /* Static configuration */
-        this.app.use("/md-icons", express.static(require("material-design-icons").STATIC_PATH));
-        this.app.use("/static", express.static(Path.resolve(__dirname, "../public")));
-        this.app.use("/favicon.ico", express.static(Path.resolve(__dirname, "../public/images/favicon.ico")));
-        this.app.use("/robots.txt", express.static(Path.resolve(__dirname, "../public/robots.txt")));
+        this.app.use("/md-icons", Express.static(require("material-design-icons").STATIC_PATH));
+        this.app.use("/static", Express.static(Path.resolve(__dirname, "../public")));
+        this.app.use("/favicon.ico", Express.static(Path.resolve(__dirname, "../public/images/favicon.ico")));
+        this.app.use("/robots.txt", Express.static(Path.resolve(__dirname, "../public/robots.txt")));
         /* Modules */
         this.app.use(this.controlPanel.app);
         this.app.use(this.apiApp.app);
         this.app.use(this.mainApp.app);
+    }
+
+    private firewall(request: Express.Request, response: Express.Response, next) {
+        Logger.getInstance().info("SERVED " + JSON.stringify(request.path) + " FOR " + request.ip);
+        next();
     }
 }

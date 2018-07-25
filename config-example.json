@@ -1,6 +1,6 @@
 {
-    "debug": true,
-    "portHTTP": 8000,
+    "debug": false,
+    "portHTTP": 80,
     "portHTTPS": 443,
     "bindAddress": "",
     "certificate": "",
