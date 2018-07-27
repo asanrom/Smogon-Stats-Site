@@ -67,7 +67,7 @@ function setPassword(user: string, password: string) {
     const config = JSON.parse(FS.readFileSync(Path.resolve(__dirname, "../config.json")).toString());
     config.controlPanelUsername = user;
     config.controlPanelPasswdAlgo = "sha256";
-    config.controlPanelPasswdSalt = Crypto.randomBytes(64).toString("hex");
+    config.controlPanelPasswdSalt = Crypto.randomBytes(8).toString("hex");
     const hash = Crypto.createHash(config.controlPanelPasswdAlgo);
     hash.update(password);
     hash.update(config.controlPanelPasswdSalt);
