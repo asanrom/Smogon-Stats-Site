@@ -13,6 +13,7 @@
     "prebuild": "npm run lint",
     "compile": "tsc --pretty",
     "build": "rimraf dist && tsc --pretty && node minify && node build-resources.js",
+    "test": "npm run build",
     "lint": "tslint --fix src/**/*.ts",
     "start": "node index.js",
     "quickstart": "npm run initconfig && npm run adminpasswd",
