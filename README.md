@@ -1,6 +1,10 @@
 Smogon-Stats-Site
 ====================
 
+[![Build Status](https://travis-ci.org/asanrom/Smogon-Stats-Sitet.svg)](https://travis-ci.org/asanrom/Smogon-Stats-Site)
+[![Dependency Status](https://david-dm.org/asanrom/Smogon-Stats-Site.svg)](https://david-dm.org/asanrom/Smogon-Stats-Site)
+[![devDependency Status](https://david-dm.org/asanrom/Smogon-Stats-Site/dev-status.svg)](https://david-dm.org/asanrom/Smogon-Stats-Site?type=dev)
+
 Smogon-Stats-Site, a mobile-responsive website that shows [Pokemon Showdown!](https://pokemonshowdown.com/) usage stats, provided by [Smogon University](https://www.smogon.com/stats/).
 
 **WARNING:** This application is currently on beta. There may be some bugs. If you are using this application and find any bugs, please report then to [Issues](https://github.com/asanrom/Smogon-Stats-Site/issues).
