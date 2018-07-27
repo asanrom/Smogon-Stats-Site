@@ -1,13 +1,15 @@
 Smogon-Stats-Site
 ====================
 
-Smogon-Stats-Site, a web application made for <a href="https://nodejs.org/" target="_blank">NodeJS</a> to visualize <a href="https://pokemonshowdown.com/" target="_blank">Pokemon Showdown!</a> usage stats taken from Smogon (<a href="https://www.smogon.com/stats/" target="_blank">https://www.smogon.com/stats/</a>).
+Smogon-Stats-Site, a mobile-responsive website that shows [Pokemon Showdown!](https://pokemonshowdown.com/) usage stats, provided by [Smogon University](https://www.smogon.com/stats/).
+
+**WARNING:** This application is currently on beta. There may be some bugs. If you are using this application and find any bugs, please report then to [Issues](https://github.com/asanrom/Smogon-Stats-Site/issues).
 
 Features
 ------------
 
  - **Usage stats**: You can visualize Smogon usage stats, including formats lists, ranking pages and trending pages for Pokemon, moves, items, abilities and leads. You can also visualize metagame stats and Pokemon usage data details.
- - **Automatic crawling**: Automatically crawls and download usage stats from Smogon website. It has a control panel you can use to select which months you want to download.
+ - **Automatic crawling**: Automatically crawls and downloads usage stats from Smogon website. It has a control panel you can use to select which months you want to download.
  - **Multi-Process**: You can use multiple workers to to take advantage of multiple processors.
  - **Mobile responsive**: Interface based on <a href="https://material.io/design/" target="_blank">Material Design</a>. 
  - **API**: It includes an API to get the stats in XML or JSON.

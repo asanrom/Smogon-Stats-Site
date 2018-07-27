@@ -1,6 +1,6 @@
 {
   "name": "smogon-stats-site",
-  "version": "0.1.0-alpha",
+  "version": "1.0.0-beta",
   "description": "Website that shows Smogon usage stats in a pretty format.",
   "author": {
     "name": "Agustin San Roman",
