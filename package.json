@@ -14,7 +14,10 @@
     "compile": "tsc --pretty",
     "build": "rimraf dist && tsc --pretty && node minify && node build-resources.js",
     "lint": "tslint --fix src/**/*.ts",
-    "start": "node index.js"
+    "start": "node index.js",
+    "quickstart": "npm run initconfig && npm run adminpasswd",
+    "initconfig": "node dist/init-config.js",
+    "adminpasswd": "node dist/admin-passwd.js"
   },
   "main": "index.js",
   "engines": {
@@ -28,7 +31,8 @@
     "express-fileupload": "0.4.0",
     "material-design-icons": "3.0.1",
     "mongodb": "3.0.10",
-    "xml": "1.0.1"
+    "xml": "1.0.1",
+    "read": "1.0.7"
   },
   "peerDependencies": {
     "typescript": "^2.8"
@@ -51,6 +55,7 @@
     "@types/express-fileupload": "^0.1.1",
     "@types/mongodb": "^3.0.21",
     "@types/node": "^10.1.4",
+    "@types/read": "0.0.28",
     "@types/xml": "^1.0.2",
     "node-minify": "^3.1.0",
     "rimraf": "^2.6.1",
